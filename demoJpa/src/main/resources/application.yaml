@@ -1,0 +1,42 @@
+# 메모리모드로 다시 제시작하면 모두 지워짐 모쓰겠다.
+#spring.h2.console:
+#  enabled: true
+#  path: /h2-console
+#  settings:
+#    trace: false
+#    web-allow-others: false
+#http://localhost:8080/h2-console 접근
+#https://velog.io/@maigumi/Spring-Boot%EC%99%80-H2-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
+#아래처럼 하니까. 재시작해도 지워지지 않는다.
+#http://localhost:8080/h2-console 접근 가능
+spring:
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: local
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
+      #jdbc-url: jdbc:h2:tcp://localhost:8090/./data/testdb 
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
+  
+       
+spring.jpa:
+   hibernate.ddl-auto: update
+#create : JPA가 DB와 상호작용할 때 기존에 있던 스키마(테이블)을 삭제하고 새로 만드는 것을 뜻합니다.
+#create-drop : JPA 종료 시점에 기존에 있었던 테이블을 삭제합니다.
+#update : JPA에 의해 변경된 부분만 반영합니다.
+#validate : 엔티티와 테이블이 정상 매핑되어 있는지만 검증합니다.
+#none : 초기화 동작을 사용하지 않습니다.
+   generate-ddl: true   #데이터베이스 자동 초기화 기능을 사용하려면 true로 세팅해야합니다.
+   show-sql: true   #쿼리문 보여주기
+   
+spring.jpa.properties.hibernate:
+   format_sql: true  # 압축된 쿼리를 읽기 좋게 포멧   
+   use_sql_comments: true
+   
+    
