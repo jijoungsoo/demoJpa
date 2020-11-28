@@ -21,6 +21,8 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor /*org.springframework.orm.jpa.JpaSystemException: No default constructor for entity:*/
 @AllArgsConstructor /*https://tzara.tistory.com/73*/
+@org.hibernate.annotations.DynamicUpdate/*구분생성시 변경된 것만 한다.*/
+@org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @ToString(exclude = "cmGrpCd")  /*무한루프 오류 때문에 필요*/
 @Entity

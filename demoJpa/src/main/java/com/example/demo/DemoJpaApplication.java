@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.example.demo.br.BR_PG_INIT;
+import com.example.demo.br.BR_PGM_INIT;
 
 @SpringBootApplication
 public class DemoJpaApplication {
@@ -15,11 +15,11 @@ public class DemoJpaApplication {
 		SpringApplication.run(DemoJpaApplication.class, args);
 	}
 	@Autowired
-	BR_PG_INIT t;
+	BR_PGM_INIT t;
 	@Bean
 	InitializingBean sendDatabase() {
 	    return () -> {
-	    	t.Init();
+	    	//t.Init();
 	    	/*
 	        userRepository.save(new User("John"));
 	        userRepository.save(new User("Rambo"));

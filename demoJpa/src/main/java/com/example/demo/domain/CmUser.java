@@ -14,27 +14,43 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
 @NoArgsConstructor /*org.springframework.orm.jpa.JpaSystemException: No default constructor for entity:*/
 @AllArgsConstructor /*https://tzara.tistory.com/73*/
 @org.hibernate.annotations.DynamicUpdate/*구분생성시 변경된 것만 한다.*/
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
+@Data
 @Entity
-@Table(name="TB_CM_DOMAIN")
-public class CmDomain {
+@Table(name="TB_CM_USER")
+public class CmUser {
 	@Id
-	@Column(nullable = false,unique=true, length = 50 ,name="DOMAIN_CD")
-	String dmnCd;
+	@Column(nullable = false ,name="USER_NO")	
+	long userNo;
 	
-	@Column(nullable = false,unique=true, length = 100 ,name="DOMAIN_NM")
-	String dmnNm;
+	@Column(nullable = false, length = 100 ,name="USER_NM")
+	String userNm;
+	
+	@Column(nullable = false, length = 100 ,name="USER_ID")
+	String userId;
+	
+	
+	@Column(nullable = false, length = 100 ,name="USER_PWD")
+	String userPwd;
+	
+	@Column(nullable = true, length = 100 ,name="EMAIL")
+	String email;
+	
 		
-	@Column(nullable = false, length = 50 ,name="DATA_TYPE")
-	String dataType;
+	@Column(nullable = false, length = 1 ,name="USE_YN")
+	String useYn;
 	
 	@Column(nullable = true, length = 4000 ,name="RMK")
-	String rmk;	
+	String rmk;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false,name="LST_ACC_DTM")
+	Date lstAccDtm;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="CRT_DTM")
