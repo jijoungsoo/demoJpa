@@ -1,24 +1,33 @@
-package com.example.demo.da;
+package com.example.demo;
 
 import java.util.Date;
+import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.da.service.CmCdRepository;
 import com.example.demo.da.service.CmGrpCdRepository;
 import com.example.demo.domain.CmCd;
 import com.example.demo.domain.CmGrpCd;
 
-@Service
-public class DA_PG_INIT {
+@SpringBootTest(properties = "classpath:/application.yml")  /*https://velog.io/@hellozin/Spring-Boot-Test에서-Yaml-프로퍼티-적용하기*/
+@Transactional
+@Rollback(false)  /*롤백하지 않게 하자. */
+/*@ContextConfiguration(loader = AnnotationConfigContextLoader.class) */ /*이거하면 임시 디비가 만들어지는 듯하다. --위에 실db쓰는건 h2 특성상 2개를 못여는 듯한다. 서버 모드 안됨 */		
+class DemoCmCd_SelectGrpCdTest {
+	
 	@Autowired
 	private CmGrpCdRepository cmGrpCdR;
 	
 	@Autowired
 	private CmCdRepository cmCdR;
 	
-	public void init() {
+	@Test
+	void insert() {
 		CmGrpCd t =cmGrpCdR.save(CmGrpCd.builder().grpCd("HOGA_GUBUN").grpNm("거래구분(호가구분)").useYn("Y").ord(2).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("00").cdNm("(00)지정가").useYn("Y").ord(1).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("03").cdNm("(03)시장가").useYn("Y").ord(2).updtDtm(new Date()).crtDtm(new Date()).build());
@@ -62,4 +71,13 @@ public class DA_PG_INIT {
 		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("50").cdNm("코넥스(KONEX)").useYn("Y").ord(10).updtDtm(new Date()).crtDtm(new Date()).build());
 
 	}
+
+	
+	void select() {
+		List<CmCd> al= cmCdR.findAll();
+		CmCd tt1 = al.get(0);
+		//System.out.println(tt1.getGrpCd());
+		System.out.println(tt1.getCmGrpCd());
+	}
+
 }

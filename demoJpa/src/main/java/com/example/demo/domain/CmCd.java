@@ -16,27 +16,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Builder
 @NoArgsConstructor /*org.springframework.orm.jpa.JpaSystemException: No default constructor for entity:*/
 @AllArgsConstructor /*https://tzara.tistory.com/73*/
 @Data
+@ToString(exclude = "cmGrpCd")  /*무한루프 오류 때문에 필요*/
 @Entity
 @Table(name="TB_CM_CD")
 @IdClass(CmCdId.class)  
 public class CmCd {
-	
-	@Id  
+	@Id
 	@Column(nullable = false, length = 30 ,name="GRP_CD")
 	String grpCd;
 	
-
-
-	
+	  
 	@ManyToOne
 	@JoinColumn(name="GRP_CD", insertable=false, updatable=false)
-	CmGrpCd cmGrpCd;
-	
+	CmGrpCd cmGrpCd;	
 	
 	@Id
 	@Column(nullable = false, length = 30 ,name="CD")
@@ -63,11 +61,12 @@ public class CmCd {
 	@Column(nullable = false,name="UPDT_DTM")
 	Date updtDtm;
 	
-
 	public void setCmGrpCd(CmGrpCd t) {
 		this.cmGrpCd =t;
 		if(!t.getCmCds().contains(this)) {
 			t.getCmCds().add(this);
 		}
 	}
+	
+	
 }

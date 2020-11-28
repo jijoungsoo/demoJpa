@@ -22,6 +22,9 @@ spring:
       driver-class-name: org.h2.Driver
       username: sa
       password:
+  output:
+    ansi:
+      enabled: always
 spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
   
        
@@ -34,9 +37,19 @@ spring.jpa:
 #none : 초기화 동작을 사용하지 않습니다.
    generate-ddl: true   #데이터베이스 자동 초기화 기능을 사용하려면 true로 세팅해야합니다.
    show-sql: true   #쿼리문 보여주기
+    
+#  https://lannstark.tistory.com/14  sql 로그보기  
+logging:
+  level:
+    org:
+     hibernate: 
+      type:
+       descriptor: 
+        sql: trace
    
 spring.jpa.properties.hibernate:
-   format_sql: true  # 압축된 쿼리를 읽기 좋게 포멧   
-   use_sql_comments: true
+  show-sql: true 
+  format_sql: true  # 압축된 쿼리를 읽기 좋게 포멧   
+  use_sql_comments: true
    
     
