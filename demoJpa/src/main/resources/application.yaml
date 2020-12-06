@@ -1,3 +1,4 @@
+server.port: 8091
 # 메모리모드로 다시 제시작하면 모두 지워짐 모쓰겠다.
 #spring.h2.console:
 #  enabled: true
@@ -9,6 +10,7 @@
 #https://velog.io/@maigumi/Spring-Boot%EC%99%80-H2-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
 #아래처럼 하니까. 재시작해도 지워지지 않는다.
 #http://localhost:8080/h2-console 접근 가능
+
 spring:
   h2:
     console:
@@ -17,9 +19,11 @@ spring:
     active: local
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
+      #jdbc-url: jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
+      jdbc-url: jdbc:log4jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
       #jdbc-url: jdbc:h2:tcp://localhost:8090/./data/testdb 
-      driver-class-name: org.h2.Driver
+      #driver-class-name: org.h2.Driver
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       username: sa
       password:
   output:
@@ -27,6 +31,11 @@ spring:
       enabled: always
 spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
   
+  
+
+
+
+
        
 spring.jpa:
    hibernate.ddl-auto: update
@@ -46,10 +55,24 @@ logging:
       type:
        descriptor: 
         sql: trace
+     springframework.web : debug
+     springframework.security.web.csrf.CsrfFilter: DEBUG
+     sql: error
+     jdbc: off
+     jdbc.sqlonly: debug
+  file : c:/logs/product.log
+  file.max-history: 9999999
+  file.max-size : 100MB        
+  config: classpath:logback-spring.xml
+ 
+  #https://ellune.tistory.com/11        
+  #spring boot 2 logback 설정  
    
 spring.jpa.properties.hibernate:
   show-sql: true 
   format_sql: true  # 압축된 쿼리를 읽기 좋게 포멧   
   use_sql_comments: true
    
+    
+#logging.level.org.springframework.security.web.csrf.CsrfFilter=DEBUG
     

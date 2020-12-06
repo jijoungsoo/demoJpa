@@ -3,7 +3,6 @@ package com.example.demo.da;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.da.service.CmCdRepository;
@@ -339,8 +338,10 @@ public class DA_PGM_INIT {
 	}
 
 	public void insertUser() {
+		/*
 		BCryptPasswordEncoder passwordEncoding = new BCryptPasswordEncoder();
 		String admin =passwordEncoding.encode("admin");
 		CmUserR.save(CmUser.builder().userNo(0).userId("admin").userPwd(admin).userNm("관리자").email("admin@stock.com").useYn("Y").lstAccDtm(new Date()).updtDtm(new Date()).crtDtm(new Date()).build());
+		*/
 	}
 }

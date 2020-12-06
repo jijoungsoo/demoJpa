@@ -23,7 +23,24 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security' /*패스워드 암호화 때문에 사용*/
+	/*implementation 'org.springframework.boot:spring-boot-starter-security'*/  /*패스워드 암호화 때문에 사용--이걸쓰면 spring boot login , csrf필터 다 걸려서 사용합면 안됨   */
+	/* compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'  */  /*패스워드 암호화 때문에 사용   */
+	
+	implementation('org.apache.httpcomponents:httpclient')   /*외부api 호출을 위해서 */
+	
+	
+	implementation 'org.codehaus.jackson:jackson-core' 
+	implementation 'org.codehaus.jackson:jackson-mapper-asl'  /*jackson-mapper-asl 이건 view 리턴을 data리턴으로 잡아주는 것!!*/
+	implementation 'org.codehaus.jackson:jackson-databind' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
+	
+	
+	//implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1' /*log 출력을 위해서   출처: https://goddaehee.tistory.com/207 [갓대희의 작은공간]  */
+    compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+
+
+
+	
 	   	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -48,7 +65,6 @@ src/main/generated  여기에  Q로시작하는 것들이  생성됨
 */
 querydsl {
 	jpa = true
-	/*querydslSourcesDir="src/main/generated"*/
 	querydslSourcesDir="$buildDir/generated-source"
 }
 
