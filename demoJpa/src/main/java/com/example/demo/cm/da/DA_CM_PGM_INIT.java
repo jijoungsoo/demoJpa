@@ -1,4 +1,4 @@
-package com.example.demo.da;
+package com.example.demo.cm.da;
 
 import java.util.Date;
 
@@ -16,10 +16,9 @@ import com.example.demo.domain.CmDomain;
 import com.example.demo.domain.CmGrpCd;
 import com.example.demo.domain.CmMenu;
 import com.example.demo.domain.CmPgm;
-import com.example.demo.domain.CmUser;
 
 @Service
-public class DA_PGM_INIT {
+public class DA_CM_PGM_INIT {
 	@Autowired
 	private CmGrpCdRepository cmGrpCdR;
 	

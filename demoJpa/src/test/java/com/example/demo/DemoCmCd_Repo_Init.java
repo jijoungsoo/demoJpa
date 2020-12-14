@@ -20,7 +20,6 @@ import com.example.demo.domain.CmDomain;
 import com.example.demo.domain.CmGrpCd;
 import com.example.demo.domain.CmMenu;
 import com.example.demo.domain.CmPgm;
-import com.example.demo.domain.CmUser;
 
 @SpringBootTest(properties = "classpath:/application.yml")  /*https://velog.io/@hellozin/Spring-Boot-Test에서-Yaml-프로퍼티-적용하기*/
 @Transactional

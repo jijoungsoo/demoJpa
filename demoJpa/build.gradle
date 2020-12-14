@@ -26,27 +26,29 @@ dependencies {
 	/*implementation 'org.springframework.boot:spring-boot-starter-security'*/  /*패스워드 암호화 때문에 사용--이걸쓰면 spring boot login , csrf필터 다 걸려서 사용합면 안됨   */
 	/* compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'  */  /*패스워드 암호화 때문에 사용   */
 	
+	implementation 'javax.servlet:jstl'
+   	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'   /*jsp */
+	
 	implementation('org.apache.httpcomponents:httpclient')   /*외부api 호출을 위해서 */
 	
 	
-	implementation 'org.codehaus.jackson:jackson-core' 
-	implementation 'org.codehaus.jackson:jackson-mapper-asl'  /*jackson-mapper-asl 이건 view 리턴을 data리턴으로 잡아주는 것!!*/
-	implementation 'org.codehaus.jackson:jackson-databind' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
+	implementation 'org.reflections:reflections:0.9.12'  /*메소드 파라미터 name을 얻어오기 위해 달아보았다.*/
+	
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3' 
+	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'  /*jackson-mapper-asl 이건 view 리턴을 data리턴으로 잡아주는 것!!*/
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
 	
 	
 	//implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1' /*log 출력을 위해서   출처: https://goddaehee.tistory.com/207 [갓대희의 작은공간]  */
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
-
-
-
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	
-	   	
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	annotationProcessor 'org.projectlombok:lombok'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	
@@ -56,6 +58,13 @@ dependencies {
     
     annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응 
     annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+    
+    
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0") 
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    
+
+
 }
 /* 유투브보고 querydsl 설정했다.
 https://www.youtube.com/watch?v=hIw4EuhF9o8
@@ -80,4 +89,45 @@ configurations { // 손권남님이 공유해주신 팁
 test {
 	useJUnitPlatform()
 }
+/* 안됨
+compileJava {
+  options.compilerArgs.addAll(['-parameters', 8])
+}
+*/
 
+/* 
+https://stackoverflow.com/questions/2237803/can-i-obtain-method-parameter-name-using-java-reflection
+java8 이상으로 reflection으로 메소드에 인자이름을 얻어오려면
+-parameters   옵션을 줘야하는데    maven 예는 많은데.. gradle은 없냐..
+ <configuration>
+                <!-- Original answer -->
+                <compilerArgument>-parameters</compilerArgument>
+                <!-- Or, if you use the plugin version >= 3.6.2 -->
+                <parameters>true</parameters>
+                <testCompilerArgument>-parameters</testCompilerArgument>
+                <source>${java.version}</source>
+                <target>${java.version}</target>
+            </configuration>
+*/
+/*
+https://www.grepiu.com/post/76  와 이거 써볼까.
+
+https://github.com/ronmamo/reflections
+이거에 대한 설명인데 별도 내용 없어도 parameter name 가져오는것 처럼 묘사 되어있다.
+*/
+
+compileJava {
+     options.compilerArgs << '-parameters'
+     options.fork = true
+     options.forkOptions.executable = 'javac'  
+}
+     
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.jvmArgs += ["-parameters"]  
+}
+
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.compilerArgs += ["-parameters"]  
+}

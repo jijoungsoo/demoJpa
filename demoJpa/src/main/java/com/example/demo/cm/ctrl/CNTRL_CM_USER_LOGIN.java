@@ -1,19 +1,13 @@
-package com.example.demo;
+package com.example.demo.cm.ctrl;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.br.BR_LOGIN;
+import com.example.demo.cm.br.BR_CM_LOGIN;
 import com.example.demo.domain.CmUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +17,9 @@ import lombok.ToString;
 
 
 @RestController 
-public class CNTRL_USER_LOGIN {
+public class CNTRL_CM_USER_LOGIN {
 	@Autowired
-	private BR_LOGIN BrL;
+	private BR_CM_LOGIN BrL;
 	
 	@Data 
 	@NoArgsConstructor 
@@ -107,6 +101,7 @@ public class CNTRL_USER_LOGIN {
 	
 	
 /*spring security 기본구현 관련 */
+	/*
 	@PostMapping(path= "/loadUserByusername", consumes = "application/json", produces = "application/json")
 	public ResData loadUserByusername(@RequestBody ReqData param) throws Exception {
 		System.out.println(param.inData.size());
@@ -127,6 +122,6 @@ public class CNTRL_USER_LOGIN {
 		r.getOutData().add(ro);
 		
 		return r;		
-	}
+	}*/
 }
 

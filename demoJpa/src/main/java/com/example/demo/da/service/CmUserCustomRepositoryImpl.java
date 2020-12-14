@@ -1,19 +1,10 @@
 package com.example.demo.da.service;
 
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
 import com.example.demo.domain.CmUser;
 import com.example.demo.domain.QCmUser;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.domain.kiw;
 
 import java.util.Date;
 
@@ -24,32 +24,20 @@ import lombok.ToString;
 @org.hibernate.annotations.DynamicUpdate/*구분생성시 변경된 것만 한다.*/
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
-@ToString(exclude = "cmGrpCd")  /*무한루프 오류 때문에 필요*/
 @Entity
-@Table(name="TB_CM_CD")
-@IdClass(CmCdId.class)  
-public class CmCd {
+@ToString(exclude = "stTheme")    /*무한루프 오류 때문에 필요*/
+@Table(name="TB_ST_THEME_STOCK")  /*키움 테마 코드 */
+@IdClass(StThemeStockId.class)  
+
+public class StThemeStock {
 	@Id
-	@Column(nullable = false, length = 30 ,name="GRP_CD")
-	String grpCd;
-	
-	@Id
-	@Column(nullable = false, length = 30 ,name="CD")
-	String cd;
-	
-	@Column(nullable = false, length = 100 ,name="CD_NM")
-	String cdNm;
-	
+	@Column(nullable = false, length = 3 ,name="THEME_CD")
+	String themeCd;
 		
-	@Column(nullable = false, length = 1 ,name="USE_YN")
-	String useYn;
-	
-	@Column(nullable = true, length = 4000 ,name="RMK")
-	String rmk;
-	
-	@Column(nullable = true, name="ORD")
-	int ord;	
-	
+	@Id
+	@Column(nullable = false, length = 9 ,name="STOCK_CD")
+	String stockCd;
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="CRT_DTM")
 	Date crtDtm;
@@ -59,15 +47,13 @@ public class CmCd {
 	Date updtDtm;
 	  
 	@ManyToOne
-	@JoinColumn(name="GRP_CD", insertable=false, updatable=false)
-	CmGrpCd cmGrpCd;
+	@JoinColumn(name="THEME_CD", insertable=false, updatable=false)   /*외래키*/
+	StTheme stTheme;
 	
-	public void setCmGrpCd(CmGrpCd t) {
-		this.cmGrpCd =t;
-		if(!t.getCmCds().contains(this)) {
-			t.getCmCds().add(this);
+	public void setThemeCd(StTheme t) {
+		this.stTheme =t;
+		if(!t.getStThemeStocks().contains(this)) {
+			t.getStThemeStocks().add(this);
 		}
 	}
-	
-	
 }

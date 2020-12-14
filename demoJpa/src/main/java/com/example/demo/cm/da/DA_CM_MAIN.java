@@ -1,21 +1,18 @@
-package com.example.demo.da;
+package com.example.demo.cm.da;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.da.service.CmUserRepository;
 import com.example.demo.domain.CmMenu;
 import com.example.demo.domain.CmPgm;
-import com.example.demo.domain.CmUser;
 import com.example.demo.domain.QCmMenu;
 import com.example.demo.domain.QCmPgm;
-import com.example.demo.domain.QCmUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
-public class DA_MAIN {
+public class DA_CM_MAIN {
 	
 	@Autowired
 	JPAQueryFactory qf;

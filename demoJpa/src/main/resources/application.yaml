@@ -1,4 +1,6 @@
 server.port: 8091
+spring.mvc.view.prefix: /WEB-INF/jsp/
+spring.mvc.view.suffix: .jsp
 # 메모리모드로 다시 제시작하면 모두 지워짐 모쓰겠다.
 #spring.h2.console:
 #  enabled: true

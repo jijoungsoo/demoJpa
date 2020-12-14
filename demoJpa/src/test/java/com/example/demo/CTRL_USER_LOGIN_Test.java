@@ -23,7 +23,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.transaction.Transactional;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print; 
@@ -32,10 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.br.BR_LOGIN;
-import com.example.demo.da.DA_LOGIN;
+import com.example.demo.cm.br.BR_CM_LOGIN;
+import com.example.demo.cm.da.DA_CM_LOGIN;
 import com.example.demo.domain.CmUser;
-import com.example.demo.exception.BizException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -63,10 +61,10 @@ public class CTRL_USER_LOGIN_Test {
 	JPAQueryFactory qf;
 	
 	@Autowired
-	DA_LOGIN daLogin;
+	DA_CM_LOGIN daLogin;
 		
 	@Autowired
-	BR_LOGIN BrLogin;
+	BR_CM_LOGIN BrLogin;
 
 	@BeforeEach() 	//Junit4의 @Before 
 	public void setup() { 
@@ -204,31 +202,6 @@ public class CTRL_USER_LOGIN_Test {
 		//.andExpect(jsonPath("$.id", is("goddaehee"))) 
 		.andDo(print());
 	}
-
-
-	void contextLoads()  throws Exception {
-		log.info("##### Properties 테스트 #####");
-		
-		/******** START : MOC MVC test **********/ 
-		log.info("******** START : MOC MVC test **********");
-		mvc.perform(post("/memberTest/1")) 
-		.andExpect(status().isOk()) 
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON)) 
-		.andExpect(jsonPath("$.id", is("goddaehee"))) 
-		.andDo(print());
-		log.info("******** END : MOC MVC test **********"); 
-		/******** END : MOC MVC test **********/
-
-		/******** START : TestRestTemplate test **********/ 
-		log.info("******** START : TestRestTemplate test **********");
-		//ResponseEntity<MemberVo> response = restTemplate.getForEntity("/memberTest/1", MemberVo.class); 
-		//then(response.getStatusCode()).isEqualTo(HttpStatus.OK); 
-		//then(response.getBody()).isNotNull();
-		log.info("******** END : TestRestTemplate test **********"); 
-		/******** END : TestRestTemplate test **********/
-
-	}
-
 }
 
 

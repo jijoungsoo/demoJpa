@@ -1,14 +1,16 @@
-package com.example.demo.br;
+package com.example.demo.cm.br;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.da.DA_PGM_INIT;
+import com.example.demo.cm.anotation.OpService;
+import com.example.demo.cm.da.DA_CM_PGM_INIT;
+import com.example.demo.exception.BizException;
 @Service
-public class BR_PGM_INIT {
+public class BR_CM_PGM_INIT {
 	
 	@Autowired
-	DA_PGM_INIT p;
+	DA_CM_PGM_INIT p;
 	
 	public void Init() {
 		p.insertGrpCd();
@@ -17,4 +19,5 @@ public class BR_PGM_INIT {
 		p.insertPgm();
 		p.insertDomain();
 	}
+
 }

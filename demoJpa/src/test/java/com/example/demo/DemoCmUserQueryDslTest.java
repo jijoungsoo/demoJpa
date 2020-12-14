@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.da.DA_PGM_INIT;
-import com.example.demo.da.service.CmUserCustomRepository;
 import com.example.demo.da.service.CmUserRepository;
 import com.example.demo.da.util.QPredicates;
 import com.example.demo.domain.CmUser;
