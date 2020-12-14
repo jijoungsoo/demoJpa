@@ -173,20 +173,20 @@ public class API {
 		 
 		resMap.brId=br;
 		resMap.brRq=rs.get("brRq").toString();
-		resMap.brRs=rs.get("brRq").toString();
+		resMap.brRs=rs.get("brRs").toString();
 		if(rs.get("uuid")!=null) {
 			resMap.uuid=rs.get("uuid").toString();
 		}
 		if(rs.get("pgmId")!=null) {
 			resMap.pgmId=rs.get("pgmId").toString();
 		}
-		String baRq = resMap.brRq;   /*요청데이터 테이블둘 IN_DATA,IN_DATA2등*/
-		String baRs = resMap.brRs;   /*응답 테이블둘 OUT_DATA,OUT_DATA등*/
-		String[] arrBaRq=baRq.split(",");
-		String[] arrBaRs=baRs.split(",");
+		String brRq = resMap.brRq;   /*요청데이터 테이블둘 IN_DATA,IN_DATA2등*/
+		String brRs = resMap.brRs;   /*응답 테이블둘 OUT_DATA,OUT_DATA등*/
+		String[] arrBrRq=brRq.split(",");
+		String[] arrBrRs=brRs.split(",");
 		
-		for(int i =0; i<arrBaRq.length;i++) {
-			String tmp  = arrBaRq[i];
+		for(int i =0; i<arrBrRq.length;i++) {
+			String tmp  = arrBrRq[i];
 			if(tmp !=null && tmp.length()>0) {
 				if(!rs.containsKey(tmp)) {
 					throw new BizException(tmp+"가 인풋 요청 파라미터 테이블이 존재하지 않습니다.");  

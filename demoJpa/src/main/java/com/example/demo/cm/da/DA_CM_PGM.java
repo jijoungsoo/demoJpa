@@ -35,7 +35,7 @@ public class DA_CM_PGM {
 	 * @param CATEGORY  카테고리
 	 * @param PGM_LINK  프로그램링크
 	 */
-	public void insertPgm(
+	public void savePgm(
 			String PGM_ID
 			,String PGM_NM
 			,String RMK
@@ -52,5 +52,11 @@ public class DA_CM_PGM {
 				.pgmLink(PGM_LINK)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
+	}
+	
+	public void rmPgm(
+			String PGM_ID
+			) {
+		cmPgmR.deleteById(PGM_ID);
 	}
 }

@@ -57,15 +57,15 @@ public class BR_CM_LOGIN {
 		CmUser c =daLogin.findByUserId((String) rs.get("USER_ID"));
 		
 		OUT_DS outDs = new OUT_DS();
+		ArrayList<HashMap<String, Object>> OUT_DATA = new ArrayList<HashMap<String,Object>>();
+		outDs.put("OUT_DATA",OUT_DATA);
 		if(c!=null) {
 			HashMap<String, Object> OUT_DATA_ROW = new HashMap<String,Object>();
 			OUT_DATA_ROW.put("userId", c.getUserId());
 			OUT_DATA_ROW.put("userPwd", c.getUserPwd());
 			OUT_DATA_ROW.put("userNm", c.getUserNm());
 			OUT_DATA_ROW.put("email", c.getEmail());
-			ArrayList<HashMap<String, Object>> OUT_DATA = new ArrayList<HashMap<String,Object>>();
 			OUT_DATA.add(OUT_DATA_ROW);
-			outDs.put("OUT_DATA",OUT_DATA);
 		}
 		return outDs;
 		
