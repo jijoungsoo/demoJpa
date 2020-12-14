@@ -15,7 +15,9 @@ import com.example.demo.cm.ctrl.OUT_DS;
 import com.example.demo.cm.da.DA_CM_PGM;
 import com.example.demo.cm.utils.PjtUtil;
 import com.example.demo.domain.CmPgm;
+import com.example.demo.domain.CmUser;
 import com.example.demo.exception.BizException;
+import com.example.demo.exception.BizRuntimeException;
 
 @Service
 public class BR_CM_PGM {
@@ -42,9 +44,43 @@ public class BR_CM_PGM {
 		return outDs;
 	}
 	@OpService
-	public OUT_DS makePgm(IN_DS inDS) throws BizException {
-
-		return null;
+	public OUT_DS savePgm(IN_DS inDS) throws BizException {
+		if(inDS.get("IN_DATA").size()!=1) {
+			throw new BizException("입력파라미터가 잘못되었습니다.");
+		}
+		HashMap<String,Object>  rs =inDS.get("IN_DATA").get(0);
+		String  PGM_ID 		= PjtUtil.str(rs.get("PGM_ID"));
+		String  PGM_NM 		= PjtUtil.str(rs.get("PGM_NM"));
+		String  PGM_LINK 	= PjtUtil.str(rs.get("PGM_LINK"));
+		String  CATEGORY 	= PjtUtil.str(rs.get("CATEGORY"));
+		/*
+		 * null이어도 ""로 들어와서 처리된다.
+		 * 위에 str은 의미 없는데
+		 * 밑에 isEmpty를 해줄려고 했다.
+		 * 
+		 * */
+		
+		if(PjtUtil.isEmpty(PGM_ID)) {
+			throw new BizRuntimeException("프로그램ID가 입력되지 않았습니다.");
+		}
+		if(PjtUtil.isEmpty(PGM_NM)) {
+			throw new BizRuntimeException("프로그램명이 입력되지 않았습니다.");
+		}
+		if(PjtUtil.isEmpty(PGM_LINK)) {
+			throw new BizRuntimeException("프로그램링크가 입력되지 않았습니다.");
+		}
+		
+		daPgm.insertPgm(
+				PGM_ID
+				,PGM_NM
+				,PGM_LINK
+				,CATEGORY
+				,PGM_LINK
+				);
+		
+		
+		OUT_DS outDs = new OUT_DS(); 
+		return outDs;
 		//return daPgm.makePgm();
 	}
 }

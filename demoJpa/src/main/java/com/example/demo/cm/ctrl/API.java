@@ -112,6 +112,23 @@ public class API {
 				e2.printStackTrace();
 			}
 			return out;
+			
+		} catch (java.lang.reflect.InvocationTargetException e) {
+			e.printStackTrace();
+			e.getTargetException().printStackTrace();
+			//log.info("AAAAA");
+			//log.info(e.getMessage());   e.getMessage로 가져올수가 없고
+			//log.info("BBBBB");
+			//log.info(e.getTargetException().getMessage());  이걸로 가져와야 값이 있다.
+			resMap.success="false";
+			resMap.errorMessage=e.getTargetException().getMessage();
+			try {
+				out = PjtUtil.ObjectToJsonString(resMap);
+			} catch (JsonProcessingException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			return out;
 		} catch (Exception e) {
 			e.printStackTrace();
 			resMap.success="false";

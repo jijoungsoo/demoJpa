@@ -40,6 +40,32 @@ public class PjtUtil {
 		return om.writeValueAsString(value);
 	}
 	
+	public static boolean isEmpty(String tmp) {
+		if(tmp == null) {
+			return true;
+		}
+		if(tmp.length()==0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static String str(Object tmp) {
+		if(tmp == null) {
+			return "";
+		}
+		String tmp2 = tmp.toString();
+		return tmp2;
+	}
+	
+	public static String nvl(String first,String second) {
+		if(isEmpty(first)) {
+			return second;
+		}
+		
+		return  first;
+	}
+
 
 	
 	
