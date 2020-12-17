@@ -17,6 +17,11 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import com.example.demo.DemoJpaApplication;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class EndpointDocController {
 	/*https://since.tistory.com/23      controller에 맴핑된주소 가져오기 펌*/
@@ -62,6 +67,8 @@ public class EndpointDocController {
 
 			pages.add(item);
 		}
+		log.info("aaa");
+		log.info("vvvvv");
 		model.addAttribute("pages", pages);
 		return "/endPoints";
 	}

@@ -41,12 +41,15 @@ dependencies {
 	
 	//implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1' /*log 출력을 위해서   출처: https://goddaehee.tistory.com/207 [갓대희의 작은공간]  */
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    //implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  //이것도 docker에서 위에 compileOnly를 못읽어서 넣어주었다.
 
-	compileOnly 'org.projectlombok:lombok:1.18.16'
+	compileOnly 'org.projectlombok:lombok:1.18.16'    ///docker에서  gradlew build에서 안되서 아래 것을 하나 더 추가했다.
+	implementation 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2'   //이렇게 하니까. docker에서 gradle build 시 못읽는다. bootRun도 읽는다.
+	//implementation 'com.h2database:h2'   //이렇게 하니까 읽었다.  둘다 살려보자.
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -115,6 +118,21 @@ https://www.grepiu.com/post/76  와 이거 써볼까.
 https://github.com/ronmamo/reflections
 이거에 대한 설명인데 별도 내용 없어도 parameter name 가져오는것 처럼 묘사 되어있다.
 */
+
+
+
+/*출처: https://coding-start.tistory.com/304 [코딩스타트]
+Junit 테스트쪽에 컴파일 안하기 위해 gradle build  시 
+*/
+sourceSets{
+    main{
+        java{
+            srcDirs = ['src','extraSrc']
+            exclude 'test/*'
+        }
+    }
+}
+
 
 compileJava {
      options.compilerArgs << '-parameters'
