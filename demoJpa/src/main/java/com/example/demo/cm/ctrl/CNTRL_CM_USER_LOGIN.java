@@ -3,12 +3,9 @@ package com.example.demo.cm.ctrl;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.cm.br.BR_CM_LOGIN;
-import com.example.demo.domain.CmUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

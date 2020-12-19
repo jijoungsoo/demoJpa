@@ -15,9 +15,6 @@ import com.example.demo.cm.utils.PjtUtil;
 import com.example.demo.domain.CmMenu;
 import com.example.demo.domain.CmPgm;
 import com.example.demo.exception.BizException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Service
 public class BR_CM_MAIN {

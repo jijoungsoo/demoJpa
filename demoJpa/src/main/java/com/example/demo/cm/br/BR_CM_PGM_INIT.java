@@ -3,9 +3,7 @@ package com.example.demo.cm.br;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.cm.anotation.OpService;
 import com.example.demo.cm.da.DA_CM_PGM_INIT;
-import com.example.demo.exception.BizException;
 @Service
 public class BR_CM_PGM_INIT {
 	

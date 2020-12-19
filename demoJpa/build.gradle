@@ -23,7 +23,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	/*implementation 'org.springframework.boot:spring-boot-starter-security'*/  /*패스워드 암호화 때문에 사용--이걸쓰면 spring boot login , csrf필터 다 걸려서 사용합면 안됨   */
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	/* compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'  */  /*패스워드 암호화 때문에 사용   */
 	
 	implementation 'javax.servlet:jstl'
@@ -74,6 +74,10 @@ https://www.youtube.com/watch?v=hIw4EuhF9o8
 
 cmd 창에서  gradlw build 를 하면
 src/main/generated  여기에  Q로시작하는 것들이  생성됨
+
+그때 이거 생성하고 어떤걸 설정했는지 기억이 나지 않는다.
+eclipse 에서 import 가 안되네.
+
 */
 querydsl {
 	jpa = true
@@ -91,61 +95,4 @@ configurations { // 손권남님이 공유해주신 팁
 
 test {
 	useJUnitPlatform()
-}
-/* 안됨
-compileJava {
-  options.compilerArgs.addAll(['-parameters', 8])
-}
-*/
-
-/* 
-https://stackoverflow.com/questions/2237803/can-i-obtain-method-parameter-name-using-java-reflection
-java8 이상으로 reflection으로 메소드에 인자이름을 얻어오려면
--parameters   옵션을 줘야하는데    maven 예는 많은데.. gradle은 없냐..
- <configuration>
-                <!-- Original answer -->
-                <compilerArgument>-parameters</compilerArgument>
-                <!-- Or, if you use the plugin version >= 3.6.2 -->
-                <parameters>true</parameters>
-                <testCompilerArgument>-parameters</testCompilerArgument>
-                <source>${java.version}</source>
-                <target>${java.version}</target>
-            </configuration>
-*/
-/*
-https://www.grepiu.com/post/76  와 이거 써볼까.
-
-https://github.com/ronmamo/reflections
-이거에 대한 설명인데 별도 내용 없어도 parameter name 가져오는것 처럼 묘사 되어있다.
-*/
-
-
-
-/*출처: https://coding-start.tistory.com/304 [코딩스타트]
-Junit 테스트쪽에 컴파일 안하기 위해 gradle build  시 
-*/
-sourceSets{
-    main{
-        java{
-            srcDirs = ['src','extraSrc']
-            exclude 'test/*'
-        }
-    }
-}
-
-
-compileJava {
-     options.compilerArgs << '-parameters'
-     options.fork = true
-     options.forkOptions.executable = 'javac'  
-}
-     
-tasks.withType(JavaCompile) {
-    options.fork = true
-    options.forkOptions.jvmArgs += ["-parameters"]  
-}
-
-tasks.withType(JavaCompile) {
-    options.fork = true
-    options.compilerArgs += ["-parameters"]  
 }

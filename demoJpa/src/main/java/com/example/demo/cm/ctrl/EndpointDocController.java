@@ -17,8 +17,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.example.demo.DemoJpaApplication;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

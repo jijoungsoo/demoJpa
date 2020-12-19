@@ -2,17 +2,8 @@ package com.example.demo;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
-import org.springframework.core.type.ClassMetadata;
-import org.springframework.core.type.MethodMetadata;
-import com.example.demo.cm.anotation.OpService;
 import com.example.demo.cm.br.BR_CM_LOGIN;
-import com.example.demo.cm.ctrl.API;
-import com.example.demo.cm.ctrl.ApiResultMethod;
 
 
 public class Replaction_Test3 {

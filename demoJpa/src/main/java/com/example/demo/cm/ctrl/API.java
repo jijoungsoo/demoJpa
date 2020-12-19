@@ -1,19 +1,14 @@
 package com.example.demo.cm.ctrl;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodParameterNamesScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -25,10 +20,8 @@ import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.DemoJpaApplication;
 import com.example.demo.cm.anotation.OpService;
 import com.example.demo.cm.utils.PjtUtil;
 import com.example.demo.exception.BizException;
@@ -37,8 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Throwables;
 
-import antlr.StringUtils;
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -90,7 +81,8 @@ public class API {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			resMap.success="false";
-			resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
+			resMap.errorMessage=e.getMessage();
+			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
 			try {
 				out = PjtUtil.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {
@@ -121,8 +113,8 @@ public class API {
 			//log.info("BBBBB");
 			//log.info(e.getTargetException().getMessage());  이걸로 가져와야 값이 있다.
 			resMap.success="false";
-			//resMap.errorMessage=e.getTargetException().getMessage();
-			resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);
+			resMap.errorMessage=e.getTargetException().getMessage();
+			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e.getTargetException());
 			try {
 				out = PjtUtil.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {

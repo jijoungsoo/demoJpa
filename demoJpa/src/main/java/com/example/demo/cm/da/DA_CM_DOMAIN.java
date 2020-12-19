@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.da.service.CmDomainRepository;
-import com.example.demo.da.service.CmPgmRepository;
 import com.example.demo.domain.CmDomain;
 import com.example.demo.domain.QCmDomain;
 import com.querydsl.jpa.impl.JPAQueryFactory;
