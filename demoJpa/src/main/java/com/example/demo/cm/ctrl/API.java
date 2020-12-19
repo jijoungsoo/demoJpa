@@ -90,7 +90,7 @@ public class API {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			resMap.success="false";
-			resMap.errorMessage=e.getMessage();			
+			resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
 			try {
 				out = PjtUtil.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {
@@ -121,7 +121,8 @@ public class API {
 			//log.info("BBBBB");
 			//log.info(e.getTargetException().getMessage());  이걸로 가져와야 값이 있다.
 			resMap.success="false";
-			resMap.errorMessage=e.getTargetException().getMessage();
+			//resMap.errorMessage=e.getTargetException().getMessage();
+			resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);
 			try {
 				out = PjtUtil.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {
