@@ -32,8 +32,8 @@ public class BR_CM_DOMAIN {
 			OUT_DATA_ROW.put("DMN_NM", cm.getDmnNm());
 			OUT_DATA_ROW.put("DATA_TYPE", cm.getDataType());
 			OUT_DATA_ROW.put("RMK", cm.getRmk());
-			OUT_DATA_ROW.put("CRT_DTM",PjtUtil.getYyyyMMddHHMMSS(cm.getCrtDtm()));
-			OUT_DATA_ROW.put("UPDT_DTM",PjtUtil.getYyyyMMddHHMMSS(cm.getUpdtDtm()));
+			OUT_DATA_ROW.put("CRT_DTM",PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm()));
+			OUT_DATA_ROW.put("UPDT_DTM",PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm()));
 			OUT_DATA.add(OUT_DATA_ROW);
 		}
 		OUT_DS outDs = new OUT_DS();

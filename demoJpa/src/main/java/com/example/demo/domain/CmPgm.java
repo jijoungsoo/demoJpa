@@ -36,6 +36,9 @@ public class CmPgm {
 	@Column(nullable = true, length = 100 ,name="CATEGORY")
 	String category;
 	
+	@Column(nullable = true, length = 1000 ,name="DIR_LINK")
+	String dirLink;
+	
 	@Column(nullable = true, length = 200 ,name="PGM_LINK")
 	String pgmLink;
 	

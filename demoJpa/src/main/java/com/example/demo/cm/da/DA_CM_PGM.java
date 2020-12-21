@@ -2,6 +2,7 @@ package com.example.demo.cm.da;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.da.service.CmPgmRepository;
 import com.example.demo.domain.CmPgm;
 import com.example.demo.domain.QCmPgm;
+import com.example.demo.exception.BizException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
@@ -35,12 +37,14 @@ public class DA_CM_PGM {
 	 * @param CATEGORY  카테고리
 	 * @param PGM_LINK  프로그램링크
 	 */
-	public void savePgm(
+	public void createPgm(
 			String PGM_ID
 			,String PGM_NM
 			,String RMK
 			,String CATEGORY
+			,String DIR_LINK
 			,String PGM_LINK
+			
 			) {
 		
 		cmPgmR.save(
@@ -52,6 +56,37 @@ public class DA_CM_PGM {
 				.pgmLink(PGM_LINK)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
+	}
+	
+	/**
+	 * @param PGM_ID  프로그램 ID
+	 * @param PGM_NM  프로그램명
+	 * @param RMK      비고
+	 * @param CATEGORY  카테고리
+	 * @param PGM_LINK  프로그램링크
+	 * @throws BizException 
+	 */
+	public void updatePgm(
+			String PGM_ID
+			,String PGM_NM
+			,String RMK
+			,String CATEGORY
+			,String DIR_LINK
+			,String PGM_LINK
+			
+			) throws BizException {
+		Optional<CmPgm> c = cmPgmR.findById(PGM_ID);
+		if(c==null) {
+			throw new BizException("["+PGM_ID+"] 프로그램이 존재하지 않습니다.[수정X]");
+		}
+		CmPgm tmp = c.get();
+		tmp.setPgmNm(PGM_NM);
+		tmp.setRmk(RMK);
+		tmp.setCategory(CATEGORY);
+		tmp.setDirLink(DIR_LINK);
+		tmp.setPgmLink(PGM_LINK);
+		tmp.setUpdtDtm(new Date());
+		cmPgmR.save(tmp);
 	}
 	
 	public void rmPgm(

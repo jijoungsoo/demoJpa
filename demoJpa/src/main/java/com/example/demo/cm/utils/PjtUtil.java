@@ -11,9 +11,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class PjtUtil {
+	static DateFormat dateformat1 = new SimpleDateFormat("yyyyMMddHHmmss");
 	public static String getYyyyMMddHHMMSS(java.util.Date inDate) {
-		DateFormat dateformat = new SimpleDateFormat("yyyyMMddHHmmss");
-		return dateformat.format(inDate);
+		
+		return dateformat1.format(inDate);
+	}
+	static DateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static String getYyyy_MM_dd_HHMMSS(java.util.Date inDate) {
+
+		return dateformat2.format(inDate);
 	}
 
 	public static <T> T JsonStringToObject(String JsonInString, Class<T> valueType)

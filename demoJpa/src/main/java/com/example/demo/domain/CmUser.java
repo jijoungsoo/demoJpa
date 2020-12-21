@@ -45,6 +45,7 @@ public class CmUser {
 	@Column(nullable = false, length = 1, name = "USE_YN")
 	String useYn;
 
+	/*출처: https://juntcom.tistory.com/94 [쥬니의 개발블로그]*/
 	@Column(nullable = true, length = 4000, name = "RMK")
 	String rmk;
 

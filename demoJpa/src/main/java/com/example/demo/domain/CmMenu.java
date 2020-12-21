@@ -34,6 +34,9 @@ public class CmMenu {
 	@Column(nullable = true, length = 50 ,name="PRNT_MENU_CD")
 	String prntMenuCd;
 	
+	@Column(nullable = true, length = 50 ,name="MENU_LVL")
+	String menuLvl;
+	
 	@Column(nullable = true, length = 1 ,name="MENU_KIND")
 	String menuKind;
 	

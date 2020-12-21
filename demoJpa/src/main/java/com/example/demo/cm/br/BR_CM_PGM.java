@@ -29,12 +29,13 @@ public class BR_CM_PGM {
 			CmPgm cm=al.get(i);
 			HashMap<String, Object>  OUT_DATA_ROW = new HashMap<String, Object>();
 			OUT_DATA_ROW.put("PGM_ID", cm.getPgmId());
+			OUT_DATA_ROW.put("DIR_LINK", cm.getDirLink());
 			OUT_DATA_ROW.put("PGM_LINK", cm.getPgmLink());
 			OUT_DATA_ROW.put("PGM_NM", cm.getPgmNm());
 			OUT_DATA_ROW.put("CATEGORY", cm.getCategory());
 			OUT_DATA_ROW.put("RMK", cm.getRmk());
-			OUT_DATA_ROW.put("CRT_DTM",PjtUtil.getYyyyMMddHHMMSS(cm.getCrtDtm()));
-			OUT_DATA_ROW.put("UPDT_DTM",PjtUtil.getYyyyMMddHHMMSS(cm.getUpdtDtm()));
+			OUT_DATA_ROW.put("CRT_DTM",PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm()));
+			OUT_DATA_ROW.put("UPDT_DTM",PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm()));
 			OUT_DATA.add(OUT_DATA_ROW);
 		}
 		OUT_DS outDs = new OUT_DS();
@@ -47,7 +48,9 @@ public class BR_CM_PGM {
 			HashMap<String,Object>  rs =inDS.get("IN_DATA").get(i);
 			String  PGM_ID 		= PjtUtil.str(rs.get("PGM_ID"));
 			String  PGM_NM 		= PjtUtil.str(rs.get("PGM_NM"));
-			String  PGM_LINK 	= PjtUtil.str(rs.get("PGM_LINK"));
+			String  RMK 		= PjtUtil.str(rs.get("RMK"));
+			String  DIR_LINK 	= PjtUtil.str(rs.get("DIR_LINK"));
+			String  PGM_LINK 	= PjtUtil.str(rs.get("PGM_LINK"));			
 			String  CATEGORY 	= PjtUtil.str(rs.get("CATEGORY"));
 			/*
 			 * null이어도 ""로 들어와서 처리된다.
@@ -62,24 +65,30 @@ public class BR_CM_PGM {
 			if(PjtUtil.isEmpty(PGM_NM)) {
 				throw new BizRuntimeException("프로그램명이 입력되지 않았습니다.");
 			}
+			if(PjtUtil.isEmpty(DIR_LINK)) {
+				throw new BizRuntimeException("디렉토리링크가 입력되지 않았습니다.");
+			}
 			if(PjtUtil.isEmpty(PGM_LINK)) {
 				throw new BizRuntimeException("프로그램링크가 입력되지 않았습니다.");
 			}
 			
-			daPgm.savePgm(
+			daPgm.createPgm(
 					PGM_ID
 					,PGM_NM
-					,PGM_LINK
+					,RMK
 					,CATEGORY
+					,DIR_LINK
 					,PGM_LINK
 					);
 		}
 		
 		for( int i=0;i<inDS.get("UPDT_DATA").size();i++) {
-			HashMap<String,Object>  rs =inDS.get("IN_DATA").get(i);
+			HashMap<String,Object>  rs =inDS.get("UPDT_DATA").get(i);
 			String  PGM_ID 		= PjtUtil.str(rs.get("PGM_ID"));
 			String  PGM_NM 		= PjtUtil.str(rs.get("PGM_NM"));
-			String  PGM_LINK 	= PjtUtil.str(rs.get("PGM_LINK"));
+			String  RMK 		= PjtUtil.str(rs.get("RMK"));
+			String  DIR_LINK 	= PjtUtil.str(rs.get("DIR_LINK"));
+			String  PGM_LINK 	= PjtUtil.str(rs.get("PGM_LINK"));			
 			String  CATEGORY 	= PjtUtil.str(rs.get("CATEGORY"));
 			/*
 			 * null이어도 ""로 들어와서 처리된다.
@@ -94,15 +103,20 @@ public class BR_CM_PGM {
 			if(PjtUtil.isEmpty(PGM_NM)) {
 				throw new BizRuntimeException("프로그램명이 입력되지 않았습니다.");
 			}
+			if(PjtUtil.isEmpty(DIR_LINK)) {
+				throw new BizRuntimeException("디렉토리링크가 입력되지 않았습니다.");
+			}
+			
 			if(PjtUtil.isEmpty(PGM_LINK)) {
 				throw new BizRuntimeException("프로그램링크가 입력되지 않았습니다.");
 			}
 			
-			daPgm.savePgm(
+			daPgm.updatePgm(
 					PGM_ID
 					,PGM_NM
-					,PGM_LINK
+					,RMK
 					,CATEGORY
+					,DIR_LINK
 					,PGM_LINK
 					);
 		}
