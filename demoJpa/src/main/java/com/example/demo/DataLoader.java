@@ -83,12 +83,14 @@ public class DataLoader {
 	void insertUser() {
 		BCryptPasswordEncoder passwordEncoding = new BCryptPasswordEncoder();
 		String admin =passwordEncoding.encode("admin");
-		//cmUserR.save(CmUser.builder().userNo(0).userNm("관리자").userId("jijs").userPwd(admin).email("admin@ji.co.kr").useYn("Y").lstAccDtm(new Date()).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmUserR.save(CmUser.builder().userNo(0).userNm("관리자").userId("jijs").userPwd(admin).email("admin@ji.co.kr").useYn("Y").lstAccDtm(new Date()).updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 	
 	void insertTableSeq() {
 		cmSeqR.save(CmSeq.builder().seqNm("CM_USER_USER_NO_SEQ").seqNo(4).tbNm("TB_CM_USER").colNm("USER_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmSeqR.save(CmSeq.builder().seqNm("CM_DOMAIN_DMN_NO_SEQ").seqNo(210).tbNm("TB_CM_DOMAIN").colNm("DMN_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmSeqR.save(CmSeq.builder().seqNm("CM_MENU_MENU_NO_SEQ").seqNo(27).tbNm("TB_CM_DOMAIN").colNm("DMN_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmSeqR.save(CmSeq.builder().seqNm("CM_PGM_PGM_NO_SEQ").seqNo(17).tbNm("TB_CM_DOMAIN").colNm("DMN_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 	
 	void insertGrpCd() {
@@ -97,6 +99,7 @@ public class DataLoader {
 		cmGrpCdR.save(CmGrpCd.builder().grpCd("STOCK_CD_TYPE").grpNm("주식코드 접두어(주문,잔고-체결)").useYn("Y").ord(3).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmGrpCdR.save(CmGrpCd.builder().grpCd("MARKET").grpNm("장구분(마켓)").useYn("Y").ord(4).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmGrpCdR.save(CmGrpCd.builder().grpCd("USE_YN").grpNm("사용여부").useYn("Y").ord(5).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmGrpCdR.save(CmGrpCd.builder().grpCd("CATEGORY").grpNm("프로그램카테고리").useYn("Y").ord(6).updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 	void insertCd() {
 		CmGrpCd t =cmGrpCdR.getOne("HOGA_GUBUN");
@@ -145,62 +148,78 @@ public class DataLoader {
 		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("Y").cdNm("Y").useYn("Y").ord(0).updtDtm(new Date()).crtDtm(new Date()).build());
 		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("N").cdNm("N").useYn("Y").ord(1).updtDtm(new Date()).crtDtm(new Date()).build());
 		
+		t =cmGrpCdR.getOne("CATEGORY");
+		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("CM").cdNm("공통").useYn("Y").ord(0).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("KIW").cdNm("키움").useYn("Y").ord(1).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmCdR.save(CmCd.builder().grpCd(t.getGrpCd()).cd("STOCK").cdNm("주식").useYn("Y").ord(2).updtDtm(new Date()).crtDtm(new Date()).build());
+		
 
 	}
 
 	void insertMenu() {
 		/*시스템관리*/
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_0000").menuNm("시스템관리").prntMenuCd(null).menuKind("M").menuLvl("0").menuPath("시스템관리").ord("10000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1000").menuNm("시스템").prntMenuCd("MN_CM_0000").menuKind("M").menuLvl("1").menuPath("시스템관리>시스템").ord("11000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1100").menuNm("프로그램관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>프로그램관리").ord("11100").pgmId("CM_1100").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1200").menuNm("테이블도메인").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블도메인").ord("11200").pgmId("CM_1200").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1300").menuNm("메뉴관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>메뉴관리").ord("11300").pgmId("CM_1300").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1400").menuNm("공통코드관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>공통코드관리").ord("11400").pgmId("CM_1400").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1500").menuNm("회원관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>회원관리").ord("11500").pgmId("CM_1500").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1600").menuNm("테이블시퀀스").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블시퀀스").ord("11600").pgmId("CM_1600").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(1L).menuCd("MN_CM_0000").menuNm("시스템관리").prntMenuCd(null).menuKind("M").menuLvl("0").menuPath("시스템관리").ord("10000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(2L).menuCd("MN_CM_1000").menuNm("시스템").prntMenuCd("MN_CM_0000").menuKind("M").menuLvl("1").menuPath("시스템관리>시스템").ord("11000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(3L).menuCd("MN_CM_1100").menuNm("프로그램관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>프로그램관리").ord("11100").pgmId("CM_1100").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(4L).menuCd("MN_CM_1200").menuNm("테이블도메인").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블도메인").ord("11200").pgmId("CM_1200").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(5L).menuCd("MN_CM_1300").menuNm("메뉴관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>메뉴관리").ord("11300").pgmId("CM_1300").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(6L).menuCd("MN_CM_1400").menuNm("공통코드관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>공통코드관리").ord("11400").pgmId("CM_1400").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(7L).menuCd("MN_CM_1500").menuNm("회원관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>회원관리").ord("11500").pgmId("CM_1500").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(8L).menuCd("MN_CM_1600").menuNm("테이블시퀀스").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블시퀀스").ord("11600").pgmId("CM_1600").updtDtm(new Date()).crtDtm(new Date()).build());
 		
 		
 		/*키움*/
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_0000").menuNm("키움").prntMenuCd(null).menuKind("M").menuLvl("0").menuPath("키움").ord("20000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_1000").menuNm("키움조회").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>키움조회").ord("21000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_1100").menuNm("주식기본요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>주식기본요청").ord("21100").pgmId("KIW_1100").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_1200").menuNm("계좌수익률요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>계좌수익률요청").ord("21200").pgmId("KIW_1200").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_1300").menuNm("관심종목정보요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>관심종목정보요청").ord("21300").pgmId("KIW_1300").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_1400").menuNm("주식종목상세(매도,매수)").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>주식종목상세(매도,매수)").ord("21400").pgmId("KIW_1400").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(9L).menuCd("MN_KIW_0000").menuNm("키움").prntMenuCd(null).menuKind("M").menuLvl("0").menuPath("키움").ord("20000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(10L).menuCd("MN_KIW_1000").menuNm("키움조회").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>키움조회").ord("21000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(11L).menuCd("MN_KIW_1100").menuNm("주식기본요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>주식기본요청").ord("21100").pgmId("KIW_1100").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(12L).menuCd("MN_KIW_1200").menuNm("계좌수익률요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>계좌수익률요청").ord("21200").pgmId("KIW_1200").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(13L).menuCd("MN_KIW_1300").menuNm("관심종목정보요청").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>관심종목정보요청").ord("21300").pgmId("KIW_1300").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(14L).menuCd("MN_KIW_1400").menuNm("주식종목상세(매도,매수)").prntMenuCd("MN_KIW_1000").menuKind("S").menuLvl("2").menuPath("키움>키움조회>주식종목상세(매도,매수)").ord("21400").pgmId("KIW_1400").updtDtm(new Date()).crtDtm(new Date()).build());
 		
 		
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_2000").menuNm("기준정보").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>기준정보").ord("22000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_2100").menuNm("테마그룹코드").prntMenuCd("MN_KIW_2000").menuKind("S").menuLvl("2").menuPath("키움>기준정보>테마그룹코드").ord("22100").pgmId("KIW_2100").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(15L).menuCd("MN_KIW_2000").menuNm("기준정보").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>기준정보").ord("22000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(16L).menuCd("MN_KIW_2100").menuNm("테마그룹코드").prntMenuCd("MN_KIW_2000").menuKind("S").menuLvl("2").menuPath("키움>기준정보>테마그룹코드").ord("22100").pgmId("KIW_2100").updtDtm(new Date()).crtDtm(new Date()).build());
 		
 		
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_3000").menuNm("키움실시간").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>키움실시간").ord("23000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_3100").menuNm("주문(접수,체결)").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>주문(접수,체결)").ord("23100").pgmId("KIW_3100").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_3200").menuNm("잔고(체결)").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>잔고(체결)").ord("23200").pgmId("KIW_3200").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_3300").menuNm("실시간체결").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>실시간체결").ord("23300").pgmId("KIW_3300").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(17L).menuCd("MN_KIW_3000").menuNm("키움실시간").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>키움실시간").ord("23000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(18L).menuCd("MN_KIW_3100").menuNm("주문(접수,체결)").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>주문(접수,체결)").ord("23100").pgmId("KIW_3100").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(19L).menuCd("MN_KIW_3200").menuNm("잔고(체결)").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>잔고(체결)").ord("23200").pgmId("KIW_3200").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(20L).menuCd("MN_KIW_3300").menuNm("실시간체결").prntMenuCd("MN_KIW_3000").menuKind("S").menuLvl("2").menuPath("키움>키움실시간>실시간체결").ord("23300").pgmId("KIW_3300").updtDtm(new Date()).crtDtm(new Date()).build());
 		
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_4000").menuNm("내주식정보").prntMenuCd("MN_KIW_0000").menuKind("M").menuLvl("1").menuPath("키움>내주식정보").ord("24000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_4100").menuNm("내가산주식").prntMenuCd("MN_KIW_4000").menuKind("S").menuLvl("2").menuPath("키움>내주식정보>내가산주식").ord("24100").pgmId("KIW_4100").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_KIW_4200").menuNm("내가판주식").prntMenuCd("MN_KIW_4000").menuKind("S").menuLvl("2").menuPath("키움>내주식정보>내가판주식").ord("24200").pgmId("KIW_4200").updtDtm(new Date()).crtDtm(new Date()).build());
+
+		
+		cmMenuR.save(CmMenu.builder().menuNo(24L).menuCd("MN_ST_0000").menuNm("외부주식정보").prntMenuCd("").menuKind("M").menuLvl("0").menuPath("외부주식정보").ord("30000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(25L).menuCd("MN_ST_1000").menuNm("FinanceData").prntMenuCd("MN_ST_0000").menuKind("M").menuLvl("1").menuPath("외부주식정보>FinanceData").ord("31000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(26L).menuCd("MN_ST_1100").menuNm("일별데이터").prntMenuCd("MN_ST_1000").menuKind("S").menuLvl("2").menuPath("외부주식정보>FinanceData>일별데이터").ord("31100").pgmId("ST_1100").updtDtm(new Date()).crtDtm(new Date()).build());
+		
+		cmMenuR.save(CmMenu.builder().menuNo(21L).menuCd("MN_ST_2000").menuNm("내주식정보").prntMenuCd("MN_ST_0000").menuKind("M").menuLvl("1").menuPath("키움>내주식정보").ord("24000").pgmId("").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(22L).menuCd("MN_ST_2100").menuNm("내가산주식").prntMenuCd("MN_ST_2000").menuKind("S").menuLvl("2").menuPath("키움>내주식정보>내가산주식").ord("24100").pgmId("ST_2100").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuNo(23L).menuCd("MN_ST_2200").menuNm("내가판주식").prntMenuCd("MN_ST_2000").menuKind("S").menuLvl("2").menuPath("키움>내주식정보>내가판주식").ord("24200").pgmId("ST_2200").updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 	void insertPgm() {
 		/*공통*/
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1100").pgmNm("프로그램관리").rmk("CM_1100(프로그램관리)").category("CM").pgmLink("CM_1100(프로그램관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1200").pgmNm("테이블도메인관리").rmk("CM_1200(테이블도메인관리)").category("CM").pgmLink("CM_1200(테이블도메인관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1300").pgmNm("메뉴관리").rmk("CM_1300(메뉴관리)").category("CM").pgmLink("CM_1300(메뉴관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1400").pgmNm("공통코드관리").rmk("CM_1400(공통코드관리)").category("CM").pgmLink("CM_1400(공통코드관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1500").pgmNm("회원관리").rmk("CM_1500(회원관리)").category("CM").pgmLink("CM_1500(회원관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("CM_1600").pgmNm("테이블시퀀스").rmk("CM_1600(테이블시퀀스)").category("CM").pgmLink("CM_1600(테이블시퀀스)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(0).ord("1100").pgmId("CM_1100").pgmNm("프로그램관리").rmk("CM_1100(프로그램관리)").category("CM").pgmLink("CM_1100(프로그램관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(1).ord("1200").pgmId("CM_1200").pgmNm("테이블도메인관리").rmk("CM_1200(테이블도메인관리)").category("CM").pgmLink("CM_1200(테이블도메인관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(2).ord("1300").pgmId("CM_1300").pgmNm("메뉴관리").rmk("CM_1300(메뉴관리)").category("CM").pgmLink("CM_1300(메뉴관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(3).ord("1400").pgmId("CM_1400").pgmNm("공통코드관리").rmk("CM_1400(공통코드관리)").category("CM").pgmLink("CM_1400(공통코드관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(4).ord("1500").pgmId("CM_1500").pgmNm("회원관리").rmk("CM_1500(회원관리)").category("CM").pgmLink("CM_1500(회원관리)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(5).ord("1600").pgmId("CM_1600").pgmNm("테이블시퀀스").rmk("CM_1600(테이블시퀀스)").category("CM").pgmLink("CM_1600(테이블시퀀스)").dirLink("CM").updtDtm(new Date()).crtDtm(new Date()).build());
 		/*키움실시간*/
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_3100").pgmNm("주문(접수,체결)").rmk("CHEJAN_ORDER(주문(접수,체결))").category("키움API").pgmLink("KIW_3100(주문(접수,체결))").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_3200").pgmNm("잔고(체결)").rmk("CHEJAN_BALANCE(잔고(체결))").category("키움API").pgmLink("KIW_3200(잔고(체결))").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_3300").pgmNm("실시간체결").rmk("REALTIME_CONTRACT(실시간체결) ").category("키움API").pgmLink("KIW_3300(실시간체결)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(6).ord("2100").pgmId("KIW_3100").pgmNm("주문(접수,체결)").rmk("CHEJAN_ORDER(주문(접수,체결))").category("KIW").pgmLink("KIW_3100(주문(접수,체결))").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(7).ord("2200").pgmId("KIW_3200").pgmNm("잔고(체결)").rmk("CHEJAN_BALANCE(잔고(체결))").category("KIW").pgmLink("KIW_3200(잔고(체결))").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(8).ord("2300").pgmId("KIW_3300").pgmNm("실시간체결").rmk("REALTIME_CONTRACT(실시간체결) ").category("KIW").pgmLink("KIW_3300(실시간체결)").updtDtm(new Date()).crtDtm(new Date()).build());
 		
 		/*키움조회*/
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_1100").pgmNm("주식기본정보요청").rmk("OPT10001(주식기본정보요청)").category("키움API").pgmLink("KIW_1100(주식기본정보요청)").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_1200").pgmNm("계좌수익률요청").rmk("OPT10085(계좌수익률요청)").category("키움API").pgmLink("KIW_1200(계좌수익률요청)").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_1300").pgmNm("관심종목정보요청").rmk("OPTKWFID(관심종목정보요청)").category("키움API").pgmLink("KIW_1300(관심종목정보요청)").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_1400").pgmNm("주식종목상세(매도,매수)").rmk("SEND_ORDER(주식종목상세(매도,매수))").category("키움API").pgmLink("KIW_1400(주식종목상세(매도,매수))").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmPgmR.save(CmPgm.builder().pgmId("KIW_2100").pgmNm("테마그룹코드").rmk("GetThemeGroupList(테마그룹코드)").category("키움API").pgmLink("KIW_2100(테마그룹코드)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(9).ord("3100").pgmId("KIW_1100").pgmNm("주식기본정보요청").rmk("OPT10001(주식기본정보요청)").category("KIW").pgmLink("KIW_1100(주식기본정보요청)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(10).ord("3200").pgmId("KIW_1200").pgmNm("계좌수익률요청").rmk("OPT10085(계좌수익률요청)").category("KIW").pgmLink("KIW_1200(계좌수익률요청)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(11).ord("3300").pgmId("KIW_1300").pgmNm("관심종목정보요청").rmk("OPTKWFID(관심종목정보요청)").category("KIW").pgmLink("KIW_1300(관심종목정보요청)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(12).ord("3400").pgmId("KIW_1400").pgmNm("주식종목상세(매도,매수)").rmk("SEND_ORDER(주식종목상세(매도,매수))").category("KIW").pgmLink("KIW_1400(주식종목상세(매도,매수))").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(13).ord("3500").pgmId("KIW_2100").pgmNm("테마그룹코드").rmk("GetThemeGroupList(테마그룹코드)").category("KIW").pgmLink("KIW_2100(테마그룹코드)").updtDtm(new Date()).crtDtm(new Date()).build());
+		
+		cmPgmR.save(CmPgm.builder().pgmNo(14).ord("4100").pgmId("ST_1100").pgmNm("일별데이터").rmk("주식정보>FinanceData>일별데이터").category("STOCK").pgmLink("ST_1100(일별데이터)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(15).ord("4200").pgmId("ST_2100").pgmNm("내가판주식").rmk("주식정보>내주식정보>내가판주식").category("STOCK").pgmLink("ST_2100(내가판주식)").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmPgmR.save(CmPgm.builder().pgmNo(16).ord("4300").pgmId("ST_2200").pgmNm("내가산주식").rmk("주식정보>내주식정보>내가산주식").category("STOCK").pgmLink("ST_2200(내가산주식)").updtDtm(new Date()).crtDtm(new Date()).build());
+		
 	}
 
 	void insertDomain() {

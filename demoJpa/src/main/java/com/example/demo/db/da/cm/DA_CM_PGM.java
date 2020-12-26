@@ -19,6 +19,8 @@ public class DA_CM_PGM {
 	@Autowired
 	JPAQueryFactory qf;
 	
+
+	
 	@Autowired
 	CmPgmRepository cmPgmR;
 	
@@ -38,9 +40,11 @@ public class DA_CM_PGM {
 	 * @param PGM_LINK  프로그램링크
 	 */
 	public void createPgm(
-			String PGM_ID
+			 Long PGM_NO
+			,String PGM_ID
 			,String PGM_NM
 			,String RMK
+			,String ORD
 			,String CATEGORY
 			,String DIR_LINK
 			,String PGM_LINK
@@ -49,10 +53,13 @@ public class DA_CM_PGM {
 		
 		cmPgmR.save(
 				CmPgm.builder()
+				.pgmNo(PGM_NO)
 				.pgmId(PGM_ID)
 				.pgmNm(PGM_NM)
 				.rmk(RMK)
+				.ord(ORD)
 				.category(CATEGORY)
+				.dirLink(DIR_LINK)
 				.pgmLink(PGM_LINK)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
@@ -67,21 +74,25 @@ public class DA_CM_PGM {
 	 * @throws BizException 
 	 */
 	public void updatePgm(
-			String PGM_ID
+			Long PGM_NO
+			,String PGM_ID
 			,String PGM_NM
 			,String RMK
+			,String ORD
 			,String CATEGORY
 			,String DIR_LINK
 			,String PGM_LINK
 			
 			) throws BizException {
-		Optional<CmPgm> c = cmPgmR.findById(PGM_ID);
+		Optional<CmPgm> c = cmPgmR.findById(PGM_NO);
 		if(c==null) {
-			throw new BizException("["+PGM_ID+"] 프로그램이 존재하지 않습니다.[수정X]");
+			throw new BizException("["+PGM_NO+"]["+PGM_ID+"] 프로그램이 존재하지 않습니다.[수정X]");
 		}
 		CmPgm tmp = c.get();
+		tmp.setPgmId(PGM_ID);
 		tmp.setPgmNm(PGM_NM);
 		tmp.setRmk(RMK);
+		tmp.setOrd(ORD);
 		tmp.setCategory(CATEGORY);
 		tmp.setDirLink(DIR_LINK);
 		tmp.setPgmLink(PGM_LINK);
@@ -90,8 +101,8 @@ public class DA_CM_PGM {
 	}
 	
 	public void rmPgm(
-			String PGM_ID
+			Long PGM_NO
 			) {
-		cmPgmR.deleteById(PGM_ID);
+		cmPgmR.deleteById(PGM_NO);
 	}
 }

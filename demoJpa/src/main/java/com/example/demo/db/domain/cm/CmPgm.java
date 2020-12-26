@@ -24,6 +24,9 @@ import lombok.NoArgsConstructor;
 @Table(name="tb_cm_pgm")
 public class CmPgm {
 	@Id
+	@Column(nullable = false,unique=true ,name="pgm_no")
+	long pgmNo;
+	
 	@Column(nullable = false,unique=true, length = 50 ,name="pgm_id")
 	String pgmId;
 	
@@ -32,6 +35,10 @@ public class CmPgm {
 		
 	@Column(nullable = true, length = 4000 ,name="rmk")
 	String rmk;
+	
+
+	@Column(nullable = true, length = 5 ,name="ord")
+	String ord;
 	
 	@Column(nullable = true, length = 100 ,name="category")
 	String category;

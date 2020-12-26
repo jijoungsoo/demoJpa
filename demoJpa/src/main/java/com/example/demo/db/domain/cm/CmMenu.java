@@ -25,6 +25,9 @@ import lombok.NoArgsConstructor;
 @Table(name="tb_cm_menu")
 public class CmMenu {
 	@Id
+	@Column(nullable = false,unique=true, length = 50 ,name="menu_no")
+	Long menuNo;
+	
 	@Column(nullable = false,unique=true, length = 50 ,name="menu_cd")
 	String menuCd;
 	

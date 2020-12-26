@@ -60,7 +60,8 @@ public class DA_CM_MENU {
 	 * @param PGM_LINK  프로그램링크
 	 */
 	public void createMenu(
-			String MENU_CD
+			Long MENU_NO
+			,String MENU_CD
 			,String MENU_NM
 			,String PRNT_MENU_CD
 			,String ORD
@@ -72,6 +73,7 @@ public class DA_CM_MENU {
 			) {
 		cmMenuR.save(
 				CmMenu.builder()
+				.menuNo(MENU_NO)
 				.menuCd(MENU_CD)
 				.menuNm(MENU_NM)
 				.prntMenuCd(PRNT_MENU_CD)
@@ -95,7 +97,8 @@ public class DA_CM_MENU {
 	 * @throws BizException 
 	 */
 	public void updateMenu(
-			String MENU_CD
+			Long MENU_NO
+			,String MENU_CD
 			,String MENU_NM
 			,String PRNT_MENU_CD
 			,String ORD
@@ -106,11 +109,12 @@ public class DA_CM_MENU {
 			,String RMK
 			) throws BizException {
 		
-		Optional<CmMenu>  c =  cmMenuR.findById(MENU_CD);
+		Optional<CmMenu>  c =  cmMenuR.findById(MENU_NO);
 		if(c==null) {
-			throw new BizException("["+MENU_CD+"] 메뉴코드가 존재하지 않습니다. ");
+			throw new BizException("["+MENU_NO+"]["+MENU_CD+"] 메뉴코드가 존재하지 않습니다. ");
 		}
 		CmMenu tmp = c.get();
+		tmp.setMenuCd(MENU_CD);
 		tmp.setMenuNm(MENU_NM);
 		tmp.setPrntMenuCd(PRNT_MENU_CD);
 		tmp.setOrd(ORD);
@@ -124,9 +128,9 @@ public class DA_CM_MENU {
 	}
 	
 	public void rmMenu(
-			String MENU_CD
+			Long MENU_NO
 			) {
-		cmMenuR.deleteById(MENU_CD);
+		cmMenuR.deleteById(MENU_NO);
 	}
 
 	

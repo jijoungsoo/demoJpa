@@ -5,9 +5,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.example.demo.db.domain.kiw.KiwMarketId;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,86 +23,81 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicUpdate/*구분생성시 변경된 것만 한다.*/
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
+@IdClass(MarcapStckId.class) 
 @Entity
 @Table(name="tb_marcap_stock")  /*https://github.com/FinanceData/marcap   여기 데이터 */
-public class MarcapStckDay {
+public class MarcapStck {
 	/*Code 종목코드  */
 	@Id
 	@Column(nullable = false, length = 9 ,name="stock_cd")
 	String stockCd;
 	
+	/*date 날자 */
+	@Id
+	@Column(nullable = false, length = 8 , name="stock_dt")
+	String stockDt;
+	
 	/*name 종목명 */
-	@Column(nullable = false, length = 45 , name="stock_nm")
+	@Column(nullable = true, length = 45 , name="stock_nm")
 	String stockNm;
 	
 	/*close 종가 */
-	@Column(nullable = false, length = 8 , name="cls_amt")
-	int clsAmt;
+	@Column(nullable = true, name="cls_amt")
+	Integer clsAmt;
 	
 	/*changes 전일대비 */
-	@Column(nullable = false, length = 8 , name="changes")
-	int changes;
+	@Column(nullable = true, name="changes_amt")
+	Integer changesAmt;
 	
 	/*changes 전일대비 */
-	@Column(nullable = false, length = 8 , name="chages_ratio")
-	float chagesRatio;
+	@Column(nullable = true,  name="changes_rt")
+	Double changesRt;
 	
 	/*Volume 거래량 */
-	@Column(nullable = false, length = 8 , name="trade_qty")
-	int tradeQty;
+	@Column(nullable = true,  name="trade_qty")
+	Long tradeQty;
 	
 	
 	/*Amount 거래대금 */
-	@Column(nullable = false, length = 8 , name="trade_amt")
-	int tradeAmt;
+	@Column(nullable = true,  name="trade_amt")
+	Long tradeAmt;
 	
 	/*open  시가 */
-	@Column(nullable = false, length = 8 , name="start_amt")
-	int startAmt;
+	@Column(nullable = true,  name="start_amt")
+	Integer startAmt;
 	
 	/*high 고가 */
-	@Column(nullable = false, length = 8 , name="high_amt")
-	int highAmt;
+	@Column(nullable = true,  name="high_amt")
+	Integer highAmt;
 	
 	/*low 저가 */
-	@Column(nullable = false, length = 8 , name="low_amt")
-	int lowAmt;
+	@Column(nullable = true,  name="low_amt")
+	Integer lowAmt;
 	
 	/*Marcap 시가총액(백만원) */
-	@Column(nullable = false, length = 8 , name="total_mrkt_amt")
-	int totalMrktAmt;
+	@Column(nullable = true,  name="total_mrkt_amt")
+	Long totalMrktAmt;
 	
 	/*MarcapRatio 시가총액비중(%) */
-	@Column(nullable = false, length = 8 , name="total_mrkt_amt_rt")
-	double totalMrktAmtrt;
+	@Column(nullable = true, length = 8 , name="total_mrkt_amt_rt")
+	Double totalMrktAmtrt;
 	
 	/*Stocks 상장주식수 */
-	@Column(nullable = false, length = 8 , name="stock_cnt")
-	int stockCnt;
+	@Column(nullable = true, length = 8 , name="stock_cnt")
+	Double stockCnt;
 	
 	
 	/*ForeignShares 외국인 보유주식수  */
-	@Column(nullable = false, length = 8 , name="frgn_cnt")
-	int frgnCnt;
+	@Column(nullable = true, length = 8 , name="frgn_cnt")
+	Double frgnCnt;
 	
 		
 	/*ForeignRatio 외국인 지분율(%)  */
-	@Column(nullable = false, length = 8 , name="frgn_rt")
-	float frgnRt;
+	@Column(nullable = true, length = 8 , name="frgn_rt")
+	Double frgnRt;
 	
-	
-	
-
-	
-	
-
-
-	
-	@Column(nullable = true, name="lst_price")
-	BigDecimal lstPrice;
-	
-	@Column(nullable = true,  length = 20 ,name="stock_state")
-	String STOCK_STATE;
+	@Column(nullable = true, name="rnk")
+	Integer rnk;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")

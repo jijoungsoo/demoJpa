@@ -12,6 +12,7 @@ import com.example.demo.cm.ctrl.IN_DS;
 import com.example.demo.cm.ctrl.OUT_DS;
 import com.example.demo.cm.utils.PjtUtil;
 import com.example.demo.db.da.cm.DA_CM_MENU;
+import com.example.demo.db.da.cm.DA_CM_SEQ;
 import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
@@ -20,6 +21,9 @@ import com.example.demo.exception.BizRuntimeException;
 public class BR_CM_MENU {
 	@Autowired
 	DA_CM_MENU daMenu;
+	
+	@Autowired
+	DA_CM_SEQ daCmSeq;
 
 	@OpService
 	public OUT_DS  findMenu(IN_DS inDS) throws BizException {
@@ -28,6 +32,7 @@ public class BR_CM_MENU {
 		for(int i=0;i<al.size();i++) {
 			CmMenu cm=al.get(i);
 			HashMap<String, Object>  OUT_DATA_ROW = new HashMap<String, Object>();
+			OUT_DATA_ROW.put("MENU_NO", cm.getMenuNo());
 			OUT_DATA_ROW.put("MENU_CD", cm.getMenuCd());
 			OUT_DATA_ROW.put("MENU_NM", cm.getMenuNm());
 			OUT_DATA_ROW.put("PRNT_MENU_CD", cm.getPrntMenuCd());
@@ -56,6 +61,7 @@ public class BR_CM_MENU {
 			OUT_DATA_ROW.put("PGM_ID", cm.getPgmId());
 			OUT_DATA_ROW.put("PRNT_MENU_CD", cm.getPrntMenuCd());
 			OUT_DATA_ROW.put("ORD", cm.getOrd());
+			OUT_DATA_ROW.put("MENU_NO", cm.getMenuNo());
 			OUT_DATA_ROW.put("MENU_CD", cm.getMenuCd());
 			OUT_DATA_ROW.put("MENU_NM", cm.getMenuNm());
 			OUT_DATA_ROW.put("MENU_PATH", cm.getMenuNm());
@@ -84,6 +90,7 @@ public class BR_CM_MENU {
 			HashMap<String, Object>  OUT_CHILD_DATA_ROW = new HashMap<String, Object>();
 			OUT_CHILD_DATA_ROW.put("PGM_ID", subC.getPgmId());
 			OUT_CHILD_DATA_ROW.put("PRNT_MENU_CD", subC.getPrntMenuCd());
+			OUT_CHILD_DATA_ROW.put("MENU_NO", subC.getMenuNo());
 			OUT_CHILD_DATA_ROW.put("MENU_CD", subC.getMenuCd());
 			OUT_CHILD_DATA_ROW.put("MENU_NM", subC.getMenuNm());
 			OUT_CHILD_DATA_ROW.put("MENU_PATH", MENU_PATH+">>"+subC.getMenuNm());
@@ -122,9 +129,12 @@ public class BR_CM_MENU {
 			if(PjtUtil.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
+			
+			long L_MENU_NO =daCmSeq.increate("CM_MENU_MENU_NO_SEQ");
 						
 			daMenu.createMenu(
-					MENU_CD
+					L_MENU_NO
+					,MENU_CD
 					,MENU_NM
 					,PRNT_MENU_CD
 					,ORD
@@ -138,6 +148,7 @@ public class BR_CM_MENU {
 		
 		for( int i=0;i<inDS.get("UPDT_DATA").size();i++) {
 			HashMap<String,Object>  rs =inDS.get("UPDT_DATA").get(i);
+			String  MENU_NO 		= PjtUtil.str(rs.get("MENU_NO"));
 			String  MENU_CD 		= PjtUtil.str(rs.get("MENU_CD"));
 			String  MENU_NM 		= PjtUtil.str(rs.get("MENU_NM"));
 			String  PRNT_MENU_CD 	= PjtUtil.str(rs.get("PRNT_MENU_CD"));
@@ -147,6 +158,10 @@ public class BR_CM_MENU {
 			String  MENU_LVL 		= PjtUtil.str(rs.get("MENU_LVL"));
 			String  MENU_PATH 		= PjtUtil.str(rs.get("MENU_PATH"));
 			String  RMK 			= PjtUtil.str(rs.get("RMK"));
+			
+			if(PjtUtil.isEmpty(MENU_NO)) {
+				throw new BizRuntimeException("메뉴번호가 입력되지 않았습니다.");
+			}
 			
 			if(PjtUtil.isEmpty(MENU_CD)) {
 				throw new BizRuntimeException("메뉴코드가 입력되지 않았습니다.");
@@ -158,9 +173,10 @@ public class BR_CM_MENU {
 			if(PjtUtil.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
-			
+			long L_MENU_NO = Long.parseLong(MENU_NO);
 			daMenu.updateMenu(
-					MENU_CD
+					L_MENU_NO
+					,MENU_CD
 					,MENU_NM
 					,PRNT_MENU_CD
 					,ORD
@@ -180,13 +196,13 @@ public class BR_CM_MENU {
 	public OUT_DS rmMenu(IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.get("IN_DATA").size();i++) {
 			HashMap<String,Object>  rs =inDS.get("IN_DATA").get(i);
-			String  MENU_CD 		= PjtUtil.str(rs.get("MENU_CD"));
-			if(PjtUtil.isEmpty(MENU_CD)) {
-				throw new BizRuntimeException("메뉴코드가 입력되지 않았습니다.");
+			String  MENU_NO 		= PjtUtil.str(rs.get("MENU_NO"));
+			if(PjtUtil.isEmpty(MENU_NO)) {
+				throw new BizRuntimeException("["+MENU_NO+"]메뉴번호가 입력되지 않았습니다.");
 			}
-			
+			long L_MENU_NO = Long.parseLong(MENU_NO);
 			daMenu.rmMenu(
-					MENU_CD
+					L_MENU_NO
 					);
 		}
 	

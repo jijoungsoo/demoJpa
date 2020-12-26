@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.db.domain.cm.CmPgm;
 
 @Repository
-public interface CmPgmRepository extends JpaRepository< CmPgm, String> {
+public interface CmPgmRepository extends JpaRepository< CmPgm, Long> {
 	
 }
