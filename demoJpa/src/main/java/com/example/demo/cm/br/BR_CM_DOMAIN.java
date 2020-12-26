@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.example.demo.cm.anotation.OpService;
 import com.example.demo.cm.ctrl.IN_DS;
 import com.example.demo.cm.ctrl.OUT_DS;
-import com.example.demo.cm.da.DA_CM_DOMAIN;
 import com.example.demo.cm.utils.PjtUtil;
-import com.example.demo.domain.CmDomain;
+import com.example.demo.db.da.cm.DA_CM_DOMAIN;
+import com.example.demo.db.da.cm.DA_CM_SEQ;
+import com.example.demo.db.domain.cm.CmDomain;
+import com.example.demo.db.domain.cm.CmUser;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 
@@ -20,6 +22,9 @@ import com.example.demo.exception.BizRuntimeException;
 public class BR_CM_DOMAIN {
 	@Autowired
 	DA_CM_DOMAIN daDmn;
+	
+	@Autowired
+	DA_CM_SEQ daCmSeq;
 
 	@OpService
 	public OUT_DS findDomain(IN_DS inDS) throws BizException {
@@ -28,6 +33,7 @@ public class BR_CM_DOMAIN {
 		for(int i=0;i<al.size();i++) {
 			CmDomain cm=al.get(i);
 			HashMap<String, Object>  OUT_DATA_ROW = new HashMap<String, Object>();
+			OUT_DATA_ROW.put("DMN_NO", cm.getDmnNo());
 			OUT_DATA_ROW.put("DMN_CD", cm.getDmnCd());
 			OUT_DATA_ROW.put("DMN_NM", cm.getDmnNm());
 			OUT_DATA_ROW.put("DATA_TYPE", cm.getDataType());
@@ -59,8 +65,11 @@ public class BR_CM_DOMAIN {
 				throw new BizRuntimeException("데이터타입 입력되지 않았습니다.");
 			}
 			
-			daDmn.saveDomain(
-					DMN_CD
+			long L_DMN_NO =daCmSeq.increate("CM_USER_USER_NO_SEQ");
+						
+			daDmn.createDomain(
+					L_DMN_NO
+					,DMN_CD
 					,DMN_NM
 					,DATA_TYPE
 					,RMK
@@ -68,11 +77,16 @@ public class BR_CM_DOMAIN {
 		}
 		
 		for( int i=0;i<inDS.get("UPDT_DATA").size();i++) {
-			HashMap<String,Object>  rs =inDS.get("IN_DATA").get(i);
+			HashMap<String,Object>  rs =inDS.get("UPDT_DATA").get(i);
+			String  DMN_NO 		= PjtUtil.str(rs.get("DMN_NO"));
 			String  DMN_CD 		= PjtUtil.str(rs.get("DMN_CD"));
 			String  DMN_NM 		= PjtUtil.str(rs.get("DMN_NM"));
 			String  DATA_TYPE 	= PjtUtil.str(rs.get("DATA_TYPE"));
 			String  RMK 	= PjtUtil.str(rs.get("RMK"));
+			
+			if(PjtUtil.isEmpty(DMN_NO)) {
+				throw new BizRuntimeException("도메인번호가 입력되지 않았습니다.");
+			}
 			
 			if(PjtUtil.isEmpty(DMN_CD)) {
 				throw new BizRuntimeException("도메인코드 입력되지 않았습니다.");
@@ -83,9 +97,10 @@ public class BR_CM_DOMAIN {
 			if(PjtUtil.isEmpty(DATA_TYPE)) {
 				throw new BizRuntimeException("데이터타입 입력되지 않았습니다.");
 			}
-			
-			daDmn.saveDomain(
-					DMN_CD
+			long L_DMN_NO = Long.parseLong(DMN_NO);
+			daDmn.updateDomain(
+					 L_DMN_NO
+					,DMN_CD
 					,DMN_NM
 					,DATA_TYPE
 					,RMK
@@ -100,13 +115,13 @@ public class BR_CM_DOMAIN {
 	public OUT_DS rmDomain(IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.get("IN_DATA").size();i++) {
 			HashMap<String,Object>  rs =inDS.get("IN_DATA").get(i);
-			String  DMN_CD 		= PjtUtil.str(rs.get("DMN_CD"));
-			if(PjtUtil.isEmpty(DMN_CD)) {
-				throw new BizRuntimeException("도메인코드 입력되지 않았습니다.");
+			String  DMN_NO 		= PjtUtil.str(rs.get("DMN_NO"));
+			if(PjtUtil.isEmpty(DMN_NO)) {
+				throw new BizRuntimeException("도메인번호가 입력되지 않았습니다.");
 			}
-			
+			long L_DMN_NO = Long.parseLong(DMN_NO);
 			daDmn.rmDomain(
-					DMN_CD
+					L_DMN_NO
 					);
 		}
 	

@@ -26,7 +26,7 @@ class CmMainMenuTest {
 		OUT_DS outDs = null;
 		try {
 			IN_DS inDS = new IN_DS();
-			outDs = BrMenu.findMainMenu(inDS);
+			outDs = BrMenu.findMainMenuRoot(inDS);
 			
 		} catch (BizException e) {
 			// TODO Auto-generated catch block

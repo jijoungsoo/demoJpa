@@ -12,6 +12,7 @@ spring.mvc.view.suffix: .jsp
 #https://velog.io/@maigumi/Spring-Boot%EC%99%80-H2-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
 #아래처럼 하니까. 재시작해도 지워지지 않는다.
 #http://localhost:8080/h2-console 접근 가능
+
 spring:
   h2:
     console:
@@ -19,15 +20,21 @@ spring:
   profiles:
     active: local
   datasource:
-    hikari:
+##H2디비 설정
       #jdbc-url: jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
-      jdbc-url: jdbc:log4jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
+      #jdbc-url: jdbc:log4jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
       #jdbc-url: jdbc:h2:tcp://localhost:8090/./data/testdb 
       #jdbc-url: jdbc:log4jdbc:h2::mem:userdb;DB_CLOSE_DELAY=-1
       #driver-class-name: org.h2.Driver
-      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      username: sa
-      password:
+      
+      #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#postgresql   하나 설정      
+    hikari:
+      maximum-pool-size: 4      
+    url: jdbc:log4jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    username: postgres
+    password: pwd
   output:
     ansi:
       enabled: always
@@ -36,12 +43,11 @@ spring:
       name: test # Default user name.
       password: test # Password for the default user name.
       roles: # Granted roles for the default user name.      
-      
-spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
-  
-  
-
-
+spring.datasource.sql-script-encoding: utf-8
+spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+#spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
+##spring.jpa.properties.hibernate.default_schema: stockweb  #postgresql 디폴트 스키마 지정  일단 이거 제외 db를 빠꾸자. 
 
 
        

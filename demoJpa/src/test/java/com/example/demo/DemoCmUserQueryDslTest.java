@@ -13,10 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.da.service.CmUserRepository;
 import com.example.demo.da.util.QPredicates;
-import com.example.demo.domain.CmUser;
-import com.example.demo.domain.QCmUser;
+import com.example.demo.db.domain.cm.CmUser;
+import com.example.demo.db.repository.cm.CmUserRepository;
+import com.example.demo.db.domain.cm.QCmUser;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;

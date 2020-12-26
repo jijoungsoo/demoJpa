@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.cm.anotation.OpService;
 import com.example.demo.cm.ctrl.IN_DS;
 import com.example.demo.cm.ctrl.OUT_DS;
-import com.example.demo.cm.da.DA_CM_PGM;
 import com.example.demo.cm.utils.PjtUtil;
-import com.example.demo.domain.CmPgm;
+import com.example.demo.db.da.cm.DA_CM_PGM;
+import com.example.demo.db.domain.cm.CmPgm;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 

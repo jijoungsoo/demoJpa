@@ -48,7 +48,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'   //이렇게 하니까. docker에서 gradle build 시 못읽는다. bootRun도 읽는다.
+	//runtimeOnly 'com.h2database:h2'   //이렇게 하니까. docker에서 gradle build 시 못읽는다. bootRun도 읽는다.
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+	
 	//implementation 'com.h2database:h2'   //이렇게 하니까 읽었다.  둘다 살려보자.
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	
@@ -79,6 +81,19 @@ src/main/generated  여기에  Q로시작하는 것들이  생성됨
 eclipse 에서 import 가 안되네.
 
 */
+
+/*출처: https://coding-start.tistory.com/304 [코딩스타트]
+Junit 테스트쪽에 컴파일 안하기 위해 gradle build  시 
+*/
+sourceSets{
+    main{
+        java{
+            /*srcDirs = ['src','extraSrc']*/
+            exclude 'test/*'
+        }
+    }
+}
+
 querydsl {
 	jpa = true
 	querydslSourcesDir="$buildDir/generated-source"

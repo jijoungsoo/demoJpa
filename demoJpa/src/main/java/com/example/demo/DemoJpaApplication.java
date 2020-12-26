@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import com.example.demo.cm.br.BR_CM_PGM_INIT;
 import com.example.demo.cm.ctrl.API;
 import com.example.demo.exception.BizException;
 
@@ -30,10 +29,7 @@ public class DemoJpaApplication {
 		log.error("ERROR");
 		try {
 			API.init("classpath*:com/example/demo/cm/br/**/*.class");  /*OpService Api 세팅*/
-		} catch(org.h2.jdbc.JdbcSQLNonTransientConnectionException e) {
-			e.printStackTrace();
-			//이건 종료 무시
-		} catch (BizException e) {
+		} catch(Exception e) {
 			//이거 환경설정 관련되는거니까. 여기 에러가 났다면
 			 //spring boot 가 멈췄으면 좋겠다.
 			e.printStackTrace();
@@ -42,12 +38,12 @@ public class DemoJpaApplication {
 	}
 	
 	@Autowired
-	BR_CM_PGM_INIT t;
+	DataLoader t;
 	@Bean
 	InitializingBean sendDatabase() {
 	    return () -> {
 	    	
-	    	//t.Init();
+	    	//t.loadData();
 	    	/*
 	        userRepository.save(new User("John"));
 	        userRepository.save(new User("Rambo"));
