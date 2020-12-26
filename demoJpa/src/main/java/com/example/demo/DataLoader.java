@@ -88,6 +88,7 @@ public class DataLoader {
 	
 	void insertTableSeq() {
 		cmSeqR.save(CmSeq.builder().seqNm("CM_USER_USER_NO_SEQ").seqNo(4).tbNm("TB_CM_USER").colNm("USER_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
+		cmSeqR.save(CmSeq.builder().seqNm("CM_DOMAIN_DMN_NO_SEQ").seqNo(210).tbNm("TB_CM_DOMAIN").colNm("DMN_NO").initVal(0).allocationSize(1).updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 	
 	void insertGrpCd() {
@@ -155,8 +156,8 @@ public class DataLoader {
 		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1200").menuNm("테이블도메인").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블도메인").ord("11200").pgmId("CM_1200").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1300").menuNm("메뉴관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>메뉴관리").ord("11300").pgmId("CM_1300").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1400").menuNm("공통코드관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>공통코드관리").ord("11400").pgmId("CM_1400").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1500").menuNm("회원관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>회원관리").ord("11500").pgmId("CM_1400").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1600").menuNm("테이블시퀀스").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블시퀀스").ord("11600").pgmId("CM_1400").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1500").menuNm("회원관리").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>회원관리").ord("11500").pgmId("CM_1500").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmMenuR.save(CmMenu.builder().menuCd("MN_CM_1600").menuNm("테이블시퀀스").prntMenuCd("MN_CM_1000").menuKind("S").menuLvl("2").menuPath("시스템관리>시스템>테이블시퀀스").ord("11600").pgmId("CM_1600").updtDtm(new Date()).crtDtm(new Date()).build());
 		
 		
 		/*키움*/
@@ -294,7 +295,7 @@ public class DataLoader {
 		cmDomainR.save(CmDomain.builder().dmnNo(92).dmnCd("buying_commission").dmnNm("매입수수료").dataType("integer").rmk("tb_opt10085").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(93).dmnCd("sales").dmnNm("매출액").dataType("integer").rmk("tb_opt10001").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(94).dmnCd("open_interest").dmnNm("미결제약정").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmDomainR.save(CmDomain.builder().dmnNo(95).dmnCd("contrast_open_interest").dmnNm("미결제전일대비").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(95).dmnCd("changes_open").dmnNm("미결제전일대비").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(96).dmnCd("not_contract_qty").dmnNm("미체결수량").dataType("integer").rmk("tb_chejan_order").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(97).dmnCd("vega").dmnNm("베가").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(98).dmnCd("possession_qty").dmnNm("보유수량").dataType("integer").rmk("tb_chejan_balance,tb_opt10085").updtDtm(new Date()).crtDtm(new Date()).build());
@@ -332,8 +333,8 @@ public class DataLoader {
 		cmDomainR.save(CmDomain.builder().dmnNo(133).dmnCd("expectation_contract_amt").dmnNm("예상체결가").dataType("integer").rmk("tb_opt10001,tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(134).dmnCd("expectation_contract_qty").dmnNm("예상체결수량").dataType("integer").rmk("tb_opt10001,tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(135).dmnCd("deposit").dmnNm("예수금").dataType("integer").rmk("tb_chejan_balance").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmDomainR.save(CmDomain.builder().dmnNo(136).dmnCd("foreign_investor").dmnNm("외국인투자자").dataType("integer").rmk("tb_opt10059").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmDomainR.save(CmDomain.builder().dmnNo(137).dmnCd("foreigner_exhaustion_rt").dmnNm("외인소진률").dataType("double precision").rmk("tb_opt10001").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(136).dmnCd("frgn_invstr").dmnNm("외국인투자자").dataType("integer").rmk("tb_opt10059").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(137).dmnCd("frgnr_ehstn_rt").dmnNm("외인소진률").dataType("double precision").rmk("tb_opt10001").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(138).dmnCd("fst_offered_qty").dmnNm("우선매도건수").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(139).dmnCd("fst_offered_balance").dmnNm("우선매도잔량").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(140).dmnCd("fst_bid_qty").dmnNm("우선매수건수").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
@@ -355,8 +356,8 @@ public class DataLoader {
 		cmDomainR.save(CmDomain.builder().dmnNo(157).dmnCd("last_price").dmnNm("전일가").dataType("integer").rmk("tb_stock").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(158).dmnCd("yesterday_contrast_trade_rt").dmnNm("전일거래량대비").dataType("double precision").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(159).dmnCd("yesterday_contrast_trade_qty").dmnNm("전일거래량대비(계약,주)").dataType("integer").rmk("tb_realtime_contract").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmDomainR.save(CmDomain.builder().dmnNo(161).dmnCd("contrast_yesterday").dmnNm("전일대비").dataType("integer").rmk("tb_opt10001,tb_opt10015,tb_optkwfid,tb_realtime_contract").updtDtm(new Date()).crtDtm(new Date()).build());
-		cmDomainR.save(CmDomain.builder().dmnNo(162).dmnCd("contrast_yesterday_symbol").dmnNm("전일대비기호").dataType("integer").rmk("tb_opt10015,tb_optkwfid,tb_realtime_contract").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(161).dmnCd("changes").dmnNm("전일대비").dataType("integer").rmk("tb_opt10001,tb_opt10015,tb_optkwfid,tb_realtime_contract").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(162).dmnCd("changes_symbol").dmnNm("전일대비기호").dataType("integer").rmk("tb_opt10015,tb_optkwfid,tb_realtime_contract").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(163).dmnCd("conversion_rt").dmnNm("전환비율").dataType("double precision").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(164).dmnCd("cls_amt").dmnNm("종가").dataType("integer").rmk("tb_optkwfid").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(165).dmnCd("stock_cd").dmnNm("종목코드").dataType("character varying(9)").rmk("tb_chejan_balance,tb_chejan_order,tb_market_stock,tb_opt10014,tb_opt10015,tb_opt10059,tb_opt10085,tb_optkwfid,tb_realtime_contract,tb_theme_stock").updtDtm(new Date()).crtDtm(new Date()).build());
@@ -401,5 +402,7 @@ public class DataLoader {
 		cmDomainR.save(CmDomain.builder().dmnNo(208).dmnCd("screen_num").dmnNm("화면번호").dataType("character varying(4)").rmk("tb_chejan_order").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(209).dmnCd("stock_state").dmnNm("종목상태 (정상, 증거금100%, 거래정지, 관리종목, 감리종목, 투자유의종목, 담보대출, 액면분할, 신용가능)").dataType("character varying(20)").rmk("tb_stock").updtDtm(new Date()).crtDtm(new Date()).build());
 		cmDomainR.save(CmDomain.builder().dmnNo(210).dmnCd("construction").dmnNm("감리구분 (정상,투자주의,투자경고,투자위험,투자주의환기종목)").dataType("character varying(20)").rmk("tb_stock").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(211).dmnCd("frgn_cnt").dmnNm("외국인주식보유수").dataType("integer").rmk("tb_marcap_stock").updtDtm(new Date()).crtDtm(new Date()).build());
+		cmDomainR.save(CmDomain.builder().dmnNo(212).dmnCd("frgn_rt").dmnNm("외국인 지분율(%)").dataType("float").rmk("tb_marcap_stock").updtDtm(new Date()).crtDtm(new Date()).build());
 	}
 }

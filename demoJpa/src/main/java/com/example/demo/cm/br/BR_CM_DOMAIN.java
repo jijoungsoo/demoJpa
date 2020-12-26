@@ -65,7 +65,7 @@ public class BR_CM_DOMAIN {
 				throw new BizRuntimeException("데이터타입 입력되지 않았습니다.");
 			}
 			
-			long L_DMN_NO =daCmSeq.increate("CM_USER_USER_NO_SEQ");
+			long L_DMN_NO =daCmSeq.increate("CM_DOMAIN_DMN_NO_SEQ");
 						
 			daDmn.createDomain(
 					L_DMN_NO

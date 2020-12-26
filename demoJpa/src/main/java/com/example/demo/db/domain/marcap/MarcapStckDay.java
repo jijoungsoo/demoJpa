@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@Table(name="tb_marcap_stock_day")  /*https://github.com/FinanceData/marcap   여기 데이터 */
+@Table(name="tb_marcap_stock")  /*https://github.com/FinanceData/marcap   여기 데이터 */
 public class MarcapStckDay {
 	/*Code 종목코드  */
 	@Id
@@ -32,32 +32,68 @@ public class MarcapStckDay {
 	@Column(nullable = false, length = 45 , name="stock_nm")
 	String stockNm;
 	
-	/*일자  */
-	@Column(nullable = false, length = 8 , name="stock_dt")
-	String stockDt;
-	
-	/*open  시가 */
-	@Column(nullable = false, length = 8 , name="start_amt")
-	int stAmt;
-	
-	/*low 저가 */
-	@Column(nullable = false, length = 8 , name="low_amt")
-	int lwAmt;
-	
-
 	/*close 종가 */
 	@Column(nullable = false, length = 8 , name="cls_amt")
 	int clsAmt;
 	
+	/*changes 전일대비 */
+	@Column(nullable = false, length = 8 , name="changes")
+	int changes;
+	
+	/*changes 전일대비 */
+	@Column(nullable = false, length = 8 , name="chages_ratio")
+	float chagesRatio;
+	
+	/*Volume 거래량 */
+	@Column(nullable = false, length = 8 , name="trade_qty")
+	int tradeQty;
+	
+	
+	/*Amount 거래대금 */
+	@Column(nullable = false, length = 8 , name="trade_amt")
+	int tradeAmt;
+	
+	/*open  시가 */
+	@Column(nullable = false, length = 8 , name="start_amt")
+	int startAmt;
+	
+	/*high 고가 */
+	@Column(nullable = false, length = 8 , name="high_amt")
+	int highAmt;
+	
+	/*low 저가 */
+	@Column(nullable = false, length = 8 , name="low_amt")
+	int lowAmt;
+	
+	/*Marcap 시가총액(백만원) */
+	@Column(nullable = false, length = 8 , name="total_mrkt_amt")
+	int totalMrktAmt;
+	
+	/*MarcapRatio 시가총액비중(%) */
+	@Column(nullable = false, length = 8 , name="total_mrkt_amt_rt")
+	double totalMrktAmtrt;
+	
+	/*Stocks 상장주식수 */
+	@Column(nullable = false, length = 8 , name="stock_cnt")
+	int stockCnt;
+	
+	
+	/*ForeignShares 외국인 보유주식수  */
+	@Column(nullable = false, length = 8 , name="frgn_cnt")
+	int frgnCnt;
+	
+		
+	/*ForeignRatio 외국인 지분율(%)  */
+	@Column(nullable = false, length = 8 , name="frgn_rt")
+	float frgnRt;
+	
+	
+	
 
 	
 	
-	
-	
-	
-	
-	@Column(nullable = false, name="stock_cnt")
-	BigDecimal stockCnt;
+
+
 	
 	@Column(nullable = true, name="lst_price")
 	BigDecimal lstPrice;
