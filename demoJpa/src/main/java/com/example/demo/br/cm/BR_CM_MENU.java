@@ -1,4 +1,4 @@
-package com.example.demo.cm.br;
+package com.example.demo.br.cm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,15 +7,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.cm.anotation.OpService;
-import com.example.demo.cm.ctrl.IN_DS;
-import com.example.demo.cm.ctrl.OUT_DS;
-import com.example.demo.cm.utils.PjtUtil;
+import com.example.demo.anotation.OpService;
+import com.example.demo.ctrl.IN_DS;
+import com.example.demo.ctrl.OUT_DS;
 import com.example.demo.db.da.cm.DA_CM_MENU;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
 import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.utils.PjtUtil;
 
 @Service
 public class BR_CM_MENU {

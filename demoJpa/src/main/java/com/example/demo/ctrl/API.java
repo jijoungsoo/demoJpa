@@ -1,4 +1,4 @@
-package com.example.demo.cm.ctrl;
+package com.example.demo.ctrl;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.cm.anotation.OpService;
-import com.example.demo.cm.utils.PjtUtil;
+import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -72,10 +72,11 @@ public class API {
 			 resMap.OUT_DS =(OUT_DS) ret;
 
 			 resMap.jsonOutString =PjtUtil.ObjectToJsonString(resMap.OUT_DS);/*리턴타입은 무조건 정해져있다.*/
-			 System.out.println("API==>"+resMap.jsonOutString);
+			 //System.out.println("API==>"+resMap.jsonOutString);
 			 resMap.success="true";
 			 out = PjtUtil.ObjectToJsonString(resMap);
-			 log.info(out);  //이건 나중에 서버에 저장하는 용도로 가지고 있자.
+			 //log.info(out);  //이건 나중에 서버에 저장하는 용도로 가지고 있자.
+			 //이 로그도 너무 느려서 제거 
 			 return out;
 		} catch (BizException e) {
 			// TODO Auto-generated catch block

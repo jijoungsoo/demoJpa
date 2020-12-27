@@ -1,4 +1,4 @@
-package com.example.demo.cm.ctrl;
+package com.example.demo.ctrl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

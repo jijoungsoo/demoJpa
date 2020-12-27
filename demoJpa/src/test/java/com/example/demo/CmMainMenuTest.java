@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.cm.br.BR_CM_MAIN;
-import com.example.demo.cm.ctrl.IN_DS;
-import com.example.demo.cm.ctrl.OUT_DS;
+import com.example.demo.br.cm.BR_CM_MAIN;
+import com.example.demo.ctrl.IN_DS;
+import com.example.demo.ctrl.OUT_DS;
 import com.example.demo.exception.BizException;
 
 @SpringBootTest(properties = "classpath:/application.yml")  /*https://velog.io/@hellozin/Spring-Boot-Test에서-Yaml-프로퍼티-적용하기*/

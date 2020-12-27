@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import com.example.demo.cm.ctrl.API;
+
+import com.example.demo.ctrl.API;
 import com.example.demo.exception.BizException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class DemoJpaApplication {
 		log.warn("WARN");
 		log.error("ERROR");
 		try {
-			API.init("classpath*:com/example/demo/cm/br/**/*.class");  /*OpService Api 세팅*/
+			API.init("classpath*:com/example/demo/br/**/*.class");  /*OpService Api 세팅*/
 		} catch(Exception e) {
 			//이거 환경설정 관련되는거니까. 여기 에러가 났다면
 			 //spring boot 가 멈췄으면 좋겠다.

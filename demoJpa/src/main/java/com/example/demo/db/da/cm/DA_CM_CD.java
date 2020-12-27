@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.cm.utils.PjtUtil;
 import com.example.demo.db.domain.cm.CmCd;
 import com.example.demo.db.domain.cm.CmCdId;
 import com.example.demo.db.repository.cm.CmCdRepository;
+import com.example.demo.utils.PjtUtil;
 import com.example.demo.db.domain.cm.QCmCd;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

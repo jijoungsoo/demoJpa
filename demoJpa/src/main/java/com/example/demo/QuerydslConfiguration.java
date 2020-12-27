@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

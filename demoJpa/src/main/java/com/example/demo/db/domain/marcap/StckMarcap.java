@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicUpdate/*구분생성시 변경된 것만 한다.*/
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
-@IdClass(MarcapStckId.class) 
+@IdClass(StckMarcapId.class) 
 @Entity
-@Table(name="tb_marcap_stock")  /*https://github.com/FinanceData/marcap   여기 데이터 */
-public class MarcapStck {
+@Table(name="tb_st_marcap")  /*https://github.com/FinanceData/marcap   여기 데이터 */
+public class StckMarcap {
 	/*Code 종목코드  */
 	@Id
 	@Column(nullable = false, length = 9 ,name="stock_cd")

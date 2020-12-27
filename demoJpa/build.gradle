@@ -68,7 +68,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0") 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     
-
+    /*스프링 상태 모니터링
+	/actuator  로 접근
+	 */
+	implementation "org.springframework.boot:spring-boot-starter-actuator:2.4.1"
+	implementation 'de.codecentric:spring-boot-admin-starter-client:2.3.1'
+    
 
 }
 /* 유투브보고 querydsl 설정했다.

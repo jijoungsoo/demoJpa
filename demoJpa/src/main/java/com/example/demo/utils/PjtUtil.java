@@ -1,4 +1,4 @@
-package com.example.demo.cm.utils;
+package com.example.demo.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,13 +25,15 @@ public class PjtUtil {
 	public static <T> T JsonStringToObject(String JsonInString, Class<T> valueType)
 			throws JsonMappingException, JsonProcessingException {
 		ObjectMapper omOut = new ObjectMapper();
-		omOut.enable(SerializationFeature.INDENT_OUTPUT);
+		//느리니까 정리도 하지 말자 
+		//omOut.enable(SerializationFeature.INDENT_OUTPUT);
 		return omOut.readValue(JsonInString, valueType);
 	}
 
 	public static String ObjectToJsonString(Object value) throws JsonProcessingException {
 		ObjectMapper om = new ObjectMapper();
-		om.enable(SerializationFeature.INDENT_OUTPUT);
+		///느리니까 정리도 하지 말자 
+		///om.enable(SerializationFeature.INDENT_OUTPUT);
 		return om.writeValueAsString(value);
 	}
 

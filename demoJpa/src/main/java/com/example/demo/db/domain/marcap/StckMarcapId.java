@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class MarcapStckId implements Serializable {
+public class StckMarcapId implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	String stockCd;

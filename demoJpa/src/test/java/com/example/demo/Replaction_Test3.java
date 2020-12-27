@@ -3,7 +3,8 @@ package com.example.demo;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import org.junit.jupiter.api.Test;
-import com.example.demo.cm.br.BR_CM_LOGIN;
+
+import com.example.demo.br.cm.BR_CM_LOGIN;
 
 
 public class Replaction_Test3 {

@@ -7,9 +7,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.MethodMetadata;
-import com.example.demo.cm.anotation.OpService;
-import com.example.demo.cm.ctrl.API;
-import com.example.demo.cm.ctrl.ApiResultMethod;
+
+import com.example.demo.anotation.OpService;
+import com.example.demo.ctrl.API;
+import com.example.demo.ctrl.ApiResultMethod;
 
 
 public class Replaction_Test2 {
