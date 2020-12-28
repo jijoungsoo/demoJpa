@@ -148,7 +148,7 @@ public class BR_STCK_MARCAP {
 		
 		ArrayList<HashMap<String, Object>> PAGE_DATA = new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> PAGE_DATA_ROW = new HashMap<String, Object>();
-		PAGE_DATA_ROW.put("NUMBER", pg.getNumber());
+		PAGE_DATA_ROW.put("PAGE_NUM", pg.getNumber());
 		PAGE_DATA_ROW.put("TOTAL_SIZE", pg.getTotalElements());
 		PAGE_DATA_ROW.put("TOTAL_PAGE", pg.getTotalPages());
 		PAGE_DATA_ROW.put("PAGE_SIZE", pg.getSize());
