@@ -43,13 +43,14 @@ public class API {
 	@PostMapping(path= "/api/{br}", consumes = "application/json", produces = "application/json")
 	public String callAPI(@PathVariable("br") String br
 			,@RequestBody/*중요 이거 없으면 못읽어옴*/ String jsonInString
-			)  {
+			) throws InterruptedException  {
 		String out = null;
 		ObjectMapper omOut = new ObjectMapper();
 		omOut.enable(SerializationFeature.INDENT_OUTPUT);
 		final ApiResultMap resMap = new ApiResultMap();
 		resMap.brId			= br;
 		resMap.jsonInString	= jsonInString;
+		
 		/*이쯤되면    input을 JSON으로 받는다는게 맞을까? 
 		 *차라리 넘어올거라고 생각하는 BR param으로 보낼까 하다 범용성에json이 맞을 것 같다.
 		 * */
@@ -67,6 +68,8 @@ public class API {
 			//https://blog.woniper.net/318  변경해서 달았다. CustomBeanNameGenerator 고고
 			Object ret = null;
 			Object bean = _appContext.getBean(resMap.rm.className);
+			log.info(resMap.rm.className);
+			log.info(resMap.rm.methodName);
 			 Method method = bean.getClass().getMethod(resMap.rm.methodName,IN_DS.class);  /*인풋타입은 무조건 정해졌다. */
 			 ret = method.invoke(bean,resMap.IN_DS);
 			 resMap.OUT_DS =(OUT_DS) ret;

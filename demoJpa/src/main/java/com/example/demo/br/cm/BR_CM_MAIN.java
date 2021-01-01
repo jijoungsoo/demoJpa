@@ -33,6 +33,7 @@ public class BR_CM_MAIN {
 			OUT_DATA_ROW.put("PGM_ID", cm.getPgmId());
 			OUT_DATA_ROW.put("PRNT_MENU_CD", cm.getPrntMenuCd());
 			OUT_DATA_ROW.put("ORD", cm.getOrd());
+			OUT_DATA_ROW.put("MENU_NO", cm.getMenuNo());
 			OUT_DATA_ROW.put("MENU_CD", cm.getMenuCd());
 			OUT_DATA_ROW.put("MENU_NM", cm.getMenuNm());
 			OUT_DATA_ROW.put("MENU_PATH", cm.getMenuNm());
@@ -61,6 +62,7 @@ public class BR_CM_MAIN {
 			HashMap<String, Object>  OUT_CHILD_DATA_ROW = new HashMap<String, Object>();
 			OUT_CHILD_DATA_ROW.put("PGM_ID", subC.getPgmId());
 			OUT_CHILD_DATA_ROW.put("PRNT_MENU_CD", subC.getPrntMenuCd());
+			OUT_CHILD_DATA_ROW.put("MENU_NO", subC.getMenuNo());
 			OUT_CHILD_DATA_ROW.put("MENU_CD", subC.getMenuCd());
 			OUT_CHILD_DATA_ROW.put("MENU_NM", subC.getMenuNm());
 			OUT_CHILD_DATA_ROW.put("MENU_PATH", MENU_PATH+">>"+subC.getMenuNm());

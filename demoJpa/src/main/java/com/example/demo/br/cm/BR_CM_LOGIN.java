@@ -59,6 +59,7 @@ public class BR_CM_LOGIN {
 		outDs.put("OUT_DATA",OUT_DATA);
 		if(c!=null) {
 			HashMap<String, Object> OUT_DATA_ROW = new HashMap<String,Object>();
+			OUT_DATA_ROW.put("userNo", c.getUserNo());
 			OUT_DATA_ROW.put("userId", c.getUserId());
 			OUT_DATA_ROW.put("userPwd", c.getUserPwd());
 			OUT_DATA_ROW.put("userNm", c.getUserNm());
