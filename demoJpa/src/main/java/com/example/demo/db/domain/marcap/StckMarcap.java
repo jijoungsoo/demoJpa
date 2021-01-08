@@ -9,9 +9,6 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.example.demo.db.domain.kiw.KiwMarketId;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -79,11 +76,11 @@ public class StckMarcap {
 	Long totalMrktAmt;
 	
 	/*MarcapRatio 시가총액비중(%) */
-	@Column(nullable = true, length = 8 , name="total_mrkt_amt_rt")
+	@Column(nullable = true,  name="total_mrkt_amt_rt")
 	Double totalMrktAmtrt;
 	
 	/*Stocks 상장주식수 */
-	@Column(nullable = true, length = 8 , name="stock_cnt")
+	@Column(nullable = true,  name="stock_cnt")
 	Double stockCnt;
 	
 	

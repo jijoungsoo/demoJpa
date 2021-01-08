@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@Table(name="tb_kiw_stock")  /*키움주식 */
-public class KiwStock {
+@Table(name="tb_kiw_stock_mst")  /*키움주식 */
+public class KiwStockMst {
 	@Id
 	@Column(nullable = false, length = 9 ,name="stock_cd")
 	String stockCd;
@@ -30,18 +30,20 @@ public class KiwStock {
 	@Column(nullable = false, length = 45 , name="stock_nm")
 	String stockNm;
 	
-	@Column(nullable = false, length = 8 , name="stock_dt")
-	String OpnDt;
+	@Column(nullable = false, length = 8 , name="open_dt")
+	String OpenDt;
 	
+	@Column(nullable = false, length = 40 , name="stock_state")
+	String stockState;
+	
+	@Column(nullable = false, length = 40 , name="construction")
+	String Construction;
 	
 	@Column(nullable = false, name="stock_cnt")
-	BigDecimal stockCnt;
+	int stockCnt;
 	
-	@Column(nullable = true, name="lst_price")
-	BigDecimal lstPrice;
-	
-	@Column(nullable = true,  length = 20 ,name="stock_state")
-	String STOCK_STATE;
+	@Column(nullable = true, name="cls_amt")
+	int clsAmt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")

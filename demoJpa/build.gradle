@@ -61,6 +61,18 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa")
     annotationProcessor("com.querydsl:querydsl-apt") // querydsl JPAAnnotationProcessor 사용 지정
     
+    
+    //복잡한 쿼리문은 mybatis를 쓰자.
+    implementation("org.springframework.data:spring-data-jdbc:2.1.2")
+    implementation("org.mybatis:mybatis:3.5.6")
+    implementation("org.mybatis:mybatis-spring:2.0.6")
+    //mybatis 를 쓰려고 하는데 postgresql을 jpa랑 같이 사용하려고 할때 HikariCp에서 문제를 일으킨다고한다.
+    //https://stackoverflow.com/questions/49088847/after-spring-boot-2-0-migration-jdbcurl-is-required-with-driverclassname
+    //tomcat-jdbc를 쓰라고 한다.
+    implementation("org.apache.tomcat:tomcat-jdbc:10.0.0")
+        
+    
+    
     annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응 
     annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
     

@@ -30,9 +30,16 @@ spring:
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 #postgresql   하나 설정      
     hikari:
-      maximum-pool-size: 4      
+      maximum-pool-size: 4
+      driver-class-name: org.postgresql.Driver       
+      jdbc-url: jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
+      username: postgres
+      password: pwd
     url: jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
     #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy  로그가 너무 나와서 제거
+    platform: postgresql 
+    driver-class-name: org.postgresql.Driver 
+    jdbc-url: jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
     username: postgres
     password: pwd
   output:
@@ -46,8 +53,19 @@ spring:
 spring.datasource.sql-script-encoding: utf-8
 spring.jpa.database-platform: org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+spring.datasource.type: org.apache.tomcat.jdbc.pool.DataSource
 #spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
 ##spring.jpa.properties.hibernate.default_schema: stockweb  #postgresql 디폴트 스키마 지정  일단 이거 제외 db를 빠꾸자. 
+
+
+# MyBatis
+# mapper.xml 위치 지정
+mybatis.mapper-locations: mybatis-mapper/**/*.xml
+# model 프로퍼티 camel case 설정
+mybatis.configuration.map-underscore-to-camel-case: true
+# 패키지 명을 생략할 수 있도록 alias 설정
+
+# mapper 로그레벨 설정
 
 
        

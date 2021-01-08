@@ -34,7 +34,7 @@ public class CmFavMenu {
 	long userNo;
 
 	@Column(nullable = true, name="ord")
-	long ord;
+	int ord;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")

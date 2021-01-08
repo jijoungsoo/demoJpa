@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.example.demo.db.da.kiw.DA_KIW_STOCK_MST_MAPPER">
+<select id="findKiwMst" parameterType="map" resultType="hashmap"> 
+	select	a.stock_cd
+			,a.open_dt
+			,a.stock_nm
+			,a.cls_amt
+			,a.stock_cnt
+			,a.construction
+			,a.stock_state
+			,to_char(a.crt_dtm, 'YYYY-MM-DD HH24:MI:SS') crt_dtm
+			,to_char(a.updt_dtm, 'YYYY-MM-DD HH24:MI:SS') updt_dtm
+			, array_to_string(array_agg(c.cd_nm),',') list_market_nm
+			, count('1') market_cnt
+	from tb_kiw_stock_mst a
+	inner join tb_kiw_market b
+	on b.stock_cd = a.stock_cd
+	inner join tb_cm_cd c
+	on c.grp_cd='MARKET' 
+	and c.cd = b.market_cd
+	where 1=1
+	<if test="MARKET_CD != null and !MARKET_CD.equals('') ">
+    AND b.market_cd = #{MARKET_CD}
+  	</if>
+	<if test="STOCK_CD != null">
+    AND a.stock_cd like  '%' || #{STOCK_CD} || '%'
+  	</if>
+  	<if test="STOCK_NM != null">
+    AND a.stock_nm like '%' || #{STOCK_NM} || '%'
+  	</if>
+  	group by a.stock_cd
+			,a.open_dt
+			,a.stock_nm
+			,a.cls_amt
+			,a.stock_cnt
+			,a.construction
+			,a.stock_state
+			,a.crt_dtm
+			,a.updt_dtm
+	limit  #{PAGE_SIZE}
+	OFFSET #{PAGE_NUM}
+	
+</select> 
+<select id="findKiwMstTotalCnt" parameterType="map" resultType="int"> 
+select count(*) cnt from (
+	select	a.stock_cd
+			,a.open_dt
+			,a.stock_nm
+			,a.cls_amt
+			,a.stock_cnt
+			,a.construction
+			,a.stock_state
+			,a.crt_dtm
+			,a.updt_dtm
+	from tb_kiw_stock_mst a
+	inner join tb_kiw_market b
+	on b.stock_cd = a.stock_cd
+	where 1=1
+	<if test="MARKET_CD != null and !MARKET_CD.equals('') ">
+    AND b.market_cd = #{MARKET_CD}
+  	</if>
+	<if test="STOCK_CD != null">
+    AND a.stock_cd like  '%' || #{STOCK_CD} || '%'
+  	</if>
+  	<if test="STOCK_NM != null">
+    AND a.stock_nm like '%' || #{STOCK_NM} || '%'
+  	</if>
+  	group by a.stock_cd
+			,a.open_dt
+			,a.stock_nm
+			,a.cls_amt
+			,a.stock_cnt
+			,a.construction
+			,a.stock_state
+			,a.crt_dtm
+			,a.updt_dtm
+) a			
+</select> 
+</mapper>
