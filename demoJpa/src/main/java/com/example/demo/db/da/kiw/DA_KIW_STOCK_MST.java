@@ -1,34 +1,17 @@
 package com.example.demo.db.da.kiw;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.db.domain.cm.CmMenu;
-import com.example.demo.db.domain.cm.CmPgm;
-import com.example.demo.db.domain.cm.QCmFavMenu;
-import com.example.demo.db.domain.cm.QCmMenu;
-import com.example.demo.db.repository.cm.CmPgmRepository;
 import com.example.demo.db.repository.stck.StckMarcapRepository;
-import com.example.demo.db.domain.cm.QCmPgm;
-import com.example.demo.db.domain.cm.QCmUser;
 import com.example.demo.db.domain.kiw.KiwStockMst;
-import com.example.demo.db.domain.kiw.QKiwMarket;
 import com.example.demo.db.domain.kiw.QKiwStockMst;
-import com.example.demo.db.domain.marcap.QStckMarcap;
-import com.example.demo.db.domain.marcap.StckMarcap;
-import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

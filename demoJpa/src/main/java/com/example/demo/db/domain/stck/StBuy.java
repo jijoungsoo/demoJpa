@@ -1,6 +1,5 @@
 package com.example.demo.db.domain.stck;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,48 +24,58 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert /* 구분생성시 null인것은 보내지 않는다. */
 @Data
 @Entity
-@Table(name = "TB_ST_BUY")
+@Table(name = "tb_st_buy")
 public class StBuy {
 	@Id
-	@Column(nullable = false, name = "BUY_SEQ")
+	@Column(nullable = false, name = "buy_seq")
 	long buySeq;
 
-	@Column(nullable = false, name = "USR_NO")
-	long usrNo;
-
-	@Column(nullable = false, length = 7, name = "STOCK_CD")
+	@Column(nullable = false, length = 9, name = "stock_cd")
 	String stockCd;
+	
+	@Column(nullable = false, length = 45 , name="stock_nm")
+	String stockNm;
 
 	/*단가 */
-	@Column(nullable = false,  name = "AMT")
+	@Column(nullable = false,  name = "amt")
 	Integer amt;
 	
 	/*갯수*/
-	@Column(nullable = false, name = "CNT")
+	@Column(nullable = false, name = "cnt")
 	Integer cnt;
 	
-	/*수수료*/
-	@Column(nullable = false, name = "TOT_FEE")
-	Integer totFee;
+	/*잔고갯수*/
+	@Column(nullable = false, name = "bal_cnt")
+	Integer balCnt;
+	
+	/*수수료 단가당*/
+	@Column(nullable = false, name = "fee")
+	Integer fee;
 	
 	/*금액*수량   */
-	@Column(nullable = false, name = "TOT_AMT")
+	@Column(nullable = false, name = "tot_amt")
 	Integer totAmt;
 
-	@Column(nullable = true, length = 14, name = "BUY_DATE")
+	@Column(nullable = false, length = 14, name = "buy_date")
 	String buyDate;
 	
-	@Column(nullable = false, name = "CRT_USR_NO")
+	@Column(nullable = false, length = 1, name = "del_yn")
+	String delYn;
+	
+	@Column(nullable = true, length = 4000 ,name="rmk")
+	String rmk;
+	
+	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;
 	
-	@Column(nullable = false, name = "UPDT_USR_NO")
+	@Column(nullable = false, name = "updt_usr_no")
 	long updtUsrNo;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, name = "CRT_DTM")
+	@Column(nullable = false, name = "crt_dtm")
 	Date crtDtm;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, name = "UPDT_DTM")
+	@Column(nullable = false, name = "updt_dtm")
 	Date updtDtm;
 }

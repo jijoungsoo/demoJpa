@@ -3,11 +3,6 @@ package com.example.demo.br.stck;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,15 +11,11 @@ import org.springframework.stereotype.Service;
 import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.IN_DS;
 import com.example.demo.ctrl.OUT_DS;
-import com.example.demo.db.da.cm.DA_CM_SEQ;
 import com.example.demo.db.da.stck.DA_STCK_MARCAP;
-import com.example.demo.db.domain.cm.CmSeq;
 import com.example.demo.db.domain.marcap.StckMarcap;
-import com.example.demo.db.repository.stck.StckMarcapRepository;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 
 

@@ -1,7 +1,6 @@
 package com.example.demo.db.domain.marcap;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Id;
 
 import lombok.Data;

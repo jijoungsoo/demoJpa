@@ -8,8 +8,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import com.example.demo.ctrl.API;
-import com.example.demo.exception.BizException;
-
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication

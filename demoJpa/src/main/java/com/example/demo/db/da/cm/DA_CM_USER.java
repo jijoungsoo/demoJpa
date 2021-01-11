@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DemoJpaApplication;
 import com.example.demo.db.domain.cm.CmUser;
 import com.example.demo.db.repository.cm.CmUserRepository;
 import com.example.demo.db.domain.cm.QCmUser;

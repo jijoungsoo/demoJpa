@@ -1,17 +1,9 @@
 package com.example.demo.br.kiw;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,20 +12,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.IN_DS;
 import com.example.demo.ctrl.OUT_DS;
-import com.example.demo.db.da.cm.DA_CM_SEQ;
-import com.example.demo.db.da.kiw.DA_KIW_STOCK_MST;
 import com.example.demo.db.da.kiw.DA_KIW_STOCK_MST_MAPPER;
-import com.example.demo.db.da.stck.DA_STCK_MARCAP;
-import com.example.demo.db.domain.cm.CmSeq;
-import com.example.demo.db.domain.kiw.KiwStockMst;
-import com.example.demo.db.domain.kiw.QKiwStockMst;
-import com.example.demo.db.domain.marcap.StckMarcap;
-import com.example.demo.db.repository.stck.StckMarcapRepository;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
-import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 

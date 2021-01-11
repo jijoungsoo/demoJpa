@@ -13,7 +13,6 @@ import com.example.demo.ctrl.OUT_DS;
 import com.example.demo.db.da.cm.DA_CM_DOMAIN;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
 import com.example.demo.db.domain.cm.CmDomain;
-import com.example.demo.db.domain.cm.CmUser;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;

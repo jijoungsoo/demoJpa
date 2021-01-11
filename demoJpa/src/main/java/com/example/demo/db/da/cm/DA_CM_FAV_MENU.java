@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.domain.cm.CmFavMenu;
-import com.example.demo.db.domain.cm.CmMenu;
-import com.example.demo.db.domain.cm.CmUser;
 import com.example.demo.db.repository.cm.CmFavMneuRepository;
 import com.example.demo.utils.PjtUtil;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.example.demo.db.domain.cm.QCmFavMenu;
 import com.example.demo.db.domain.cm.QCmMenu;

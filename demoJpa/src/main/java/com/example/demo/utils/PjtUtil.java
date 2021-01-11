@@ -8,7 +8,6 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class PjtUtil {
 	static DateFormat dateformat1 = new SimpleDateFormat("yyyyMMddHHmmss");

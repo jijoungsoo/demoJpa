@@ -1,23 +1,14 @@
 package com.example.demo.db.da.stck;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.db.domain.cm.CmPgm;
-import com.example.demo.db.repository.cm.CmPgmRepository;
 import com.example.demo.db.repository.stck.StckMarcapRepository;
-import com.example.demo.db.domain.cm.QCmPgm;
 import com.example.demo.db.domain.marcap.QStckMarcap;
 import com.example.demo.db.domain.marcap.StckMarcap;
-import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
