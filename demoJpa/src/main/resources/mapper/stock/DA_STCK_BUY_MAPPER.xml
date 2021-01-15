@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.example.demo.db.da.stck.DA_STCK_BUY_MAPPER">
+<update  id="reSyncStBuy">
+	update tb_st_buy a
+	set bal_cnt = a.cnt-COALESCE((select sum(z.cnt) from tb_st_sell z where z.buy_seq= a.buy_seq),0),
+		updt_usr_no = #{UPDT_USR_NO},
+		updt_dtm = now()		
+	where a.buy_seq = #{BUY_SEQ}
+</update> 
+</mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
 <mapper namespace="com.example.demo.db.da.kiw.DA_KIW_STOCK_MST_MAPPER">
-<select id="findKiwMst" parameterType="map" resultType="hashmap"> 
+<select id="findKiwMst" parameterType="map" resultType="hashmap">
 	select	a.stock_cd
 			,a.open_dt
 			,a.stock_nm

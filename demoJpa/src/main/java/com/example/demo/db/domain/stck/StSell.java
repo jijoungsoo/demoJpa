@@ -24,17 +24,20 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert /* 구분생성시 null인것은 보내지 않는다. */
 @Data
 @Entity
-@Table(name = "TB_ST_SELL")
+@Table(name = "tb_st_sell")
 public class StSell {
 	@Id
-	@Column(nullable = false, name = "SELL_SEQ")
+	@Column(nullable = false, name = "sell_seq")
 	long sellSeq;
 
-	@Column(nullable = false, name = "USR_NO")
-	long usrNo;
+	@Column(nullable = false, name = "buy_seq")
+	long buySeq;
 
-	@Column(nullable = false, length = 7, name = "STOCK_CD")
+	@Column(nullable = false, length = 9, name = "stock_cd")
 	String stockCd;
+	
+	@Column(nullable = false, length = 45 , name="stock_nm")
+	String stockNm;
 
 	@Column(nullable = false,  name = "AMT")
 	Integer amt;
@@ -44,12 +47,19 @@ public class StSell {
 	Integer cnt;
 	
 	/*수수료*/
-	@Column(nullable = false, name = "TOT_FEE")
-	Integer totFee;
+	@Column(nullable = false, name = "FEE")
+	Integer fee;
+	
+	/*세금*/
+	@Column(nullable = false, name = "tax")
+	Integer tax;
 	
 	/*금액*수량   */
 	@Column(nullable = false, name = "TOT_AMT")
 	Integer totAmt;
+	
+	@Column(nullable = false, length = 1, name = "del_yn")
+	String delYn;
 
 
 	@Column(nullable = true, length = 14, name = "SELL_DATE")

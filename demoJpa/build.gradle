@@ -57,9 +57,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	
-	implementation("com.querydsl:querydsl-core")
-    implementation("com.querydsl:querydsl-jpa")
-    annotationProcessor("com.querydsl:querydsl-apt") // querydsl JPAAnnotationProcessor 사용 지정
+	implementation("com.querydsl:querydsl-core:4.4.0")
+    implementation("com.querydsl:querydsl-jpa:4.4.0")
+    annotationProcessor("com.querydsl:querydsl-apt:4.4.0") // querydsl JPAAnnotationProcessor 사용 지정
     
     
     //복잡한 쿼리문은 mybatis를 쓰자.
