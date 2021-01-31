@@ -28,19 +28,13 @@ public class DA_CM_GRP_CD {
 		 return al;
 	}
 	
-	/**
-	 * @param GRP_CD  그룹코드
-	 * @param GRP_NM  그룹코드명
-	 * @param USE_YN  사용여부
-	 * @param ORD 	  순서
-	 * @param RMK	  비고
-	 */
-	public void saveCmGrpCd(
+	public void createCmGrpCd(
 			String GRP_CD
 			,String GRP_NM
 			,String USE_YN
 			,String ORD
 			,String RMK
+			,Long L_SESSION_USER_NO
 			) {
 
 		cmGrpCdR.save(
@@ -50,8 +44,31 @@ public class DA_CM_GRP_CD {
 				.useYn(USE_YN)
 				.ord(Integer.parseInt(ORD))
 				.rmk(RMK)
+				.crtUsrNo(L_SESSION_USER_NO)
+				.updtUsrNo(L_SESSION_USER_NO)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
+	}
+	
+
+	public void updateCmGrpCd(
+			String GRP_CD
+			,String GRP_NM
+			,String USE_YN
+			,String ORD
+			,String RMK
+			,Long L_SESSION_USER_NO
+			) {
+
+		cmGrpCdR.save(
+				CmGrpCd.builder()
+				.grpCd(GRP_CD)
+				.grpNm(GRP_NM)
+				.useYn(USE_YN)
+				.ord(Integer.parseInt(ORD))
+				.rmk(RMK)
+				.updtUsrNo(L_SESSION_USER_NO)
+				.updtDtm(new Date()).build());
 	}
 	
 	public void rmCmGrpCd(

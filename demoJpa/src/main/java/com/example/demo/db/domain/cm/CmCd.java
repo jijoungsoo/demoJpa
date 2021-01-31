@@ -48,7 +48,13 @@ public class CmCd {
 	String rmk;
 	
 	@Column(nullable = true, name="ord")
-	int ord;	
+	int ord;
+	
+	@Column(nullable = false, name = "crt_usr_no")
+	long crtUsrNo;
+	
+	@Column(nullable = false, name = "updt_usr_no")
+	long updtUsrNo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")

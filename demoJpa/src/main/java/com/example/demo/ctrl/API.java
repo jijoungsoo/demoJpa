@@ -37,167 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController 
 public class API {
-	@Autowired
-	private ApplicationContext _appContext;
-	
-	@PostMapping(path= "/api/{br}", consumes = "application/json", produces = "application/json")
-	public String callAPI(@PathVariable("br") String br
-			,@RequestBody/*중요 이거 없으면 못읽어옴*/ String jsonInString
-			) throws InterruptedException  {
-		String out = null;
-		ObjectMapper omOut = new ObjectMapper();
-		omOut.enable(SerializationFeature.INDENT_OUTPUT);
-		final ApiResultMap resMap = new ApiResultMap();
-		resMap.brId			= br;
-		resMap.jsonInString	= jsonInString;
-		
-		/*이쯤되면    input을 JSON으로 받는다는게 맞을까? 
-		 *차라리 넘어올거라고 생각하는 BR param으로 보낼까 하다 범용성에json이 맞을 것 같다.
-		 * */
-		
-		try {
-			/*IN OUT 변수 감증 및 BR 존재하는지 검증, 아웃풋에 인풋까지 호출하는 정보까지 모두 담고있다.*/
-			validOpService(br,jsonInString,resMap /*아웃 참조로 써보자.*/);   
-			/*빌드 패턴이고   하나의 명령이 하나의 클래스면   java replaction으로   값을 보내기 좋은데 
-		 	*하나의 클래스에 여러개의 br이라고 생각하니까. 복잡하다.
-		 	*그래서 ejb가 클래스마다 명령이고 3개씩 만드나 보다. 
-		 	*/
-		    //Object bean = _appContext.getBean("com.content.partner.Movie");  <== 내입장에서는 이게 맞는데??  sprnig 컨트롤 네임이 중복되지 못하나??
-			//Object bean = _appContext.getBean("Movie");  이렇게 해야한다고 한다.  <== 찾아보니까 service 이름이 중복되지 못해서 serivce(이름을 주거나 )     
-			//http://itnp.kr/post/spring-annotation-driven-bean-name-conflicts
-			//https://blog.woniper.net/318  변경해서 달았다. CustomBeanNameGenerator 고고
-			Object ret = null;
-			Object bean = _appContext.getBean(resMap.rm.className);
-			log.info(resMap.rm.className);
-			log.info(resMap.rm.methodName);
-			 Method method = bean.getClass().getMethod(resMap.rm.methodName,IN_DS.class);  /*인풋타입은 무조건 정해졌다. */
-			 ret = method.invoke(bean,resMap.IN_DS);
-			 resMap.OUT_DS =(OUT_DS) ret;
-
-			 resMap.jsonOutString =PjtUtil.ObjectToJsonString(resMap.OUT_DS);/*리턴타입은 무조건 정해져있다.*/
-			 //System.out.println("API==>"+resMap.jsonOutString);
-			 resMap.success="true";
-			 out = PjtUtil.ObjectToJsonString(resMap);
-			 //log.info(out);  //이건 나중에 서버에 저장하는 용도로 가지고 있자.
-			 //이 로그도 너무 느려서 제거 
-			 return out;
-		} catch (BizException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			resMap.success="false";
-			resMap.errorMessage=e.getMessage();
-			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
-			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			return out;
-			
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();	
-			/*여길 타는건 없다.*/
-			resMap.success="false";
-			resMap.errorMessage="알수없는 시스템 오류입니다.(JsonProcessingException)";
-			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			return out;
-			
-		} catch (java.lang.reflect.InvocationTargetException e) {
-			e.printStackTrace();
-			e.getTargetException().printStackTrace();
-			//log.info("AAAAA");
-			//log.info(e.getMessage());   e.getMessage로 가져올수가 없고
-			//log.info("BBBBB");
-			//log.info(e.getTargetException().getMessage());  이걸로 가져와야 값이 있다.
-			resMap.success="false";
-			resMap.errorMessage=e.getTargetException().getMessage();
-			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e.getTargetException());
-			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			return out;
-		} catch (Exception e) {
-			e.printStackTrace();
-			resMap.success="false";
-			resMap.errorMessage="알수없는 시스템 오류입니다.(Exception)";
-			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			return out;
-		}
-	}
-	
-	public void validOpService(String br,String jsonInString,ApiResultMap resMap /*아웃*/) throws Exception {
-		resMap.rm= API.getApiClass(br);
-		resMap.brId=br;
-		resMap.jsonInString=jsonInString;
-		if(resMap.rm==null) {			
-			BizException bE= new BizException(br+" opService가 없습니다.");
-			throw bE;
-		}
-		resMap.rm.methodName = br;		
-		HashMap<String, Object> rs = null;
-		try {
-			rs=PjtUtil.JsonStringToObject(jsonInString, HashMap.class);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BizException("valid 한 json 인풋 파라미터가 요청되지 않았습니다.");
-		}
-		
-		if(rs.get("brRq")==null) {
-			throw new BizException("baRq 요청 파라미터 테이블명이 존재하지않습니다. 인풋이 없다면 baRq: '' 라도 보내야합니다. ");
-		}
-		
-		if(rs.get("brRs")==null) {
-			throw new BizException("baRs 응답 파라미터 테이블명이 존재하지않습니다. 아웃풋이 없다면 baRs:'' 라도 보내야합니다. ");
-		}
-		
-		//if(dataSet.size()>1)
-		 
-		resMap.brId=br;
-		resMap.brRq=rs.get("brRq").toString();
-		resMap.brRs=rs.get("brRs").toString();
-		if(rs.get("uuid")!=null) {
-			resMap.uuid=rs.get("uuid").toString();
-		}
-		if(rs.get("pgmId")!=null) {
-			resMap.pgmId=rs.get("pgmId").toString();
-		}
-		String brRq = resMap.brRq;   /*요청데이터 테이블둘 IN_DATA,IN_DATA2등*/
-		String brRs = resMap.brRs;   /*응답 테이블둘 OUT_DATA,OUT_DATA등*/
-		String[] arrBrRq=brRq.split(",");
-		String[] arrBrRs=brRs.split(",");
-		
-		for(int i =0; i<arrBrRq.length;i++) {
-			String tmp  = arrBrRq[i];
-			if(tmp !=null && tmp.length()>0) {
-				if(!rs.containsKey(tmp)) {
-					throw new BizException(tmp+"가 인풋 요청 파라미터 테이블이 존재하지 않습니다.");  
-					/*사실 이건 이쪽에 안있어도된다.  왜냐면 클라이언트 체크니까.
-					*/
-				}
-				if(rs.containsKey(tmp)) {
-					resMap.IN_DS.put(tmp,  (ArrayList<HashMap<String, Object>>) rs.get(tmp)); 
-				}	
-			}
-			
-		}
-	}
-	
 	public static void init(String classAntPattern) throws Exception{
 		API.alOpServiceMethod = API.opServiceMethodMetaScan(classAntPattern);
 	}
@@ -251,7 +90,7 @@ public class API {
 						
 							/*파라미터 IN_PUT은 IN_DS  아웃풋은 OUT_DS 무조건 정해져있다. 체크할 필요가 없다.*/
 							Class<?> returnType = method.getReturnType();
-							if(!returnType.getClass().getName().equals(OUT_DS.class.getClass().getName())  ) {
+							if(!returnType.getClass().getName().equals("OUT_DS")  ) {
 								log.info("className=>"+key.getDeclaringClassName());
 								log.info("methodName=>"+key.getMethodName());
 								throw new BizException("opService를 구현함수는 반환값음 OUT_DS.class 형이여야합니다.");
@@ -266,7 +105,7 @@ public class API {
 							for (Parameter p :method.getParameters()) {
 								//tmp.parameters.put(p.getName(),p.getType());
 								Class<?> argType = p.getType();
-								if(!argType.getClass().getName().equals(IN_DS.class.getClass().getName())  ) {
+								if(!argType.getClass().getName().equals("IN_DS")  ) {
 									log.info("className=>"+key.getDeclaringClassName());
 									log.info("methodName=>"+key.getMethodName());
 									throw new BizException("opService를 구현함수는 입력파라미터는 IN_DS.class 형이여야합니다.");

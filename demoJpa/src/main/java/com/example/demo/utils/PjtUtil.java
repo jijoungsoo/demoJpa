@@ -53,6 +53,13 @@ public class PjtUtil {
 		String tmp2 = tmp.toString();
 		return tmp2;
 	}
+	public static String strTrim(Object tmp) {
+		if (tmp == null) {
+			return "";
+		}
+		String tmp2 = tmp.toString().trim();
+		return tmp2;
+	}
 
 	public static String nvl(String first, String second) {
 		if (isEmpty(first)) {

@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.br.cm.BR_CM_LOGIN;
 import com.example.demo.db.da.cm.DA_CM_LOGIN;
 import com.example.demo.db.domain.cm.CmUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,9 +61,6 @@ public class CTRL_USER_LOGIN_Test {
 	
 	@Autowired
 	DA_CM_LOGIN daLogin;
-		
-	@Autowired
-	BR_CM_LOGIN BrLogin;
 
 	@BeforeEach() 	//Junit4의 @Before 
 	public void setup() { 

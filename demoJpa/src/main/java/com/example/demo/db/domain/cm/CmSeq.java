@@ -43,6 +43,11 @@ public class CmSeq {
 	int allocationSize;  //시퀀스 한번 호출에 증가하는 수  50   
 	//50개를 메모리에 해두고 나중에   메모리에서 할당 /// insert 가 중요하지 않으면 1로 하면 된다.  
 	
+	@Column(nullable = false, name = "crt_usr_no")
+	long crtUsrNo;
+	
+	@Column(nullable = false, name = "updt_usr_no")
+	long updtUsrNo;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")

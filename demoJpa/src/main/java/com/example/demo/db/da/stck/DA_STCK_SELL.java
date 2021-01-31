@@ -9,15 +9,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.db.repository.stck.StBuyRepository;
 import com.example.demo.db.repository.stck.StSellRepository;
-import com.example.demo.db.domain.marcap.QStckMarcap;
 import com.example.demo.db.domain.stck.QStBuy;
 import com.example.demo.db.domain.stck.QStSell;
-import com.example.demo.db.domain.stck.StBuy;
 import com.example.demo.db.domain.stck.StSell;
 import com.example.demo.exception.BizException;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -31,13 +29,32 @@ public class DA_STCK_SELL {
 	@Autowired
 	StSellRepository stSellR;
 	
-	public Page<StSell> findStckSell(Pageable p) {
-		JPAQuery<StSell> c= qf.selectFrom(QStSell.stSell);
+	public Page<Tuple> findStckSell(Pageable p) {
+		
+		JPAQuery<Tuple> c= qf.select(QStSell.stSell.sellSeq,
+				QStSell.stSell.buySeq,
+				QStSell.stSell.stockCd,
+				QStSell.stSell.stockNm,
+				QStSell.stSell.amt,
+				QStBuy.stBuy.amt,
+				QStSell.stSell.cnt,
+				QStSell.stSell.fee,
+				QStSell.stSell.tax,
+				QStSell.stSell.totAmt,
+				QStSell.stSell.sellDate,
+				QStSell.stSell.crtUsrNo,
+				QStSell.stSell.updtUsrNo,
+				QStSell.stSell.crtDtm,
+				QStSell.stSell.updtDtm
+				)
+				.from(QStSell.stSell)
+				.leftJoin(QStBuy.stBuy)
+				.on(QStSell.stSell.buySeq.eq(QStBuy.stBuy.buySeq));
 				//.where(QStSell.stSell.delYn.eq("N"));
 		c= c.offset(p.getOffset()); // offset과
 		c= c.limit(p.getPageSize()); // Limit 을 지정할 수 있고
 		c= c.orderBy(QStSell.stSell.sellDate.asc());
-		QueryResults<StSell> result= c.fetchResults();
+		QueryResults<Tuple> result= c.fetchResults();
 		/*
 		 * QueryResults<StckMarcap>
 		 * JPAQuery<StckMarcap>

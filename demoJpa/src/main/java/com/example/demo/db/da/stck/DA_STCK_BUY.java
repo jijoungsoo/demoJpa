@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.db.repository.stck.StBuyRepository;
 import com.example.demo.db.domain.kiw.QKiwStockMst;
-import com.example.demo.db.domain.marcap.QStckMarcap;
 import com.example.demo.db.domain.stck.QStBuy;
 import com.example.demo.db.domain.stck.StBuy;
 import com.example.demo.exception.BizException;

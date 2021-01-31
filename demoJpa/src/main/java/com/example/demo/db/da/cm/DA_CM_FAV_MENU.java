@@ -29,7 +29,7 @@ public class DA_CM_FAV_MENU {
 	@Autowired
 	CmFavMneuRepository cmFavMenuR;
 
-	public ArrayList<HashMap<String, Object>> findFavMenu() {
+	public List<com.querydsl.core.Tuple> findFavMenu() {
 		List<com.querydsl.core.Tuple> tmp =qf.from(QCmFavMenu.cmFavMenu)
 		.leftJoin(QCmMenu.cmMenu)
 		.on(QCmFavMenu.cmFavMenu.menuNo.eq(QCmMenu.cmMenu.menuNo))
@@ -51,27 +51,11 @@ public class DA_CM_FAV_MENU {
 				,QCmFavMenu.cmFavMenu.updtDtm
 				)
 		.fetch();
-		ArrayList<HashMap<String, Object>> OUT_DATA = new ArrayList<HashMap<String,Object>>();
-		 for (Tuple row : tmp) {
-			 HashMap<String, Object>  OUT_DATA_ROW = new HashMap<String, Object>();
-			 OUT_DATA_ROW.put("FAV_NO", row.get(QCmFavMenu.cmFavMenu.favNo));
-			 OUT_DATA_ROW.put("MENU_NO", row.get(QCmFavMenu.cmFavMenu.menuNo));
-			 OUT_DATA_ROW.put("USER_NO", row.get(QCmFavMenu.cmFavMenu.userNo));
-			 OUT_DATA_ROW.put("USER_NM", row.get(QCmUser.cmUser.userNm));
-			 OUT_DATA_ROW.put("USER_ID", row.get(QCmUser.cmUser.userId));
-			 OUT_DATA_ROW.put("MENU_NM", row.get(QCmMenu.cmMenu.menuNm));
-			 OUT_DATA_ROW.put("PGM_ID", row.get(QCmMenu.cmMenu.pgmId));
-			 OUT_DATA_ROW.put("PGM_NM", row.get(QCmPgm.cmPgm.pgmNm));
-			 OUT_DATA_ROW.put("PGM_LINK", row.get(QCmPgm.cmPgm.pgmLink));
-			 OUT_DATA_ROW.put("DIR_LINK", row.get(QCmPgm.cmPgm.dirLink));
-			 OUT_DATA_ROW.put("CRT_DTM", PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.crtDtm)));
-			 OUT_DATA_ROW.put("UPDT_DTM", PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.updtDtm)));
-			 OUT_DATA.add(OUT_DATA_ROW);
-		 }
-		return OUT_DATA;
+	
+		return tmp;
 	}
 
-	public ArrayList<HashMap<String, Object>> findFavMenuByUserNo(long USER_NO) {
+	public List<com.querydsl.core.Tuple> findFavMenuByUserNo(long USER_NO) {
 		List<com.querydsl.core.Tuple> tmp =qf.from(QCmFavMenu.cmFavMenu)
 		.leftJoin(QCmMenu.cmMenu)
 		.on(QCmFavMenu.cmFavMenu.menuNo.eq(QCmMenu.cmMenu.menuNo))
@@ -83,35 +67,16 @@ public class DA_CM_FAV_MENU {
 		.select(QCmFavMenu.cmFavMenu.favNo
 				,QCmFavMenu.cmFavMenu.menuNo
 				,QCmFavMenu.cmFavMenu.userNo
-				,QCmUser.cmUser.userNm
 				,QCmUser.cmUser.userId
 				,QCmMenu.cmMenu.menuNm
 				,QCmMenu.cmMenu.pgmId
 				,QCmPgm.cmPgm.pgmNm
 				,QCmPgm.cmPgm.pgmLink
 				,QCmPgm.cmPgm.dirLink
-				,QCmFavMenu.cmFavMenu.crtDtm
-				,QCmFavMenu.cmFavMenu.updtDtm
 				)
 		.fetch();
-		ArrayList<HashMap<String, Object>> OUT_DATA = new ArrayList<HashMap<String,Object>>();
-		 for (Tuple row : tmp) {
-			 HashMap<String, Object>  OUT_DATA_ROW = new HashMap<String, Object>();
-			 OUT_DATA_ROW.put("FAV_NO", row.get(QCmFavMenu.cmFavMenu.favNo));
-			 OUT_DATA_ROW.put("MENU_NO", row.get(QCmFavMenu.cmFavMenu.menuNo));
-			 OUT_DATA_ROW.put("USER_NO", row.get(QCmFavMenu.cmFavMenu.userNo));
-			 OUT_DATA_ROW.put("USER_NM", row.get(QCmUser.cmUser.userNm));
-			 OUT_DATA_ROW.put("USER_ID", row.get(QCmUser.cmUser.userId));
-			 OUT_DATA_ROW.put("MENU_NM", row.get(QCmMenu.cmMenu.menuNm));
-			 OUT_DATA_ROW.put("PGM_ID", row.get(QCmMenu.cmMenu.pgmId));
-			 OUT_DATA_ROW.put("PGM_NM", row.get(QCmPgm.cmPgm.pgmNm));
-			 OUT_DATA_ROW.put("PGM_LINK", row.get(QCmPgm.cmPgm.pgmLink));
-			 OUT_DATA_ROW.put("DIR_LINK", row.get(QCmPgm.cmPgm.dirLink));
-			 OUT_DATA_ROW.put("CRT_DTM", PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.crtDtm)));
-			 OUT_DATA_ROW.put("UPDT_DTM", PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.updtDtm)));
-			 OUT_DATA.add(OUT_DATA_ROW);
-		 }
-		return OUT_DATA;
+		
+		return tmp;
 	}
 	
 	

@@ -49,6 +49,12 @@ public class CmPgm {
 	@Column(nullable = true, length = 200 ,name="pgm_link")
 	String pgmLink;
 	
+	@Column(nullable = false, name = "crt_usr_no")
+	long crtUsrNo;
+	
+	@Column(nullable = false, name = "updt_usr_no")
+	long updtUsrNo;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false,name="crt_dtm")
 	Date crtDtm;

@@ -86,6 +86,9 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-actuator:2.4.1"
 	implementation 'de.codecentric:spring-boot-admin-starter-client:2.3.1'
     
+    //https://github.com/springfox/springfox
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    
 
 }
 /* 유투브보고 querydsl 설정했다.

@@ -4,14 +4,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import org.junit.jupiter.api.Test;
 
-import com.example.demo.br.cm.BR_CM_LOGIN;
+import com.example.demo.br.cm.cm_login.BR_CM_LOGIN_LOAD_USER_BY_USER_NAME;
 
 
 public class Replaction_Test3 {
 		
 	@Test
 	void restTest2() throws Exception {
-		Class<?> cls = BR_CM_LOGIN.class;
+		Class<?> cls = BR_CM_LOGIN_LOAD_USER_BY_USER_NAME.class;
 		Method[] arrMethod = cls.getDeclaredMethods();
 		for(int j=0;j<arrMethod.length;j++) {
 			Method method = arrMethod[j];

@@ -17,8 +17,6 @@ public class ApiResultMap {
 	public String brRs ="";
 	public String uuid ="";  /*json 문자열에 붙여서 넘길 값--- 프로그램 uuid */
 	public String pgmId  ="";  /*json 문자열에 붙여서 넘길 값--- 프로그램 pgmId */
-	public IN_DS IN_DS= new IN_DS(); 
-	public OUT_DS OUT_DS= new OUT_DS();
 	public HashMap<String,Object> MY_SESSION  = new HashMap<String,Object>();
 	//세션데이터도 하나가지고 있어야한다.
 }
