@@ -1,15 +1,17 @@
-package com.example.demo.br.cm.cm_fav_menu;
+package com.example.demo.br.av.av_mv;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ctrl.LSESSION_ROW;
-import com.example.demo.db.da.cm.DA_CM_FAV_MENU;
-import com.example.demo.db.da.cm.DA_CM_SEQ;
-import com.example.demo.db.domain.cm.CmFavMenu;
+import com.example.demo.db.da.av.DA_AV_MV;
+import com.example.demo.db.da.cm.DA_CM_EXCEL_UPLD;
+import com.example.demo.db.domain.cm.CmExcelUpld;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
@@ -26,13 +28,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "CM_MENU", description = "메뉴")
+@Tag(name = "AV", description = "AV정보")
 @Slf4j
 @RestController
-public class BR_CM_FAV_MENU_CREATE {
+public class BR_AV_MV_EXCEL_SAVE {
 
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_CM_FAV_MENU_CREATE")
+	@ApiModel(value="IN_DS-BR_AV_MV_EXCEL_SAVE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -44,41 +46,41 @@ public class BR_CM_FAV_MENU_CREATE {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_CM_FAV_MENU_CREATE", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_AV_MV_EXCEL_SAVE", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
 		LSESSION_ROW LSESSION;
 	}
-
-	@ApiModel(value="IN_DATA_ROW-BR_CM_FAV_MENU_CREATE")
+	
+	@ApiModel(value="IN_DATA_ROW-BR_AV_MV_EXCEL_SAVE")
 	@Data
 	static class IN_DATA_ROW {
-		@JsonProperty("MENU_NO")
-		@Schema(name = "MENU_NO", example = "1", description = "메뉴번호")
-		String MENU_NO = null;
+		@JsonProperty("FILE_ID")
+		@Schema(name = "FILE_ID", example = "1", description = "파일 ID")
+		String FILE_ID = null;
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_CM_FAV_MENU_CREATE")
+	@ApiModel(value="OUT_DS-BR_AV_MV_EXCEL_SAVE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_CM_FAV_MENU_CREATE", description = "출력 데이터")
+		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_AV_MV_EXCEL_SAVE", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 	
 	@Autowired
-	DA_CM_FAV_MENU daFavM;
-	
+	DA_AV_MV daAvMv;
+
 	@Autowired
-	DA_CM_SEQ daCmSeq;
+	DA_CM_EXCEL_UPLD daCmExcelUpld;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"CM_MENU"},value = "즐겨찾기 메뉴를 저장한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_FAV_MENU_CREATE", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"AV"},value = "AV작품을 EXCEL을 기반으로 저장한다.", notes = "")
+	@PostMapping(path= "/api/BR_AV_MV_EXCEL_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
@@ -88,29 +90,49 @@ public class BR_CM_FAV_MENU_CREATE {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
+		
+		if(inDS.IN_DATA.size()!=1) {
+			throw new BizRuntimeException("잘못된 파라미터 입니다.");
+		}
+		String FILE_ID = inDS.IN_DATA.get(0).FILE_ID;
+		
+		List<CmExcelUpld>  al = daCmExcelUpld.findExcelUpld(FILE_ID);
 				
-		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  MENU_NO 		= PjtUtil.str(rs.MENU_NO);
-		
-		if(PjtUtil.isEmpty(MENU_NO)) {
-			throw new BizRuntimeException("메뉴번호가 입력되지 않았습니다.");
+		for( int i=0;i<al.size();i++) {
+			CmExcelUpld  rs =al.get(i);
+			if(rs.getGbn().equals("D")) {  //상세 
+				String  AV_NM 	= PjtUtil.str(rs.getCol00());
+				String  TTL 	= PjtUtil.str(rs.getCol01());
+				String  CNTNT	= PjtUtil.str(rs.getCol02());
+				String  MSC_CD 	= PjtUtil.str(rs.getCol03());
+				String  ORD 	= PjtUtil.str(rs.getCol04());
+				String  RMK 	= PjtUtil.str(rs.getCol05());		
+				String  CPTN_YN = PjtUtil.str(rs.getCol06());
+				String  MK_DT 	= PjtUtil.str(rs.getCol07());
+				
+				if(PjtUtil.isEmpty(AV_NM)) {
+					throw new BizRuntimeException("품번이 입력되지 않았습니다.");
+				}
+				if(PjtUtil.isEmpty(MSC_CD)) {
+					throw new BizRuntimeException("모자이크코드가 입력되지 않았습니다.");
+				}
+				if(PjtUtil.isEmpty(CPTN_YN)) {
+					throw new BizRuntimeException("자막 유무가 입력되지 않았습니다.");
+				}
+				
+				daAvMv.saveExcelAvMv(
+						AV_NM.toUpperCase().trim()
+						,TTL
+						,CNTNT
+						,MSC_CD
+						,ORD
+						,RMK
+						,CPTN_YN
+						,MK_DT
+						,L_SESSION_USER_NO
+						);
+			}
 		}
-		long L_FAV_NO =daCmSeq.increate("CM_FAV_MENU_FAV_NO_SEQ");
-		
-		long L_MENU_NO = Long.parseLong(MENU_NO);
-		
-		CmFavMenu c=daFavM.findFavMenuByMenuCdAndUserNo(L_SESSION_USER_NO,L_MENU_NO);
-		if(c!=null) {
-			//기존에 데이터가 있었다.종료
-			throw new BizRuntimeException("이미 즐겨찾기에 추가되어있습니다.");
-		} else {
-			daFavM.createFavMenu(
-					L_FAV_NO
-					,L_MENU_NO
-					,L_SESSION_USER_NO
-			);	
-		}
-		
 		OUT_DS outDs = new OUT_DS(); 
 		return outDs;
 	}

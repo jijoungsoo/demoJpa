@@ -108,7 +108,18 @@ spring.jpa.properties.hibernate:
     
 #logging.level.org.springframework.security.web.csrf.CsrfFilter=DEBUG
 
-
+#spring.boot:
+#    admin:
+#      client:
+#        url: http://localhost:8081
+# war 로 기동시 service-url 추가 해야줘됨.
+#        instance:
+#          service-url: http://localhost:8091
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
 
 #스프링액츄에이터 ==> 모니터링 프로그램
 #spring.boot.admin:

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.br.cm.cm_domain.BR_CM_DOMAIN_FIND.OUT_DS;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_DOMAIN;
 import com.example.demo.exception.BizException;
@@ -14,19 +15,24 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_DOMAIN", description = "공통도메인")
 @Slf4j
 @RestController
-@Tag(name = "CM_DOMAIN", description = "공통도메인")
 public class BR_CM_DOMAIN_RM {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_CM_DOMAIN_RM")
+	@ApiModel(value="IN_DS-BR_CM_DOMAIN_RM")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -42,20 +48,19 @@ public class BR_CM_DOMAIN_RM {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_CM_DOMAIN_RM")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_DOMAIN_RM")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("DMN_NO")
-		@Schema(name = "DMN_NO", example = "1", description = "av작품Seq")
+		@Schema(name = "DMN_NO", example = "1", description = "도멘인NO")
 		String DMN_NO = "";
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_CM_DOMAIN_RM")
+	@ApiModel(value="OUT_DS-BR_CM_DOMAIN_RM")
 	@Data
 	static class OUT_DS {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
@@ -64,7 +69,10 @@ public class BR_CM_DOMAIN_RM {
 	@Autowired
 	DA_CM_DOMAIN daDmn;
 	
-	@Operation(summary = "도메인을 삭제한다.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_DOMAIN"},value = "도메인을 삭제한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_DOMAIN_RM", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {

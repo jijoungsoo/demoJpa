@@ -45,4 +45,13 @@ public class DA_CM_MAIN {
 	                
 		 return al;
 	}
+
+	public List<CmPgm> findPgmByPgmId(String PGM_ID) {
+		List<CmPgm> al =  qf
+                .selectFrom(QCmPgm.cmPgm)
+                .where(QCmPgm.cmPgm.pgmId.eq(PGM_ID))
+                .orderBy(QCmPgm.cmPgm.pgmId.asc())
+                .fetch();
+		return al;
+	}
 }

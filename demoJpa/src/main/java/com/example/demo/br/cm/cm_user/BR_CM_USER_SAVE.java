@@ -16,8 +16,12 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +34,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class BR_CM_USER_SAVE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_USER_SAVE")
+	@ApiModel(value="IN_DS-BR_CM_USER_SAVE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -50,12 +54,11 @@ public class BR_CM_USER_SAVE {
 		ArrayList<DATA_ROW> UPDT_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_USER_SAVE")
+	@ApiModel(value="OUT_DS-BR_CM_USER_SAVE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -63,30 +66,40 @@ public class BR_CM_USER_SAVE {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
-	@Schema(name = "DATA_ROW-BR_CM_USER_SAVE")
+	@ApiModel(value="DATA_ROW-BR_CM_USER_SAVE")
 	@Data
 	static class DATA_ROW {
 		@JsonProperty("USER_NO")
-		@Schema(name = "USER_NO", example = "1", description = "프로그램NO")
+		@Schema(name = "USER_NO", example = "1", description = "사용자NO")
 		String USER_NO = null;
+		
 		@JsonProperty("USER_NM")
-		@Schema(name = "USER_NM", example = "CM_001", description = "프로그램ID")
+		@Schema(name = "USER_NM", example = "홍길동", description = "사용자명")
 		String USER_NM = null;
+		
 		@JsonProperty("USER_ID")
-		@Schema(name = "USER_ID", example = "****", description = "DIR_LINK")
+		@Schema(name = "USER_ID", example = "admin", description = "사용자ID")
 		String USER_ID = null;
+		
 		@JsonProperty("USER_PWD")
-		@Schema(name = "USER_PWD", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "USER_PWD", example = "****", description = "패스워드")
 		String USER_PWD = null;
+		
 		@JsonProperty("EMAIL")
-		@Schema(name = "EMAIL", example = "admin@gogo.com", description = "CATEGORY")
+		@Schema(name = "EMAIL", example = "admin@gogo.com", description = "이메일")
 		String EMAIL = null;
+		
 		@JsonProperty("USE_YN")
-		@Schema(name = "USE_YN", example = "admin@gogo.com", description = "RMK")
+		@Schema(name = "USE_YN", example = "(Y,N)", description = "사용여부")
 		String USE_YN = null;
+		
 		@JsonProperty("RMK")
-		@Schema(name = "RMK", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
+		
+		@JsonProperty("LST_ACC_DTM")
+		@Schema(name = "LST_ACC_DTM", example = "202012311640", description = "마지막접속일")
+		String LST_ACC_DTM = null;
 	}
 	
 	@Autowired
@@ -95,7 +108,10 @@ public class BR_CM_USER_SAVE {
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 	
-	@Operation(summary = "사용자 저장.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_USER"},value = "사용자 저장.", notes = "")
 	@PostMapping(path= "/api/BR_CM_USER_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS saveCmUser(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
@@ -133,9 +149,6 @@ public class BR_CM_USER_SAVE {
 				if(PjtUtil.isEmpty(USE_YN)) {
 					throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(RMK)) {
-					throw new BizRuntimeException("비고가 입력되지 않았습니다.");
-				}
 				
 				long L_USER_NO =daCmSeq.increate("CM_USER_USER_NO_SEQ");
 				//id중복검사
@@ -155,6 +168,7 @@ public class BR_CM_USER_SAVE {
 						,EMAIL
 						,USE_YN
 						,RMK
+						,L_LSESSION_USER_NO
 						);
 			} else {
 				if(PjtUtil.isEmpty(USER_NO)) {
@@ -173,10 +187,7 @@ public class BR_CM_USER_SAVE {
 				if(PjtUtil.isEmpty(USE_YN)) {
 					throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(RMK)) {
-					throw new BizRuntimeException("비고가 입력되지 않았습니다.");
-				}
-				
+								
 				long L_USER_NO = Long.parseLong(USER_NO);
 				daCmUser.updateCmUser(
 						L_USER_NO
@@ -185,6 +196,7 @@ public class BR_CM_USER_SAVE {
 						,EMAIL
 						,USE_YN
 						,RMK
+						,L_LSESSION_USER_NO
 						);
 			}
 		}

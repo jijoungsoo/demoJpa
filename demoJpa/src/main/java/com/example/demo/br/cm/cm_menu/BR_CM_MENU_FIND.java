@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.example.demo.db.da.cm.DA_CM_MENU;
 import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.exception.BizException;
@@ -16,19 +15,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_MENU", description = "메뉴")
 @Slf4j
 @RestController
-@Tag(name = "CM_MENU", description = "메뉴")
 public class BR_CM_MENU_FIND {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_MENU_FIND")
+	@ApiModel(value="IN_DS-BR_CM_MENU_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -41,7 +44,7 @@ public class BR_CM_MENU_FIND {
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_MENU_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_MENU_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -49,7 +52,7 @@ public class BR_CM_MENU_FIND {
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@Schema(name="OUT_DATA_ROW",title = "OUT_DATA_ROW-BR_CM_MENU_FIND")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_MENU_FIND")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("MENU_NO")
@@ -81,18 +84,23 @@ public class BR_CM_MENU_FIND {
 		String MENU_LVL = null;
 		@JsonProperty("MENU_PATH")
 		@Schema(name = "MENU_PATH", example = "admin@gogo.com", description = "MENU_PATH")
-		String MENU_PATH = null;
+		String MENU_PATH = null
+		;
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "admin@gogo.com", description = "UPDT_DTM")
+		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
 		String UPDT_DTM = null;
 	}
 	@Autowired
 	DA_CM_MENU daMenu;
 
-	@Operation(summary = "메뉴 조회.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_MENU"},value = "메뉴 조회.", notes = "")
 	@PostMapping(path= "/api/BR_CM_MENU_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		List<CmMenu>  al =daMenu.findMenu();

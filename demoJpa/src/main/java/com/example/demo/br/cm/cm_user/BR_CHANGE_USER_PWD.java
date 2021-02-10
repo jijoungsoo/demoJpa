@@ -14,21 +14,25 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Tag(name = "CM_USER", description = "사용자정보")
 @Slf4j
 @RestController
-@Tag(name = "CM_USER", description = "사용자정보")
 public class BR_CHANGE_USER_PWD {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CHANGE_USER_PWD")
+	@ApiModel(value="IN_DS-BR_CHANGE_USER_PWD")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -44,26 +48,25 @@ public class BR_CHANGE_USER_PWD {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION",title="LSESSION-BR_CHANGE_USER_PWD", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name="DATA_ROW", title = "DATA_ROW-BR_CHANGE_USER_PWD")
+	@ApiModel(value="IN_DATA_ROW-BR_CHANGE_USER_PWD")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("USER_NO")
 		@Schema(name = "USER_NO", example = "1", description = "사용자NO")
 		String USER_NO = null;
 		@JsonProperty("USER_PWD")
-		@Schema(name = "USER_PWD", example = "1", description = "사용자NO")
+		@Schema(name = "USER_PWD", example = "****", description = "패스워드")
 		String USER_PWD = null;
 		@JsonProperty("RE_USER_PWD")
-		@Schema(name = "RE_USER_PWD", example = "1", description = "사용자NO")
+		@Schema(name = "RE_USER_PWD", example = "****", description = "패스워드확인")
 		String RE_USER_PWD = null;
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CHANGE_USER_PWD")
+	@ApiModel(value="OUT_DS-BR_CHANGE_USER_PWD")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -74,7 +77,10 @@ public class BR_CHANGE_USER_PWD {
 	@Autowired
 	DA_CM_USER daCmUser;
 	
-	@Operation(summary = "사용자 패스워드 변경.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_USER"},value = "사용자 패스워드 변경.", notes = "")
 	@PostMapping(path= "/api/BR_CHANGE_USER_PWD", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.IN_DATA.size();i++) {

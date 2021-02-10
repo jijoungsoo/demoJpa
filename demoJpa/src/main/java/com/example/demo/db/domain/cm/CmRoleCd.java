@@ -21,47 +21,37 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@Table(name="tb_cm_file")
-public class CmFile {
-	@Column(nullable = false,name="file_no")
-	Long fileNo;
-	
+@Table(name="tb_cm_role_cd")
+public class CmRoleCd {
 	@Id
-	@Column(nullable = false, length = 1000 ,name="file_id")
-	String fileId;
-	@Column(nullable = false, length = 1000 ,name="file_group")
-	String fileGroup;
+	@Column(nullable = false,unique=true, length = 50 ,name="role_cd")
+	String roleCd;
 	
-	@Column(nullable = false, length = 1000 ,name="org_file_nm")
-	String orgFileNm;
-	@Column(nullable = true, length = 10 ,name="ext")
-	String ext;
-	@Column(nullable = false, length = 4000 ,name="svr_file_nm")
-	String svrFileNm;
+	@Column(nullable = false,unique=false, length = 100 ,name="role_nm")
+	String roleNm;
 	
-	@Column(nullable = false, length = 4000 ,name="svr_dir_path")
-	String svrDirPath;
-	
-	@Column(nullable = false, length = 1 ,name="fie_status_cd")
-	String fileStatusCd;
-	
-	@Column(nullable = true, length = 1000 ,name="content_type")
-	String contentType;
-	
-	@Column(nullable = true, name="file_size")
-	Long fileSize;
+
+	@Column(nullable = false, length = 1, name = "use_yn")
+	String useYn;
 		
+	@Column(nullable = true, length = 4000 ,name="rmk")
+	String rmk;
+	
+
+	@Column(nullable = true, length = 5 ,name="ord")
+	String ord;
+	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;
 	
 	@Column(nullable = false, name = "updt_usr_no")
 	long updtUsrNo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, name = "crt_dtm")
+	@Column(nullable = false,name="crt_dtm")
 	Date crtDtm;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, name = "updt_dtm")
+	@Column(nullable = false,name="updt_dtm")
 	Date updtDtm;
 }

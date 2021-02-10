@@ -16,8 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +76,14 @@ public class BR_CM_GRP_CD_FIND {
 		@Schema(name = "RMK", example = "홍길동", description = "사용자명")
 		String RMK = null;
 
+		@JsonProperty("CRT_USR_NO")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
+		String CRT_USR_NO = null;
+		
+		@JsonProperty("UPDT_USR_NO")
+		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
+		String UPDT_USR_NO = null;
+		
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
@@ -85,7 +96,10 @@ public class BR_CM_GRP_CD_FIND {
 	@Autowired
 	DA_CM_GRP_CD daGrpCd;
 
-	@Operation(summary = "공통그룹코드 조회한다.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_CD"},value = "공통그룹코드 조회한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_GRP_CD_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		List<CmGrpCd>  al =daGrpCd.findCmGrpCd();

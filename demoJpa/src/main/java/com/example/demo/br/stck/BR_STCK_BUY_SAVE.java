@@ -15,20 +15,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-
+@Tag(name = "STCK", description = "주식")
 @Slf4j
 @RestController
-@Tag(name = "STCK", description = "주식")
 public class BR_STCK_BUY_SAVE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_STCK_BUY_SAVE")
+	@ApiModel(value="IN_DS-BR_STCK_BUY_SAVE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -48,12 +51,11 @@ public class BR_STCK_BUY_SAVE {
 		ArrayList<DATA_ROW> UPDT_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_STCK_BUY_SAVE")
+	@ApiModel(value="OUT_DS-BR_STCK_BUY_SAVE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -61,35 +63,46 @@ public class BR_STCK_BUY_SAVE {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
-	@Schema(name = "DATA_ROW-BR_STCK_BUY_SAVE")
+	@ApiModel(value="DATA_ROW-BR_STCK_BUY_SAVE")
 	@Data
 	static class DATA_ROW {
 		@JsonProperty("BUY_SEQ")
-		@Schema(name = "BUY_SEQ", example = "1", description = "프로그램NO")
+		@Schema(name = "BUY_SEQ", example = "1", description = "주식팔자SEQ")
 		String BUY_SEQ = null;
+		
 		@JsonProperty("STOCK_CD")
-		@Schema(name = "STOCK_CD", example = "1", description = "프로그램NO")
+		@Schema(name = "STOCK_CD", example = "00005", description = "종목코드")
 		String STOCK_CD = null;
+		
 		@JsonProperty("STOCK_NM")
-		@Schema(name = "STOCK_NM", example = "CM_001", description = "프로그램ID")
+		@Schema(name = "STOCK_NM", example = "삼성전자", description = "종목명")
 		String STOCK_NM = null;
-		@JsonProperty("AMT")
-		@Schema(name = "AMT", example = "****", description = "DIR_LINK")
-		String AMT = null;
+		
+		@JsonProperty("BUY_AMT")
+		@Schema(name = "BUY_AMT", example = "1000", description = "구매단가")
+		String BUY_AMT = null;
+		
 		@JsonProperty("CNT")
-		@Schema(name = "CNT", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "CNT", example = "admin@gogo.com", description = "이메일")
 		String CNT = null;
+		
 		@JsonProperty("BAL_CNT")
-		@Schema(name = "BAL_CNT", example = "admin@gogo.com", description = "CATEGORY")
+		@Schema(name = "BAL_CNT", example = "3", description = "구매수량")
 		String BAL_CNT = null;
+				
 		@JsonProperty("FEE")
-		@Schema(name = "FEE", example = "admin@gogo.com", description = "RMK")
+		@Schema(name = "FEE", example = "10", description = "수수료")
 		String FEE = null;
+		
+		@JsonProperty("RMK")
+		@Schema(name = "RMK", example = "비고", description = "비고")
+		String RMK = null;
+		
 		@JsonProperty("TOT_AMT")
-		@Schema(name = "TOT_AMT", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "TOT_AMT", example = "2000", description = "전체구매금액")
 		String TOT_AMT = null;
 		@JsonProperty("BUY_DATE")
-		@Schema(name = "BUY_DATE", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "BUY_DATE", example = "20201231", description = "구매일자")
 		String BUY_DATE = null;
 	}
 	
@@ -99,7 +112,10 @@ public class BR_STCK_BUY_SAVE {
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 
-	@Operation(summary = "산주식 저장.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"STCK"},value = "산주식 저장.", notes = "")
 	@PostMapping(path= "/api/BR_STCK_BUY_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
@@ -115,7 +131,7 @@ public class BR_STCK_BUY_SAVE {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
 			String  STOCK_CD 		= PjtUtil.str(rs.STOCK_CD);
 			String  STOCK_NM 		= PjtUtil.str(rs.STOCK_NM);
-			String  AMT			 	= PjtUtil.str(rs.AMT);
+			String  AMT			 	= PjtUtil.str(rs.BUY_AMT);
 			String  CNT 			= PjtUtil.str(rs.CNT);
 			String  BAL_CNT			= PjtUtil.str(rs.BAL_CNT);
 			String  FEE 			= PjtUtil.str(rs.FEE);
@@ -175,7 +191,7 @@ public class BR_STCK_BUY_SAVE {
 			String  BUY_SEQ 		= PjtUtil.str(rs.BUY_SEQ);
 			String  STOCK_CD 		= PjtUtil.str(rs.STOCK_CD);
 			String  STOCK_NM 		= PjtUtil.str(rs.STOCK_NM);
-			String  AMT			 	= PjtUtil.str(rs.AMT);
+			String  AMT			 	= PjtUtil.str(rs.BUY_AMT);
 			String  CNT 			= PjtUtil.str(rs.CNT);
 			String  BAL_CNT			= PjtUtil.str(rs.BAL_CNT);
 			String  FEE 			= PjtUtil.str(rs.FEE);

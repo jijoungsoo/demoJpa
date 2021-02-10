@@ -102,11 +102,20 @@ public class BR_CM_CD_FIND {
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
 
+		@JsonProperty("CRT_USR_NO")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
+		String CRT_USR_NO = null;
+		
+		@JsonProperty("UPDT_USR_NO")
+		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
+		String UPDT_USR_NO = null;
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "20201231123150", description = "생성일시")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "20201231123150", description = "수정일시")
+		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
 		String UPDT_DTM = null;
 	}
 	

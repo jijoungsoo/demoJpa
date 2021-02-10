@@ -2,6 +2,7 @@ package com.example.demo.br.cm.cm_file;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,10 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "CM_FILE", description = "파일")
 @Slf4j
 @RestController
-public class BR_CM_FILE_FIND {
+public class BR_CM_FILE_FIND_BY_FILE_ID {
 
 	@JsonRootName("IN_DS")
-	@ApiModel(value="OUT_DS-BR_CM_FILE_FIND")
+	@ApiModel(value="IN_DS-BR_CM_FILE_FIND_BY_FILE_ID")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -50,10 +50,11 @@ public class BR_CM_FILE_FIND {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 				
 		@JsonProperty("LSESSION")
+		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 	
-	@ApiModel(value="IN_DATA_ROW-BR_CM_FILE_FIND")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_FILE_FIND_BY_FILE_ID")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("FILE_ID")
@@ -62,7 +63,7 @@ public class BR_CM_FILE_FIND {
 	}
 
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_CM_FILE_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_FILE_FIND_BY_FILE_ID")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -70,12 +71,9 @@ public class BR_CM_FILE_FIND {
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BR_CM_FILE_FIND")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_FILE_FIND_BY_FILE_ID")
 	@Data
 	static class OUT_DATA_ROW {
-		@JsonProperty("FILE_NO")
-		@Schema(name = "FILE_NO", example = "XXXXX", description = "파일ID")
-		String FILE_NO = null;
 		@JsonProperty("FILE_ID")
 		@Schema(name = "FILE_ID", example = "XXXXX", description = "파일ID")
 		String FILE_ID = null;
@@ -97,14 +95,15 @@ public class BR_CM_FILE_FIND {
 		@JsonProperty("EXT")
 		@Schema(name = "EXT", example = "JPG", description = "확장자")
 		String EXT = null;
-		
+
 		@JsonProperty("FILE_SIZE")
-		@Schema(name = "FILE_SIZE", example = "1000", description = "파일사이즈")
+		@Schema(name = "FILE_SIZE", example = "123123", description = "파일사이즈")
 		Long FILE_SIZE = null;
 		
 		@JsonProperty("CONTENT_TYPE")
-		@Schema(name = "CONTENT_TYPE", example = "image/jpg", description = "파일타입")
+		@Schema(name = "CONTENT_TYPE", example = "123123", description = "컨텐츠타입")
 		String CONTENT_TYPE = null;
+		
 		
 		@JsonProperty("CRT_USR_NO")
 		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
@@ -112,6 +111,7 @@ public class BR_CM_FILE_FIND {
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311650", description = "생성일")
 		String CRT_DTM = null;
+		
 	}
 	
 	@Autowired
@@ -120,8 +120,8 @@ public class BR_CM_FILE_FIND {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"CM_FILE"},value = "파일을 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_FILE_FIND", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"CM_FILE"},value = "파일을 조회한다.(by FILE_ID)", notes = "")
+	@PostMapping(path= "/api/BR_CM_FILE_FIND_BY_FILE_ID", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
@@ -131,24 +131,33 @@ public class BR_CM_FILE_FIND {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
+
+		if (inDS.IN_DATA.size() != 1) {
+			throw new BizException("입력파라미터가 잘못되었습니다.");
+		}
+		IN_DATA_ROW rs = inDS.IN_DATA.get(0);
+
+		if (rs.FILE_ID == null) {
+			throw new BizException("파일ID가 입력되지 않았습니다.");
+		}
 		
-		List<CmFile>  al =daCmFile.findFileList();
+		String FILE_ID = rs.FILE_ID;
+		Optional<CmFile>  c =daCmFile.findFileListByFileId(FILE_ID);
 		OUT_DS outDs = new OUT_DS();
-		for(int i=0;i<al.size();i++) {
-			CmFile cm=al.get(i);
+		if(c!=null) {
+			CmFile cm=c.get();
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.FILE_NO= cm.getFileNo().toString();
-			row.FILE_ID= cm.getFileId();
+			row.FILE_ID= cm.getFileId().toString();
 			row.FILE_GROUP= cm.getFileGroup();
 			row.ORG_FILE_NM= cm.getOrgFileNm();
 			row.SVR_DIR_PATH= cm.getSvrDirPath();
 			row.SVR_FILE_NM= cm.getSvrFileNm();
+			row.FILE_SIZE= cm.getFileSize();
+			row.CONTENT_TYPE = cm.getContentType();
+			row.FILE_STATUS_CD =cm.getFileStatusCd(); 
 			row.EXT= cm.getExt();
 			row.CRT_USR_NO= String.valueOf(cm.getCrtUsrNo());
 			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.FILE_SIZE = cm.getFileSize();
-			row.CONTENT_TYPE = cm.getContentType();
-			row.FILE_STATUS_CD = cm.getFileStatusCd();
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

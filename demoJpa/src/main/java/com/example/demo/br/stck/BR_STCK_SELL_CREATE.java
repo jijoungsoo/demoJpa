@@ -2,9 +2,9 @@ package com.example.demo.br.stck;
 
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
@@ -15,15 +15,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
-@Service
+@Tag(name = "STCK", description = "주식")
+@Slf4j
+@RestController
 public class BR_STCK_SELL_CREATE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_STCK_BUY_SAVE")
+	@ApiModel(value="IN_DS-BR_STCK_SELL_CREATE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -35,16 +43,15 @@ public class BR_STCK_SELL_CREATE {
 		String brRs;
 		
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_STCK_BUY_SAVE", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_STCK_SELL_CREATE", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_STCK_BUY_SAVE")
+	@ApiModel(value="OUT_DS-BR_STCK_SELL_CREATE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -52,35 +59,35 @@ public class BR_STCK_SELL_CREATE {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_STCK_BUY_SAVE")
+	@ApiModel(value="IN_DATA_ROW-BR_STCK_SELL_CREATE")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("BUY_SEQ")
-		@Schema(name = "BUY_SEQ", example = "1", description = "프로그램NO")
+		@Schema(name = "BUY_SEQ", example = "1", description = "판매SEQ")
 		String BUY_SEQ = null;
 		@JsonProperty("STOCK_CD")
-		@Schema(name = "STOCK_CD", example = "1", description = "프로그램NO")
+		@Schema(name = "STOCK_CD", example = "292929", description = "주식코드")
 		String STOCK_CD = null;
 		@JsonProperty("STOCK_NM")
-		@Schema(name = "STOCK_NM", example = "CM_001", description = "프로그램ID")
+		@Schema(name = "STOCK_NM", example = "삼성전자", description = "주식명")
 		String STOCK_NM = null;
 		@JsonProperty("AMT")
-		@Schema(name = "AMT", example = "****", description = "DIR_LINK")
+		@Schema(name = "AMT", example = "100", description = "판매금액")
 		String AMT = null;
 		@JsonProperty("CNT")
-		@Schema(name = "CNT", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "CNT", example = "10", description = "판매수량")
 		String CNT = null;
 		@JsonProperty("TOT_AMT")
-		@Schema(name = "TOT_AMT", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "TOT_AMT", example = "1000", description = "판매금액")
 		String TOT_AMT = null;
 		@JsonProperty("FEE")
-		@Schema(name = "FEE", example = "admin@gogo.com", description = "RMK")
+		@Schema(name = "FEE", example = "10", description = "수수료")
 		String FEE = null;
 		@JsonProperty("TAX")
-		@Schema(name = "TAX", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "TAX", example = "100", description = "세금")
 		String TAX = null;
 		@JsonProperty("SELL_DATE")
-		@Schema(name = "SELL_DATE", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "SELL_DATE", example = "20201231", description = "판매일자")
 		String SELL_DATE = null;
 	}
 	
@@ -92,7 +99,11 @@ public class BR_STCK_SELL_CREATE {
 	
 	@Autowired
 	DA_CM_SEQ daCmSeq;
-	@Operation(summary = "판주식 생성.", description = "")
+
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"STCK"},value = "판주식 생성.", notes = "")
 	@PostMapping(path= "/api/BR_STCK_SELL_CREATE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws Exception {
 		if(inDS.LSESSION==null) {

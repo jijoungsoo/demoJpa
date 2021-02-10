@@ -1,4 +1,4 @@
-package com.example.demo.br.stck;
+package com.example.demo.br.cm.cm_file;
 
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ctrl.LSESSION_ROW;
-import com.example.demo.db.da.stck.DA_STCK_BUY;
+import com.example.demo.db.da.cm.DA_CM_FILE;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
@@ -24,75 +24,83 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "STCK", description = "주식")
+@Tag(name = "CM_FILE", description = "파일")
 @Slf4j
 @RestController
-public class BR_STCK_BUY_RM {
+public class BR_CM_FILE_RM {
 
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_STCK_BUY_RM")
+	@ApiModel(value="IN_DS-BR_CM_FILE_RM")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
-		@Schema(name = "brRq", example = "IN_DATA", description = "입력 데이터명")
+		@Schema(name = "brRq", example = "IN_DATA,LSESSION", description = "입력 데이터명")
 		String brRq;
 
 		@JsonProperty("brRs")
-		@Schema(name = "brRs", example = "", description = "출력 데이터명")
+		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
 		
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_STCK_BUY_RM", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_CM_FILE_RM", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
-		
+				
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_STCK_BUY_RM")
+	@ApiModel(value="OUT_DS-BR_CM_FILE_RM")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_STCK_BUY_RM", description = "출력 데이터")
+		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_CM_FILE_CREATE", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BR_STCK_BUY_RM")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_FILE_RM")
 	@Data
 	static class IN_DATA_ROW {
-		@JsonProperty("BUY_SEQ")
-		@Schema(name = "BUY_SEQ", example = "1", description = "프로그램NO")
-		String BUY_SEQ = null;
+		@JsonProperty("FILE_ID")
+		@Schema(name = "FILE_ID", example = "1", description = "프로그램NO")
+		String FILE_ID = null;
+		
+		@JsonProperty("SVR_DIR_PATH")
+		@Schema(name = "SVR_DIR_PATH", example = "/sorce/xxx/", description = "서버경로")
+		String SVR_DIR_PATH = null;
 	}
 	
 	@Autowired
-	DA_STCK_BUY daStckB;
+	DA_CM_FILE daCmFile;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"STCK"},value = "산주식 삭제.", notes = "")
-	@PostMapping(path= "/api/BR_STCK_BUY_RM", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"CM_FILE"},value = "파일정보를 삭제한다.", notes = "")
+	@PostMapping(path= "/api/BR_CM_FILE_RM", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
-		if(PjtUtil.isEmpty(inDS.LSESSION.getUSER_NO())) {
+		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
+		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
+		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
+		
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  BUY_SEQ 		= PjtUtil.str(rs.BUY_SEQ);
-			if(PjtUtil.isEmpty(BUY_SEQ)) {
-				throw new BizRuntimeException("["+BUY_SEQ+"]내가산 주식 일련번호가 입력되지 않았습니다.");
-			}
-			long L_BUY_SEQ = Long.parseLong(BUY_SEQ);
-			daStckB.rmStckBuy(L_BUY_SEQ);
+			String  FILE_ID		 	= PjtUtil.strTrim(rs.FILE_ID);
+			String  SVR_DIR_PATH	= PjtUtil.strTrim(rs.SVR_DIR_PATH);
+			
+			daCmFile.rmFile(
+					 FILE_ID,
+					 SVR_DIR_PATH,
+					 L_LSESSION_USER_NO
+					);
 		}
-	
+
 		OUT_DS outDs = new OUT_DS(); 
 		return outDs;
 	}

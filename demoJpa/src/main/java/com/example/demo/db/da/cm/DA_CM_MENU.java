@@ -70,6 +70,7 @@ public class DA_CM_MENU {
 			,String MENU_LVL
 			,String MENU_PATH
 			,String RMK
+			,Long L_SESSION_USER_NO
 			) {
 		cmMenuR.save(
 				CmMenu.builder()
@@ -83,6 +84,8 @@ public class DA_CM_MENU {
 				.menuLvl(MENU_LVL)
 				.menuPath(MENU_PATH)
 				.rmk(RMK)
+				.crtUsrNo(L_SESSION_USER_NO)
+				.updtUsrNo(L_SESSION_USER_NO)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
 	}
@@ -107,6 +110,7 @@ public class DA_CM_MENU {
 			,String MENU_LVL
 			,String MENU_PATH
 			,String RMK
+			,Long L_SESSION_USER_NO
 			) throws BizException {
 		
 		Optional<CmMenu>  c =  cmMenuR.findById(MENU_NO);
@@ -123,6 +127,7 @@ public class DA_CM_MENU {
 		tmp.setMenuLvl(MENU_LVL);
 		tmp.setMenuPath(MENU_PATH);
 		tmp.setRmk(RMK);
+		tmp.setUpdtUsrNo(L_SESSION_USER_NO);
 		tmp.setUpdtDtm(new Date());
 		cmMenuR.save(tmp);
 	}

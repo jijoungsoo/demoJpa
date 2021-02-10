@@ -18,20 +18,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-
+@Tag(name = "STCK", description = "주식")
 @Slf4j
 @RestController
-@Tag(name = "STCK", description = "주식")
 public class BR_STCK_SELL_RM {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_STCK_SELL_RM")
+	@ApiModel(value="IN_DS-BR_STCK_SELL_RM")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -47,11 +50,10 @@ public class BR_STCK_SELL_RM {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_STCK_SELL_RM")
+	@ApiModel(value="IN_DATA_ROW-BR_STCK_SELL_RM")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("SELL_SEQ")
@@ -60,7 +62,7 @@ public class BR_STCK_SELL_RM {
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_STCK_SELL_RM")
+	@ApiModel(value="OUT_DS-BR_STCK_SELL_RM")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -75,7 +77,10 @@ public class BR_STCK_SELL_RM {
 	@Autowired
 	DA_STCK_BUY_MAPPER daStckBM;
 	
-	@Operation(summary = "판주식 삭제.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"STCK"},value = "판주식 삭제.", notes = "")
 	@PostMapping(path= "/api/BR_STCK_SELL_RM", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws Exception {
 		if(inDS.LSESSION==null) {

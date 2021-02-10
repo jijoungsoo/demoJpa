@@ -18,19 +18,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_EXCEL_UPLD", description = "엑셀업로드")
 @Slf4j
 @RestController
-@Tag(name = "CM_EXCEL_UPLD", description = "엑셀업로드")
 public class BR_CM_EXCEL_UPLD_FIND {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_AV_ACTR_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_EXCEL_UPLD_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -42,123 +46,127 @@ public class BR_CM_EXCEL_UPLD_FIND {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_AV_ACTR_FIND", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_CM_EXCEL_UPLD_FIND", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION",title="LSESSION-BR_AV_ACTR_RM", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_AV_ACTR_FIND")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_EXCEL_UPLD_FIND")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("EXCEL_UPLD_ID")
-		@Schema(name = "EXCEL_UPLD_ID", example = "jijs", description = "사용자ID")
+		@Schema(name = "EXCEL_UPLD_ID", example = "XXXXXX", description = "엑셀업로드ID")
 		String EXCEL_UPLD_ID = "";
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_AV_ACTR_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_EXCEL_UPLD_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_AV_ACTR_FIND", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_CM_EXCEL_UPLD_FIND", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 		
 		@JsonProperty("PAGE_DATA")
-		@Schema(name="PAGE_DATA-BR_AV_MV_FIND", description = "페이지 데이터")
 		PAGE_DATA_ROW PAGE_DATA;
 	}
 
-	@Schema(name = "OUT_DATA_ROW-BR_AV_ACTR_FIND")
+	@Schema(name = "OUT_DATA_ROW-BR_CM_EXCEL_UPLD_FIND")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("EXCEL_UPLD_ID")
-		@Schema(name = "EXCEL_UPLD_ID", example = "1", description = "사용자NO")
+		@Schema(name = "EXCEL_UPLD_ID", example = "XXXXX", description = "업로드ID")
 		String EXCEL_UPLD_ID = null;
 		@JsonProperty("EXCEL_SEQ")
-		@Schema(name = "EXCEL_SEQ", example = "jijs", description = "사용자ID")
+		@Schema(name = "EXCEL_SEQ", example = "1", description = "엑셀SEQ")
 		String EXCEL_SEQ = null;
 		@JsonProperty("GBN")
-		@Schema(name = "GBN", example = "****", description = "사용자패스워드")
+		@Schema(name = "GBN", example = "(H-해더,D-디테일)", description = "구분")
 		String GBN = null;
 		@JsonProperty("COL00")
-		@Schema(name = "COL00", example = "홍길동", description = "사용자명")
+		@Schema(name = "COL00", example = "", description = "COL00")
 		String COL00 = null;
 		@JsonProperty("COL01")
-		@Schema(name = "COL01", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL01", example = "", description = "COL01")
 		String COL01 = null;
 		@JsonProperty("COL02")
-		@Schema(name = "COL02", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL02", example = "", description = "COL02")
 		String COL02 = null;
 		@JsonProperty("COL03")
-		@Schema(name = "COL03", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL03", example = "", description = "COL03")
 		String COL03 = null;
 		@JsonProperty("COL04")
-		@Schema(name = "COL04", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL04", example = "", description = "COL04")
 		String COL04 = null;
 		@JsonProperty("COL05")
-		@Schema(name = "COL05", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL05", example = "", description = "COL05")
 		String COL05 = null;
 		@JsonProperty("COL06")
-		@Schema(name = "COL06", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL06", example = "", description = "COL06")
 		String COL06 = null;
 		@JsonProperty("COL07")
-		@Schema(name = "COL07", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL07", example = "", description = "COL07")
 		String COL07 = null;
 		@JsonProperty("COL08")
-		@Schema(name = "COL08", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL08", example = "", description = "COL08")
 		String COL08 = null;
 		@JsonProperty("COL09")
-		@Schema(name = "COL09", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL09", example = "", description = "COL09")
 		String COL09 = null;
 		@JsonProperty("COL10")
-		@Schema(name = "COL10", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL10", example = "", description = "COL10")
 		String COL10 = null;
 		@JsonProperty("COL11")
-		@Schema(name = "COL11", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL11", example = "", description = "COL11")
 		String COL11 = null;
 		@JsonProperty("COL12")
-		@Schema(name = "COL12", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL12", example = "", description = "COL12")
 		String COL12 = null;
 		@JsonProperty("COL13")
-		@Schema(name = "COL13", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL13", example = "", description = "COL13")
 		String COL13 = null;
 		@JsonProperty("COL14")
-		@Schema(name = "COL14", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL14", example = "", description = "COL14")
 		String COL14 = null;
 		@JsonProperty("COL15")
-		@Schema(name = "COL15", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL15", example = "", description = "COL15")
 		String COL15 = null;
 		@JsonProperty("COL16")
-		@Schema(name = "COL16", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL16", example = "", description = "COL16")
 		String COL16 = null;
 		@JsonProperty("COL17")
-		@Schema(name = "COL17", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL17", example = "", description = "COL17")
 		String COL17 = null;
 		@JsonProperty("COL18")
-		@Schema(name = "COL18", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL18", example = "", description = "COL19")
 		String COL18 = null;
 		@JsonProperty("COL19")
-		@Schema(name = "COL19", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL19", example = "", description = "COL19")
 		String COL19 = null;
 		@JsonProperty("COL20")
-		@Schema(name = "COL20", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL20", example = "", description = "COL20")
 		String COL20 = null;
+				
 		@JsonProperty("CRT_USR_NO")
-		@Schema(name = "CRT_USR_NO", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
 		String CRT_USR_NO = null;
+				
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 	}
 	@Autowired
 	DA_CM_EXCEL_UPLD daCmExcelUpld;
 
-	@Operation(summary = "엑셀UPLD_ID로 조회한다.", description = "")
-	@PostMapping(path= "/api/BR_CM_EXCEL_UPLD_FIND", consumes = "application/json", produces = "application/json")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_EXCEL_UPLD"},value = "엑셀UPLD_ID로 조회한다.", notes = "")
+	@PostMapping(path= "/api/BR_CM_EXCEL_UPLD_FIND_BY_EXCEL_UPLD_ID", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");

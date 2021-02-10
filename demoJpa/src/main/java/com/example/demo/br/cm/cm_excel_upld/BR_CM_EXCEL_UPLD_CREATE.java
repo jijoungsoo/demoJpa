@@ -1,11 +1,16 @@
 package com.example.demo.br.cm.cm_excel_upld;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.br.cm.cm_domain.BR_CM_DOMAIN_SAVE;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_EXCEL_UPLD;
 import com.example.demo.exception.BizException;
@@ -14,18 +19,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_EXCEL_UPLD", description = "엑셀업로드")
 @Slf4j
 @RestController
-@Tag(name = "CM_EXCEL_UPLD", description = "엑셀업로드")
 public class BR_CM_EXCEL_UPLD_CREATE {
+	
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-UPDT_DATA")
+	@ApiModel(value="IN_DS-BR_CM_EXCEL_UPLD_CREATE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -37,108 +47,118 @@ public class BR_CM_EXCEL_UPLD_CREATE {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-UPDT_DATA", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_CM_EXCEL_UPLD_CREATE", description = "입력 데이터")
 		ArrayList<DATA_ROW> IN_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("UPDT_DATA")
-		@Schema(name="IN_DATA-UPDT_DATA", description = "수정 데이터")
+		@Schema(name="UPDT_DATA-BR_CM_EXCEL_UPLD_CREATE", description = "수정 데이터")
 		ArrayList<DATA_ROW> UPDT_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION",title="LSESSION-UPDT_DATA", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name="DATA_ROW", title = "DATA_ROW-UPDT_DATA")
+	@ApiModel(value="DATA_ROW-BR_CM_EXCEL_UPLD_CREATE")
 	@Data
 	static class DATA_ROW {
 		@JsonProperty("EXCEL_UPLD_ID")
-		@Schema(name = "EXCEL_UPLD_ID", example = "1", description = "사용자NO")
-		Long EXCEL_UPLD_ID = null;
+		@Schema(name = "EXCEL_UPLD_ID", example = "XXXXXX", description = "엑셀업로드ID")
+		String EXCEL_UPLD_ID = null;
 		@JsonProperty("EXCEL_SEQ")
-		@Schema(name = "EXCEL_SEQ", example = "jijs", description = "사용자ID")
+		@Schema(name = "EXCEL_SEQ", example = "1", description = "엑셀SEQ")
 		String EXCEL_SEQ = null;
 		@JsonProperty("GBN")
-		@Schema(name = "GBN", example = "****", description = "사용자패스워드")
+		@Schema(name = "GBN", example = "(H-해더, D-상세)", description = "구분")
 		String GBN = null;
 		@JsonProperty("COL00")
-		@Schema(name = "COL00", example = "홍길동", description = "사용자명")
+		@Schema(name = "COL00", example = "", description = "")
 		String COL00 = null;
 		@JsonProperty("COL01")
-		@Schema(name = "COL01", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL01", example = "", description = "")
 		String COL01 = null;
 		@JsonProperty("COL02")
-		@Schema(name = "COL02", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL02", example = "", description = "")
 		String COL02 = null;
 		@JsonProperty("COL03")
-		@Schema(name = "COL03", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL03", example = "", description = "")
 		String COL03 = null;
 		@JsonProperty("COL04")
-		@Schema(name = "COL04", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL04", example = "", description = "")
 		String COL04 = null;
 		@JsonProperty("COL05")
-		@Schema(name = "COL05", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL05", example = "", description = "")
 		String COL05 = null;
 		@JsonProperty("COL06")
-		@Schema(name = "COL06", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL06", example = "", description = "")
 		String COL06 = null;
 		@JsonProperty("COL07")
-		@Schema(name = "COL07", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL07", example = "", description = "")
 		String COL07 = null;
 		@JsonProperty("COL08")
-		@Schema(name = "COL08", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL08", example = "", description = "")
 		String COL08 = null;
 		@JsonProperty("COL09")
-		@Schema(name = "COL09", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL09", example = "", description = "")
 		String COL09 = null;
 		@JsonProperty("COL10")
-		@Schema(name = "COL10", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL10", example = "", description = "")
 		String COL10 = null;
 		@JsonProperty("COL11")
-		@Schema(name = "COL11", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL11", example = "", description = "")
 		String COL11 = null;
 		@JsonProperty("COL12")
-		@Schema(name = "COL12", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL12", example = "", description = "")
 		String COL12 = null;
 		@JsonProperty("COL13")
-		@Schema(name = "COL13", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL13", example = "", description = "")
 		String COL13 = null;
 		@JsonProperty("COL14")
-		@Schema(name = "COL14", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL14", example = "", description = "")
 		String COL14 = null;
 		@JsonProperty("COL15")
-		@Schema(name = "COL15", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL15", example = "", description = "")
 		String COL15 = null;
 		@JsonProperty("COL16")
-		@Schema(name = "COL16", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL16", example = "", description = "")
 		String COL16 = null;
 		@JsonProperty("COL17")
-		@Schema(name = "COL17", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL17", example = "", description = "")
 		String COL17 = null;
 		@JsonProperty("COL18")
-		@Schema(name = "COL18", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL18", example = "", description = "")
 		String COL18 = null;
 		@JsonProperty("COL19")
-		@Schema(name = "COL19", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL19", example = "", description = "")
 		String COL19 = null;
 		@JsonProperty("COL20")
-		@Schema(name = "COL20", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "COL20", example = "", description = "")
 		String COL20 = null;
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-UPDT_DATA")
+	@ApiModel(value="OUT_DS-BR_CM_EXCEL_UPLD_CREATE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name = "OUT_DATA", title="OUT_DATA-UPDT_DATA", description = "출력 데이터")
-		ArrayList<String> OUT_DATA = new ArrayList<String>();
+		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_CM_EXCEL_UPLD_CREATE", description = "출력 데이터")
+		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
+	}
+	
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_EXCEL_UPLD_CREATE")
+	@Data
+	static class OUT_DATA_ROW {
+		@JsonProperty("EXCEL_UPLD_ID")
+		@Schema(name = "EXCEL_UPLD_ID", example = "XXXXXXXXX", description = "엑셀업로드ID")
+		String EXCEL_UPLD_ID = null;
 	}
 	
 	@Autowired
 	DA_CM_EXCEL_UPLD daCmExcelUpld;
 
-	@Operation(summary = "엑셀UPLD_ID로 조회한다.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_EXCEL_UPLD"},value = "엑셀UPLD_ID로 조회한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_EXCEL_UPLD_CREATE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
@@ -149,6 +169,8 @@ public class BR_CM_EXCEL_UPLD_CREATE {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
+		
+		LinkedHashSet<String> excelUpldId = new LinkedHashSet<String>();
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
@@ -212,9 +234,16 @@ public class BR_CM_EXCEL_UPLD_CREATE {
 					COL20,
 					L_USER_NO
 					);
+			excelUpldId.add(EXCEL_UPLD_ID);
 		}
-
-		OUT_DS outDs = new OUT_DS(); 
+		
+		OUT_DS outDs = new OUT_DS();
+		Iterator<String> it = excelUpldId.iterator();
+		while (it.hasNext()) {
+		    OUT_DATA_ROW tmp = new OUT_DATA_ROW();
+		    tmp.EXCEL_UPLD_ID=it.next();
+		    outDs.OUT_DATA.add(tmp);
+		}
 		return outDs;
 	}
 }

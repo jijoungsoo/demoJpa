@@ -15,19 +15,23 @@ import com.example.demo.exception.BizException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_MENU", description = "메뉴")
 @Slf4j
 @RestController
-@Tag(name = "CM_MENU", description = "메뉴")
 public class BR_CM_MENU_FIND_TREE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_MENU_FIND_TREE")
+	@ApiModel(value="IN_DS-BR_CM_MENU_FIND_TREE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -40,7 +44,7 @@ public class BR_CM_MENU_FIND_TREE {
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_MENU_FIND_TREE")
+	@ApiModel(value="OUT_DS-BR_CM_MENU_FIND_TREE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -48,7 +52,7 @@ public class BR_CM_MENU_FIND_TREE {
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@Schema(name="OUT_DATA_ROW",title = "OUT_DATA_ROW-BR_CM_MENU_FIND_TREE")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_MENU_FIND_TREE")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("PGM_ID")
@@ -90,7 +94,10 @@ public class BR_CM_MENU_FIND_TREE {
 	@Autowired
 	DA_CM_MENU daMenu;
 
-	@Operation(summary = "메뉴tree 조회.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_MENU"},value = "메뉴tree 조회.", notes = "")
 	@PostMapping(path= "/api/BR_CM_MENU_FIND_TREE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDs) throws BizException {
 		OUT_DS  outDs =  new OUT_DS();

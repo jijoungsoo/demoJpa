@@ -108,6 +108,12 @@
 
     <level value="info"/>
   </logger>
+  
+   <logger name="me.actuator" level="debug" additivity="false">
+        <!-- ref="appender name 지정" -->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLING"/>
+    </logger>
 
   <root level="info">
     <appender-ref ref="ROLLING"/>

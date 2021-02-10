@@ -17,19 +17,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_SEQ", description = "시퀀스")
 @Slf4j
 @RestController
-@Tag(name = "CM_SEQ", description = "시퀀스")
 public class BR_CM_SEQ_FIND {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_CM_PGM_FIND")
+	@ApiModel(value="IN_DS-BR_CM_SEQ_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -41,52 +45,56 @@ public class BR_CM_SEQ_FIND {
 		String brRs;
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_CM_PGM_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_SEQ_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_CM_PGM_FIND", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_CM_SEQ_FIND", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@Schema(name = "OUT_DATA_ROW-BR_CM_PGM_FIND")
+	@ApiModel(value = "OUT_DATA_ROW-BR_CM_SEQ_FIND")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("SEQ_NM")
-		@Schema(name = "SEQ_NM", example = "1", description = "프로그램NO")
+		@Schema(name = "SEQ_NM", example = "CM_MENU_MENU_SEQ", description = "시퀀스명(키)")
 		String SEQ_NM = null;
 		@JsonProperty("SEQ_NO")
-		@Schema(name = "SEQ_NO", example = "CM_001", description = "프로그램ID")
+		@Schema(name = "SEQ_NO", example = "1", description = "시퀀스(유지되는숫자)")
 		String SEQ_NO = null;
 		@JsonProperty("TB_NM")
-		@Schema(name = "TB_NM", example = "****", description = "DIR_LINK")
+		@Schema(name = "TB_NM", example = "TB_CM_MENU", description = "시퀀스 적용되는 테이블명")
 		String TB_NM = null;
 		@JsonProperty("COL_NM")
-		@Schema(name = "COL_NM", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "COL_NM", example = "MENU_SEQ", description = "시퀀스 적용되는 컬럼")
 		String COL_NM = null;
 		@JsonProperty("INIT_VAL")
-		@Schema(name = "INIT_VAL", example = "admin@gogo.com", description = "CATEGORY")
+		@Schema(name = "INIT_VAL", example = "초기값", description = "초기값")
 		String INIT_VAL = null;
 		@JsonProperty("ALLOCATION_SIZE")
-		@Schema(name = "ALLOCATION_SIZE", example = "admin@gogo.com", description = "RMK")
+		@Schema(name = "ALLOCATION_SIZE", example = "1", description = "증가값")
 		String ALLOCATION_SIZE = null;
+		
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "CRT_DTM", example = "202012311210", description = "CRT_DTM")
 		String CRT_DTM = null;
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "admin@gogo.com", description = "UPDT_DTM")
+		@Schema(name = "UPDT_DTM", example = "202012311210", description = "UPDT_DTM")
 		String UPDT_DTM = null;
 	}
 	
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 
-	@Operation(summary = "시퀀스 조회.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_SEQ"},value = "시퀀스 조회", notes = "")
 	@PostMapping(path= "/api/BR_CM_SEQ_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {

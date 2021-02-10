@@ -19,19 +19,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_MENU", description = "메뉴")
 @Slf4j
 @RestController
-@Tag(name = "CM_MENU", description = "메뉴")
 public class BR_CM_FAV_MENU_FIND {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_FAV_MENU_FIND")
+	@ApiModel(value="IN_DS-BR_CM_FAV_MENU_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -44,7 +48,7 @@ public class BR_CM_FAV_MENU_FIND {
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_FAV_MENU_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_FAV_MENU_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -52,44 +56,63 @@ public class BR_CM_FAV_MENU_FIND {
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 	
-	@Schema(name="DATA_ROW", title = "DATA_ROW-BR_CM_FAV_MENU_FIND")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_FAV_MENU_FIND")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("FAV_NO")
-		@Schema(name = "FAV_NO", example = "1", description = "사용자NO")
+		@Schema(name = "FAV_NO", example = "1", description = "즐겨찾기NO")
 		String FAV_NO = null;
+		
 		@JsonProperty("MENU_NO")
-		@Schema(name = "MENU_NO", example = "1", description = "사용자NO")
+		@Schema(name = "MENU_NO", example = "1", description = "메뉴NO")
 		String MENU_NO = null;
+		
 		@JsonProperty("USER_NO")
-		@Schema(name = "USER_NO", example = "jijs", description = "사용자ID")
+		@Schema(name = "USER_NO", example = "1", description = "사용자NO")
 		String USER_NO = null;
+		
 		@JsonProperty("USER_NM")
-		@Schema(name = "USER_NM", example = "****", description = "사용자패스워드")
+		@Schema(name = "USER_NM", example = "지정수", description = "사용자명")
 		String USER_NM = null;
+		
 		@JsonProperty("USER_ID")
-		@Schema(name = "USER_ID", example = "****", description = "사용자패스워드")
+		@Schema(name = "USER_ID", example = "admin", description = "사용자ID")
 		String USER_ID = null;
+		
 		@JsonProperty("MENU_NM")
-		@Schema(name = "MENU_NM", example = "****", description = "사용자패스워드")
+		@Schema(name = "MENU_NM", example = "즐겨찾기", description = "메뉴명")
 		String MENU_NM = null;
+		
 		@JsonProperty("PGM_ID")
-		@Schema(name = "PGM_ID", example = "****", description = "사용자패스워드")
+		@Schema(name = "PGM_ID", example = "PGM_0001", description = "프로그램ID")
 		String PGM_ID = null;
+		
 		@JsonProperty("PGM_NM")
-		@Schema(name = "PGM_NM", example = "****", description = "사용자패스워드")
+		@Schema(name = "PGM_NM", example = "즐겨찾기", description = "프로그램명")
 		String PGM_NM = null;
+		
 		@JsonProperty("PGM_LINK")
-		@Schema(name = "PGM_LINK", example = "****", description = "사용자패스워드")
+		@Schema(name = "PGM_LINK", example = "****", description = "프로그램LINK")
 		String PGM_LINK = null;
+		
 		@JsonProperty("DIR_LINK")
-		@Schema(name = "DIR_LINK", example = "****", description = "사용자패스워드")
+		@Schema(name = "DIR_LINK", example = "****", description = "경로LINK")
 		String DIR_LINK = null;
+
+		@JsonProperty("CRT_USR_NO")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
+		String CRT_USR_NO = null;
+		
+		@JsonProperty("UPDT_USR_NO")
+		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
+		String UPDT_USR_NO = null;
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "****", description = "사용자패스워드")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "****", description = "사용자패스워드")
+		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
 		String UPDT_DTM = null;
 	
 	}
@@ -97,7 +120,10 @@ public class BR_CM_FAV_MENU_FIND {
 	@Autowired
 	DA_CM_FAV_MENU daFavM;
 
-	@Operation(summary = "즐겨찾기 메뉴 조회한다.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_MENU"},value = "즐겨찾기 메뉴 조회한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_FAV_MENU_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		List<com.querydsl.core.Tuple>   al =daFavM.findFavMenu();

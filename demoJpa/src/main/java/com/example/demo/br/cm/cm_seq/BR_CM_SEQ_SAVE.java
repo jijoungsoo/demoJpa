@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.br.cm.cm_seq.BR_CM_SEQ_FIND.OUT_DS;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
 import com.example.demo.exception.BizException;
@@ -14,19 +15,24 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_SEQ", description = "시퀀스")
 @Slf4j
 @RestController
-@Tag(name = "CM_SEQ", description = "시퀀스")
 public class BR_CM_SEQ_SAVE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_SEQ_SAVE")
+	@ApiModel(value="IN_DS-BR_CM_SEQ_SAVE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -42,46 +48,47 @@ public class BR_CM_SEQ_SAVE {
 		ArrayList<DATA_ROW> IN_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("UPDT_DATA")
-		@Schema(name="IN_DATA-BR_CM_SEQ_SAVE", description = "수정 데이터")
+		@Schema(name="UPDT_DATA-BR_CM_SEQ_SAVE", description = "수정 데이터")
 		ArrayList<DATA_ROW> UPDT_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION",title="LSESSION-UPDT_DATA", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name="DATA_ROW", title = "DATA_ROW-BR_CM_SEQ_SAVE")
+	@ApiModel(value="DATA_ROW-BR_CM_SEQ_SAVE")
 	@Data
 	static class DATA_ROW {
 		@JsonProperty("SEQ_NM")
-		@Schema(name = "SEQ_NM", example = "1", description = "프로그램NO")
+		@Schema(name = "SEQ_NM", example = "CM_MENU_MENU_SEQ", description = "시퀀스명(키)")
 		String SEQ_NM = null;
 		@JsonProperty("SEQ_NO")
-		@Schema(name = "SEQ_NO", example = "CM_001", description = "프로그램ID")
+		@Schema(name = "SEQ_NO", example = "1", description = "시퀀스(유지되는숫자)")
 		String SEQ_NO = null;
 		@JsonProperty("TB_NM")
-		@Schema(name = "TB_NM", example = "****", description = "DIR_LINK")
+		@Schema(name = "TB_NM", example = "TB_CM_MENU", description = "시퀀스 적용되는 테이블명")
 		String TB_NM = null;
 		@JsonProperty("COL_NM")
-		@Schema(name = "COL_NM", example = "PGM_LINK", description = "PGM_LINK")
+		@Schema(name = "COL_NM", example = "MENU_SEQ", description = "시퀀스 적용되는 컬럼")
 		String COL_NM = null;
 		@JsonProperty("INIT_VAL")
-		@Schema(name = "INIT_VAL", example = "admin@gogo.com", description = "CATEGORY")
+		@Schema(name = "INIT_VAL", example = "초기값", description = "초기값")
 		String INIT_VAL = null;
 		@JsonProperty("ALLOCATION_SIZE")
-		@Schema(name = "ALLOCATION_SIZE", example = "admin@gogo.com", description = "RMK")
+		@Schema(name = "ALLOCATION_SIZE", example = "1", description = "증가값")
 		String ALLOCATION_SIZE = null;
+		
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "CRT_DTM", example = "202012311210", description = "CRT_DTM")
 		String CRT_DTM = null;
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "admin@gogo.com", description = "UPDT_DTM")
+		@Schema(name = "UPDT_DTM", example = "202012311210", description = "UPDT_DTM")
 		String UPDT_DTM = null;
 	
 	}
 	
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_CM_SEQ_SAVE")
+	@ApiModel(value="OUT_DS-BR_CM_SEQ_SAVE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -92,7 +99,10 @@ public class BR_CM_SEQ_SAVE {
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 
-	@Operation(summary = "시퀀스 저장.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_SEQ"},value = "시퀀스 저장.", notes = "")
 	@PostMapping(path= "/api/BR_CM_SEQ_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for (int i = 0; i < inDS.IN_DATA.size(); i++) {

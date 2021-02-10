@@ -15,19 +15,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_MENU", description = "메뉴")
 @Slf4j
 @RestController
-@Tag(name = "CM_MENU", description = "메뉴")
 public class BR_CM_MENU_SAVE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_CM_MENU_SAVE")
+	@ApiModel(value="IN_DS-BR_CM_MENU_SAVE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -47,11 +51,10 @@ public class BR_CM_MENU_SAVE {
 		ArrayList<DATA_ROW> UPDT_DATA = new ArrayList<DATA_ROW>();
 		
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION",title="LSESSION-UPDT_DATA", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
-	@Schema(name="DATA_ROW", title = "DATA_ROW-BR_CM_MENU_SAVE")
+	@ApiModel(value="DATA_ROW-BR_CM_MENU_SAVE")
 	@Data
 	static class DATA_ROW {
 		@JsonProperty("MENU_NO")
@@ -87,7 +90,7 @@ public class BR_CM_MENU_SAVE {
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_MENU_SAVE")
+	@ApiModel(value="OUT_DS-BR_CM_MENU_SAVE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -101,17 +104,20 @@ public class BR_CM_MENU_SAVE {
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 
-	@Operation(summary = "메뉴 저장.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_MENU"},value = "메뉴 저장.", notes = "")
 	@PostMapping(path= "/api/BR_CM_MENU_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
-		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
+		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
-		Long L_USER_NO = Long.parseLong(USER_NO);
+		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		System.out.println(inDS);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
@@ -150,6 +156,7 @@ public class BR_CM_MENU_SAVE {
 					,MENU_LVL
 					,MENU_PATH
 					,RMK
+					,L_SESSION_USER_NO
 					);
 		}
 		
@@ -192,6 +199,7 @@ public class BR_CM_MENU_SAVE {
 					,MENU_LVL
 					,MENU_PATH
 					,RMK
+					,L_SESSION_USER_NO
 					);
 		}
 		OUT_DS outDs = new OUT_DS(); 

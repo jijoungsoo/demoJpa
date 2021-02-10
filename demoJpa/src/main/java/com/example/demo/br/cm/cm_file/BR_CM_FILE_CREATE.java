@@ -15,19 +15,23 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_FILE", description = "파일")
 @Slf4j
 @RestController
-@Tag(name = "CM_FILE", description = "파일")
 public class BR_CM_FILE_CREATE {
 
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS",title="IN_DS-BR_CM_FILE_CREATE")
+	@ApiModel(value="IN_DS-BR_CM_FILE_CREATE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -43,12 +47,11 @@ public class BR_CM_FILE_CREATE {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 				
 		@JsonProperty("LSESSION")
-		@Schema(name = "LSESSION", description = "세션데이터")
 		LSESSION_ROW LSESSION;
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name="OUT_DS",title = "OUT_DS-BR_CM_FILE_CREATE")
+	@ApiModel(value="OUT_DS-BR_CM_FILE_CREATE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -56,7 +59,7 @@ public class BR_CM_FILE_CREATE {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_CM_FILE_CREATE")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_FILE_CREATE")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("FILE_ID")
@@ -77,6 +80,15 @@ public class BR_CM_FILE_CREATE {
 		@JsonProperty("FILE_STATUS_CD")
 		@Schema(name = "FILE_STATUS_CD", example = "admin@gogo.com", description = "RMK")
 		String FILE_STATUS_CD = null;
+		
+		@JsonProperty("FILE_SIZE")
+		@Schema(name = "FILE_SIZE", example = "1000", description = "파일사이즈")
+		Long FILE_SIZE = null;
+		
+		@JsonProperty("CONTENT_TYPE")
+		@Schema(name = "CONTENT_TYPE", example = "image/jpg", description = "파일타입")
+		String CONTENT_TYPE = null;
+		
 		@JsonProperty("EXT")
 		@Schema(name = "EXT", example = "admin@gogo.com", description = "CRT_DTM")
 		String EXT = null;
@@ -84,13 +96,16 @@ public class BR_CM_FILE_CREATE {
 	
 	@Autowired
 	DA_CM_FILE daCmFile;
-
+	
 	@Autowired
 	DA_CM_SEQ daCmSeq;
 
-	@Operation(summary = "파일정보를 저장한다.", description = "")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
+	})
+	@ApiOperation(tags={"CM_FILE"},value = "파일정보를 저장한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_FILE_CREATE", consumes = "application/json", produces = "application/json")
-	public OUT_DS createFile(@RequestBody IN_DS inDS) throws BizException {
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
@@ -109,9 +124,17 @@ public class BR_CM_FILE_CREATE {
 			String  SVR_DIR_PATH 	= PjtUtil.strTrim(rs.SVR_DIR_PATH);
 			String  SVR_FILE_NM 	= PjtUtil.strTrim(rs.SVR_FILE_NM);
 			String  FILE_STATUS_CD 	= PjtUtil.strTrim(rs.FILE_STATUS_CD);
+			String  FILE_SIZE 	    = PjtUtil.strTrim(rs.FILE_SIZE);
+			String  CONTENT_TYPE 	= PjtUtil.strTrim(rs.CONTENT_TYPE);
 			String  EXT 			= PjtUtil.strTrim(rs.EXT);
+			
+			Long L_FILE_SIZE  = Long.parseLong(FILE_SIZE);
+			
+			long L_FILE_NO =daCmSeq.increate("CM_FILE_CM_FILE_NO");
+			
 
 			daCmFile.createFile(
+					L_FILE_NO,
 					 FILE_ID,
 					 FILE_GROUP,
 					 ORG_FILE_NM,
@@ -119,6 +142,8 @@ public class BR_CM_FILE_CREATE {
 					 SVR_FILE_NM,
 					 SVR_DIR_PATH,
 					 FILE_STATUS_CD,
+					 L_FILE_SIZE,
+					 CONTENT_TYPE,					 
 					 L_LSESSION_USER_NO
 					);
 		}

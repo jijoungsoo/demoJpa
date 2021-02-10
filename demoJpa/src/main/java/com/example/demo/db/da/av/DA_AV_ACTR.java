@@ -1,11 +1,13 @@
 package com.example.demo.db.da.av;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,41 @@ public class DA_AV_ACTR {
 	AvActrRepository avActrR;
 	
 	public Page<Tuple> findAvActr(Pageable p) {
+		
+		JPAQuery<Tuple> c= qf.select(QAvActr.avActr.actrSeq,
+				QAvActr.avActr.actrNmKr,
+				QAvActr.avActr.actrNmJp,
+				QAvActr.avActr.actrNmEng,
+				QAvActr.avActr.birthDt,
+				QAvActr.avActr.sex,
+				QAvActr.avActr.rnk,
+				QAvActr.avActr.ord,
+				QAvActr.avActr.rmk,
+				QAvActr.avActr.mscYn,
+				QAvActr.avActr.crtUsrNo,
+				QAvActr.avActr.updtUsrNo,
+				QAvActr.avActr.crtDtm,
+				QAvActr.avActr.updtDtm
+				)
+				.from(QAvActr.avActr);
+		c= c.orderBy(
+				QAvActr.avActr.ord.asc(),
+				QAvActr.avActr.actrNmKr.asc(),
+				QAvActr.avActr.actrSeq.asc()
+				);
+		if(p!=null) {
+			c= c.offset(p.getOffset()); // offset과
+			c= c.limit(p.getPageSize()); // Limit 을 지정할 수 있고			
+		}
+		QueryResults<Tuple> result= c.fetchResults();
+		if(p==null) {
+			p = PageRequest.of(0, (int) result.getTotal());
+		}
+		
+		return new PageImpl<>(result.getResults(), p, result.getTotal());
+	}
+	
+public Page<Tuple> findAvActrExcel(Pageable p) {
 		
 		JPAQuery<Tuple> c= qf.select(QAvActr.avActr.actrSeq,
 				QAvActr.avActr.actrNmKr,
@@ -118,8 +155,39 @@ public class DA_AV_ACTR {
 		tmp.setUpdtUsrNo(L_UPDT_USR_NO);
 		tmp.setUpdtDtm(new Date());
 		avActrR.save(tmp);
+	}
+	
+	public void saveExcelAvActr(
+			String ACTR_NM_KR
+			, String ACTR_NM_JP
+			, String ACTR_NM_ENG
+			, String BIRTH_DT
+			, String SEX
+			, Integer RNK
+			, Integer ORD
+			, String RMK
+			, String MSC_YN
+			, long L_UPDT_USR_NO
+			) throws BizException {
 		
 		
+		List<AvActr> al= qf.selectFrom(QAvActr.avActr)
+				.where(QAvActr.avActr.actrNmKr.eq(ACTR_NM_KR))
+				.fetch();
+		for(int i=0;i<al.size();i++) {
+			AvActr tmp= al.get(i);
+			tmp.setActrNmJp(ACTR_NM_JP);
+			tmp.setActrNmEng(ACTR_NM_ENG);
+			tmp.setBirthDt(BIRTH_DT);
+			tmp.setSex(SEX);
+			tmp.setRnk(RNK);
+			tmp.setOrd(ORD);
+			tmp.setRmk(RMK);
+			tmp.setMscYn(MSC_YN);
+			tmp.setUpdtUsrNo(L_UPDT_USR_NO);
+			tmp.setUpdtDtm(new Date());
+			avActrR.save(tmp);
+		}
 	}
 	
 	public Optional<AvActr> findById(long l_ACTR_SEQ){

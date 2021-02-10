@@ -65,17 +65,29 @@ public class BR_CM_DOMAIN_FIND {
 		@JsonProperty("DMN_NM")
 		@Schema(name = "DMN_NM", example = "사용여부", description = "도메인명")
 		String DMN_NM = null;
+		
 		@JsonProperty("DATA_TYPE")
-		@Schema(name = "DATA_TYPE", example = "VARCHAR(10)", description = "사용여부")
+		@Schema(name = "DATA_TYPE", example = "VARCHAR(10)", description = "데이터타입")
 		String DATA_TYPE = null;
+		
 		@JsonProperty("RMK")
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;		
+		
+		@JsonProperty("CRT_USR_NO")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
+		String CRT_USR_NO = null;
+		
+		@JsonProperty("UPDT_USR_NO")
+		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
+		String UPDT_USR_NO = null;
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "admin@gogo.com", description = "이메일")
+		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
 		String UPDT_DTM = null;
 	}
 	
@@ -85,7 +97,7 @@ public class BR_CM_DOMAIN_FIND {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"CM_CD"},value = "도메인을 조회한다.", notes = "")
+	@ApiOperation(tags={"CM_DOMAIN"},value = "도메인을 조회한다.", notes = "")
 	@PostMapping(path= "/api/BR_CM_DOMAIN_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		List<CmDomain>  al =daDmn.findDomain();

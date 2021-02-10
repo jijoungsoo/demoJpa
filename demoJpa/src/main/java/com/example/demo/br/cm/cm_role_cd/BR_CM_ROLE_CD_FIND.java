@@ -1,4 +1,4 @@
-package com.example.demo.br.cm.cm_pgm;
+package com.example.demo.br.cm.cm_role_cd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.db.da.cm.DA_CM_PGM;
-import com.example.demo.db.domain.cm.CmPgm;
+import com.example.demo.db.da.cm.DA_CM_GRP_CD;
+import com.example.demo.db.da.cm.DA_CM_ROLE_CD;
+import com.example.demo.db.domain.cm.CmGrpCd;
+import com.example.demo.db.domain.cm.CmRoleCd;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,13 +27,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "CM_PGM", description = "프로그램")
+@Tag(name = "CM_ROLE_CD", description = "역할코드")
 @Slf4j
 @RestController
-public class BR_CM_PGM_FIND {
-	
+public class BR_CM_ROLE_CD_FIND {
+
 	@JsonRootName("IN_DS")
-	@ApiModel(value="OUT_DS-BR_CM_PGM_FIND")
+	@ApiModel(value="IN_DS-BR_CM_ROLE_CD_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -43,77 +44,80 @@ public class BR_CM_PGM_FIND {
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
 	}
-
+	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_CM_PGM_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_ROLE_CD_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_CM_PGM_FIND", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_CM_ROLE_CD_FIND", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BR_CM_PGM_FIND")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_ROLE_CD_FIND")
 	@Data
 	static class OUT_DATA_ROW {
-		@JsonProperty("PGM_NO")
-		@Schema(name = "PGM_NO", example = "1", description = "프로그램NO")
-		Long PGM_NO = null;
-		@JsonProperty("PGM_ID")
-		@Schema(name = "PGM_ID", example = "CM_001", description = "프로그램ID")
-		String PGM_ID = null;
-		@JsonProperty("DIR_LINK")
-		@Schema(name = "DIR_LINK", example = "****", description = "DIR_LINK")
-		String DIR_LINK = null;
-		@JsonProperty("PGM_LINK")
-		@Schema(name = "PGM_LINK", example = "PGM_LINK", description = "PGM_LINK")
-		String PGM_LINK = null;
-		@JsonProperty("PGM_NM")
-		@Schema(name = "PGM_NM", example = "admin@gogo.com", description = "PGM_NM")
-		String PGM_NM = null;
-		@JsonProperty("CATEGORY")
-		@Schema(name = "CATEGORY", example = "admin@gogo.com", description = "CATEGORY")
-		String CATEGORY = null;
-		@JsonProperty("RMK")
-		@Schema(name = "RMK", example = "admin@gogo.com", description = "RMK")
-		String RMK = null;
+		@JsonProperty("ROLE_CD")
+		@Schema(name = "ROLE_CD", example = "ADMIN", description = "역할코드")
+		String ROLE_CD = null;
+		
+		@JsonProperty("ROLE_NM")
+		@Schema(name = "ROLE_NM", example = "관리자", description = "역할명")
+		String ROLE_NM = null;
+		
+		@JsonProperty("USE_YN")
+		@Schema(name = "USE_YN", example = "(Y-사용,N-미사용)", description = "사용여부")
+		String USE_YN = null;
+		
 		@JsonProperty("ORD")
-		@Schema(name = "ORD", example = "admin@gogo.com", description = "ORD")
+		@Schema(name = "ORD", example = "001", description = "정렬")
 		String ORD = null;
+		
+		@JsonProperty("RMK")
+		@Schema(name = "RMK", example = "비고", description = "비고")
+		String RMK = null;
+
+		@JsonProperty("CRT_USR_NO")
+		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
+		String CRT_USR_NO = null;
+		
+		@JsonProperty("UPDT_USR_NO")
+		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
+		String UPDT_USR_NO = null;
+		
 		@JsonProperty("CRT_DTM")
-		@Schema(name = "CRT_DTM", example = "admin@gogo.com", description = "CRT_DTM")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
 		String CRT_DTM = null;
+		
 		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "admin@gogo.com", description = "UPDT_DTM")
+		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
 		String UPDT_DTM = null;
 	}
 	
 	@Autowired
-	DA_CM_PGM daPgm;
-	
+	DA_CM_ROLE_CD daRoleCd;
+
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"CM_PGM"},value = "프로그램 조회.", notes = "")
-	@PostMapping(path= "/api/BR_CM_PGM_FIND", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"CM_ROLE_CD"},value = "역할코드를 조회한다.", notes = "")
+	@PostMapping(path= "/api/BR_CM_ROLE_CD_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
-		List<CmPgm>  al =daPgm.findPgm();
+		List<CmRoleCd>  al =daRoleCd.findCmRoleCd();
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
-			CmPgm cm=al.get(i);
+			CmRoleCd cm=al.get(i);
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.PGM_NO=cm.getPgmNo();
-			row.PGM_ID=cm.getPgmId();
-			row.DIR_LINK=cm.getDirLink();
-			row.PGM_LINK=cm.getPgmLink();
-			row.PGM_NM=cm.getPgmNm();
-			row.CATEGORY=cm.getCategory();
-			row.RMK=cm.getRmk();
-			row.ORD=cm.getOrd();
+			row.ROLE_CD= cm.getRoleCd();
+			row.ROLE_NM= cm.getRoleNm();
+			row.USE_YN= cm.getUseYn();
+			row.ORD= String.valueOf(cm.getOrd());
+			row.RMK= cm.getRmk();
 			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
-		}		
+		}
+
 		return outDs;
-	}
+	}	
 }

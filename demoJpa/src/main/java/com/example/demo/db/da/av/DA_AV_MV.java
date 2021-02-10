@@ -1,11 +1,13 @@
 package com.example.demo.db.da.av;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +31,21 @@ public class DA_AV_MV {
 	
 	public Page<AvMv> findAvMv(Pageable p) {
 		JPAQuery<AvMv> c= qf.selectFrom(QAvMv.avMv);
-		c= c.offset(p.getOffset()); // offset과
-		c= c.limit(p.getPageSize()); // Limit 을 지정할 수 있고
 		c= c.orderBy(
 				QAvMv.avMv.avNm.asc(),
 				QAvMv.avMv.ord.asc(),
 				QAvMv.avMv.avSeq.asc()
 				);
+		if(p!=null) {
+			c= c.offset(p.getOffset()); // offset과
+			c= c.limit(p.getPageSize()); // Limit 을 지정할 수 있고			
+		}
 		QueryResults<AvMv> result= c.fetchResults();
-		 return new PageImpl<>(result.getResults(), p, result.getTotal());
+		
+		if(p==null) {
+			p = PageRequest.of(0, (int) result.getTotal());
+		}
+		return new PageImpl<>(result.getResults(), p, result.getTotal());
 	}
 	
 	public void createAvMv(long L_AV_SEQ
@@ -118,6 +126,35 @@ public class DA_AV_MV {
 	
 	public void rmAvMv(long L_AV_SEQ) {
 		avMvR.deleteById(L_AV_SEQ);
+		
+	}
+
+	public void saveExcelAvMv(String AV_NM
+			, String TTL
+			, String CNTNT
+			, String MSC_CD
+			, String ORD
+			, String RMK
+			, String CPTN_YN
+			, String MK_DT
+			, Long L_SESSION_USER_NO) {
+		
+		List<AvMv> al= qf.selectFrom(QAvMv.avMv)
+				.where(QAvMv.avMv.avNm.eq(AV_NM))
+				.fetch();
+		for(int i=0;i<al.size();i++) {
+			AvMv tmp= al.get(i);
+			tmp.setTtl(TTL);
+			tmp.setCntnt(CNTNT);
+			tmp.setMscCd(MSC_CD);
+			tmp.setOrd(ORD);
+			tmp.setRmk(RMK);
+			tmp.setCptnYn(CPTN_YN);
+			tmp.setMkDt(MK_DT);
+			tmp.setUpdtUsrNo(L_SESSION_USER_NO);
+			tmp.setUpdtDtm(new Date());
+			avMvR.save(tmp);
+		}
 		
 	}
 }

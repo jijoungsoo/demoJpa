@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.example.demo.db.da.cm.DA_CM_LOGIN;
 import com.example.demo.db.domain.cm.CmUser;
 import com.example.demo.exception.BizException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,13 +23,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Tag(name = "CM_LOGIN", description = "로그인")
 @Slf4j
 @RestController
-@Tag(name = "CM_LOGIN", description = "로그인")
 public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 	
 	@JsonRootName("IN_DS")
-	@Schema(name="IN_DS-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
+	@ApiModel(value="IN_DS-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -43,7 +45,7 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@Schema(name = "IN_DATA_ROW-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
+	@ApiModel(value="IN_DATA_ROW-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("USER_ID")
@@ -52,7 +54,7 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 	}
 
 	@JsonRootName("OUT_DS")
-	@Schema(name = "OUT_DS-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
+	@ApiModel(value="OUT_DS-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
@@ -60,7 +62,7 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@Schema(name = "OUT_DATA_ROW-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_LOGIN_LOAD_USER_BY_USER_NAME")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("userNo")
@@ -83,11 +85,10 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 	@Autowired
 	private DA_CM_LOGIN daLogin;
 
-	// https://github.com/springdoc/springdoc-openapi-demos/blob/master/springdoc-openapi-spring-boot-2-webmvc/src/main/java/org/springdoc/demo/app2/api/UserApi.java
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@Operation(summary = "스피링시큐리티 로그인 조회.", description = "")
+	@ApiOperation(tags={"CM_LOGIN"},value = "스피링시큐리티 로그인 조회.", notes = "")
 	@PostMapping(path = "/api/BR_CM_LOGIN_LOAD_USER_BY_USER_NAME", consumes = "application/json", produces = "application/json")
 	public @ResponseBody OUT_DS run(@RequestBody IN_DS inDs) throws BizException {
 		if (inDs.IN_DATA.size() != 1) {

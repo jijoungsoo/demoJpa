@@ -2,13 +2,16 @@ package com.example.demo.db.da.cm;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.db.domain.av.AvActr;
 import com.example.demo.db.domain.cm.CmCd;
 import com.example.demo.db.domain.cm.CmCdId;
 import com.example.demo.db.repository.cm.CmCdRepository;
+import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.example.demo.db.domain.cm.QCmCd;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -67,19 +70,25 @@ public class DA_CM_CD {
 			,String ORD
 			,String RMK
 			,Long L_SESSION_USER_NO
-			) {
+			) throws BizException {
+		CmCdId cm_cd_id = new CmCdId();
+		cm_cd_id.setGrpCd(GRP_CD);
+		cm_cd_id.setCd(CD);
+		Optional<CmCd> c= cmCdR.findById(cm_cd_id);
 		
-
-		cmCdR.save(
-				CmCd.builder()
-				.grpCd(GRP_CD)
-				.cdNm(CD_NM)
-				.cd(CD)
-				.useYn(USE_YN)
-				.ord(Integer.parseInt(ORD))
-				.rmk(RMK)
-				.updtUsrNo(L_SESSION_USER_NO)
-				.updtDtm(new Date()).build());
+		if(c==null) {
+			throw new BizException("["+GRP_CD+"그룹코드 "+CD+"코드]가 존재하지 않습니다.[수정X]");
+		}
+		CmCd tmp = c.get();
+		tmp.setGrpCd(GRP_CD);
+		tmp.setCdNm(CD_NM);
+		tmp.setUseYn(USE_YN);
+		tmp.setOrd(Integer.parseInt(ORD));
+		tmp.setRmk(RMK);
+		tmp.setUpdtUsrNo(L_SESSION_USER_NO);
+		tmp.setUpdtDtm(new Date());
+		
+		cmCdR.save(tmp);
 	}
 	
 	public void rmCmCd(

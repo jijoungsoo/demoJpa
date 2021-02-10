@@ -54,6 +54,7 @@ public class DA_CM_USER {
 			,String EMAIL
 			,String USE_YN
 			,String RMK
+			,Long L_LSESSION_USER_NO
 			) {
 
 		cmUserR.save(
@@ -66,6 +67,8 @@ public class DA_CM_USER {
 				.useYn(USE_YN)
 				.rmk(RMK)
 				.lstAccDtm(new Date())
+				.crtUsrNo(L_LSESSION_USER_NO)
+				.updtUsrNo(L_LSESSION_USER_NO)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
 	}
@@ -77,6 +80,7 @@ public class DA_CM_USER {
 			,String EMAIL
 			,String USE_YN
 			,String RMK
+			,Long L_LSESSION_USER_NO
 			) throws BizException {
 		 Optional<CmUser> c = cmUserR.findById(USER_NO);
 		 if(c==null) {
@@ -89,6 +93,8 @@ public class DA_CM_USER {
 		tmp.setEmail(EMAIL);
 		tmp.setUseYn(USE_YN);
 		tmp.setRmk(RMK);
+		tmp.setUpdtUsrNo(L_LSESSION_USER_NO);
+		tmp.setUpdtDtm(new Date());
 		
 		cmUserR.save(tmp);
 	}
