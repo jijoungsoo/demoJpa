@@ -51,12 +51,12 @@ public class MybatisDbConfiguration {
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		HikariDataSource hikariDataSource = new HikariDataSource();
-		//hikariDataSource.setDriverClassName("org.postgresql.Driver");
-		hikariDataSource.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+		hikariDataSource.setDriverClassName("org.postgresql.Driver");
+		//hikariDataSource.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
 		hikariDataSource.setUsername("postgres");
 		hikariDataSource.setPassword("pwd");
-		//hikariDataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/stockweb");
-		hikariDataSource.setJdbcUrl("jdbc:log4jdbc:postgresql://localhost:5432/stockweb");
+		hikariDataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/stockweb");
+		//hikariDataSource.setJdbcUrl("jdbc:log4jdbc:postgresql://localhost:5432/stockweb");
 		
 		return hikariDataSource;
 
