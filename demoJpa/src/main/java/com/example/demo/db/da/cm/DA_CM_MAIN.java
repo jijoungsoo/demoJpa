@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.db.domain.cm.CmPgm;
 import com.example.demo.db.domain.cm.QCmMenu;
+import com.example.demo.db.domain.cm.QCmMenuRoleCd;
 import com.example.demo.db.domain.cm.QCmPgm;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 

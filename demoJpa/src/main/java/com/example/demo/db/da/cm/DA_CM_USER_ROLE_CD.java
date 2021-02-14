@@ -24,14 +24,13 @@ public class DA_CM_USER_ROLE_CD {
 	@Autowired
 	CmUserRoleCdRepository cmUserRoleR;
 	
-
 	public List<Tuple>  findCmUserRoleCd(String ROLE_CD) {
 		List<Tuple>  al =  qf
-		.select(QCmUserRoleCd.cmUserRoleCd.cmUser.userNm,
+		.select(QCmUserRoleCd.cmUserRoleCd.refCmUser.userNm,
 		QCmUserRoleCd.cmUserRoleCd.roleCd,
 		QCmUserRoleCd.cmUserRoleCd.userNo,
-		QCmUserRoleCd.cmUserRoleCd.cmUser.userId,
-		QCmUserRoleCd.cmUserRoleCd.cmUser.userNm,
+		QCmUserRoleCd.cmUserRoleCd.refCmUser.userId,
+		QCmUserRoleCd.cmUserRoleCd.refCmUser.userNm,
 		QCmUserRoleCd.cmUserRoleCd.useYn,
 		QCmUserRoleCd.cmUserRoleCd.ord,
 		QCmUserRoleCd.cmUserRoleCd.rmk,			
@@ -42,10 +41,11 @@ public class DA_CM_USER_ROLE_CD {
 		)
 		.from(QCmUserRoleCd.cmUserRoleCd)
 					.where(QCmUserRoleCd.cmUserRoleCd.roleCd.eq(ROLE_CD))
-	                .orderBy(QCmUserRoleCd.cmUserRoleCd.userNo.asc())
-	                .fetch();
-		 return al;
+					.orderBy(QCmUserRoleCd.cmUserRoleCd.userNo.asc())
+					.fetch();
+			return al;
 	}
+	
 	
 	public void createCmUserRoleCd(
 			String ROLE_CD

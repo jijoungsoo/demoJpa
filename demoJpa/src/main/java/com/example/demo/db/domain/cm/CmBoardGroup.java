@@ -1,13 +1,15 @@
 package com.example.demo.db.domain.cm;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,25 +29,21 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert /* 구분생성시 null인것은 보내지 않는다. */
 @Data
 @Entity
-@IdClass(CmUserNoRoleCd.class)  
-@Table(name = "tb_cm_user_role_cd")
-public class CmUserRoleCd {
+@Table(name = "tb_cm_brd_grp")
+//https://gangnam-americano.tistory.com/25
+public class CmBoardGroup {
 	@Id
-	@Column(nullable = false, name = "user_no")
-	long userNo;
+	@Column(nullable = false,  name = "grp_seq")
+	long grpSeq;
 
-	@Id
-	@Column(nullable = false,length = 50 , name = "role_cd")
-	String roleCd;
-
-	@Column(nullable = false, length = 1, name = "use_yn")
-	String useYn;
+	@Column(nullable = true, length = 4000, name = "grp_nm")
+	String grpNm;
 
 	@Column(nullable = true, length = 4000, name = "rmk")
 	String rmk;
 
-	@Column(nullable = true, length = 5 ,name="ord")
-	String ord;
+	@Column(nullable = false, length = 1, name = "use_yn")
+	String useYn;
 	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;
@@ -61,20 +59,7 @@ public class CmUserRoleCd {
 	@Column(nullable = false, name = "updt_dtm")
 	Date updtDtm;
 
-
-		  
-	@ManyToOne
-	@JoinColumn(name="role_cd", insertable=false, updatable=false)
-	CmRoleCd refCmRoleCd;		//CmRoleCd.java 에 mappedBy = "refCmUserRoleCd" 가 됨
-	
-	public void setRefCmUserRoleCd(CmRoleCd t) {
-		this.refCmRoleCd =t;
-		if(!t.getRefCmUserRoleCds().contains(this)) {
-			t.getRefCmUserRoleCds().add(this);
-		}
-	}
-
-	@ManyToOne
-	@JoinColumn(name="user_no", insertable=false, updatable=false)
-	CmUser refCmUser;
+	@Builder.Default
+	@OneToMany(mappedBy = "orfCmBoardGroup")  
+	List<CmBoard> al_cmBoard = new ArrayList<CmBoard>();
 }

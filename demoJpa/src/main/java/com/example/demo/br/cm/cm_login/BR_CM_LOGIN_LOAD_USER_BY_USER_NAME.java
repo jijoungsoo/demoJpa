@@ -1,6 +1,8 @@
 package com.example.demo.br.cm.cm_login;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,6 +82,10 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 		@JsonProperty("email")
 		@Schema(name = "email", example = "admin@gogo.com", description = "이메일")
 		String EMAIL = null;
+
+		@JsonProperty("auth")
+		@Schema(name = "auth", example = "ROLE_ADMIN,ROLE_PUBLIC", description = "권한")
+		String AUTH = null;
 	}
 
 	@Autowired
@@ -103,13 +109,18 @@ public class BR_CM_LOGIN_LOAD_USER_BY_USER_NAME {
 
 		OUT_DS outDs = new OUT_DS();
 		if (c != null) {
+			List<String> auth_al = daLogin.findAuthByUserNo( c.getUserNo());
 			OUT_DATA_ROW row = new OUT_DATA_ROW();
 			row.USER_NO = c.getUserNo();
 			row.USER_ID = c.getUserId();
 			row.USER_PWD = c.getUserPwd();
 			row.USER_NM = c.getUserNm();
 			row.EMAIL = c.getEmail();
+			if(auth_al.size()>0){
+				row.AUTH  = String.join(",", auth_al);
+			}
 			outDs.OUT_DATA.add(row);
+			
 		}
 		return outDs;
 	}

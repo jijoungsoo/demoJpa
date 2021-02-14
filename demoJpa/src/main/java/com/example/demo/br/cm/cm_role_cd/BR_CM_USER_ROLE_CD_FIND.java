@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.db.da.cm.DA_CM_USER_ROLE_CD;
-import com.example.demo.db.domain.cm.CmUserRoleCd;
 import com.example.demo.db.domain.cm.QCmUserRoleCd;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
@@ -145,8 +144,8 @@ public class BR_CM_USER_ROLE_CD_FIND {
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
 			row.ROLE_CD= cm.get(QCmUserRoleCd.cmUserRoleCd.roleCd);
 			row.USER_NO= cm.get(QCmUserRoleCd.cmUserRoleCd.userNo);
-			row.USER_ID= cm.get(QCmUserRoleCd.cmUserRoleCd.cmUser.userId);
-			row.USER_NM= cm.get(QCmUserRoleCd.cmUserRoleCd.cmUser.userNm);
+			row.USER_ID= cm.get(QCmUserRoleCd.cmUserRoleCd.refCmUser.userId);
+			row.USER_NM= cm.get(QCmUserRoleCd.cmUserRoleCd.refCmUser.userNm);
 			row.USE_YN= cm.get(QCmUserRoleCd.cmUserRoleCd.useYn);
 			row.ORD= cm.get(QCmUserRoleCd.cmUserRoleCd.ord);
 			row.RMK= cm.get(QCmUserRoleCd.cmUserRoleCd.rmk);

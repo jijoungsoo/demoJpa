@@ -1,13 +1,15 @@
 package com.example.demo.db.domain.cm;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,28 +29,45 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert /* 구분생성시 null인것은 보내지 않는다. */
 @Data
 @Entity
-@IdClass(CmUserNoRoleCd.class)  
-@Table(name = "tb_cm_user_role_cd")
-public class CmUserRoleCd {
-	@Id
-	@Column(nullable = false, name = "user_no")
-	long userNo;
+@Table(name = "tb_cm_brd_cmt")
+//https://gangnam-americano.tistory.com/25
+public class CmBoardCmt {
+	@Column(nullable = false, name = "brd_seq")
+	long brdSeq;
 
 	@Id
-	@Column(nullable = false,length = 50 , name = "role_cd")
-	String roleCd;
+	@Column(nullable = false, name = "cmt_seq")
+	long cmtSeq;
+	
+	@Column(nullable = false, name = "root_cmt_seq")
+	long rootCmtSeq;
 
-	@Column(nullable = false, length = 1, name = "use_yn")
-	String useYn;
+	@Column(nullable = false, name = "cmt_rply_ord")
+	long cmtRplyOrd;
 
-	@Column(nullable = true, length = 4000, name = "rmk")
-	String rmk;
+	@Column(nullable = false, name = "cmt_dpth")
+	long cmtDpth;
 
-	@Column(nullable = true, length = 5 ,name="ord")
-	String ord;
+	@Column(nullable = false, name = "prnt_cmt_seq")
+	long prntCmtSeq;
+
+	@Column(nullable = false, length = 4000, name = "cntnt_text")
+	String cntnt_text;
+
+	@Column(nullable = false, length = 4000, name = "cntnt_html")
+	String cntnt_html;
+
+	@Column(nullable = false, name = "lk_cnt")
+	long lkCnt;
+
+	@Column(nullable = false, name = "dslk_cnt")
+	long dislkCnt;
 	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;
+
+	@Column(nullable = false, length = 1, name = "del_yn")
+	String delYn;
 	
 	@Column(nullable = false, name = "updt_usr_no")
 	long updtUsrNo;
@@ -61,20 +80,7 @@ public class CmUserRoleCd {
 	@Column(nullable = false, name = "updt_dtm")
 	Date updtDtm;
 
-
-		  
 	@ManyToOne
-	@JoinColumn(name="role_cd", insertable=false, updatable=false)
-	CmRoleCd refCmRoleCd;		//CmRoleCd.java 에 mappedBy = "refCmUserRoleCd" 가 됨
-	
-	public void setRefCmUserRoleCd(CmRoleCd t) {
-		this.refCmRoleCd =t;
-		if(!t.getRefCmUserRoleCds().contains(this)) {
-			t.getRefCmUserRoleCds().add(this);
-		}
-	}
-
-	@ManyToOne
-	@JoinColumn(name="user_no", insertable=false, updatable=false)
-	CmUser refCmUser;
+	@JoinColumn(name="brd_seq", insertable=false, updatable=false)   //부모 테이블의 조인필드(기본키) 이름
+	CmBoard orfCmBoard;
 }

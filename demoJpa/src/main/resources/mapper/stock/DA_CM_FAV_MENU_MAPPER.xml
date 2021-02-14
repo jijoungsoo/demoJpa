@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.example.demo.db.da.cm.DA_CM_FAV_MENU_MAPPER">
+<select id="findFavMenuByUserNo" parameterType="map" resultType="hashmap">
+select a.fav_no
+,a.menu_no
+,a.user_no
+,d.user_id
+,b.menu_nm
+,c.pgm_id
+,c.pgm_link
+,c.dir_link
+from tb_cm_fav_menu a
+inner join tb_cm_menu b
+on b.menu_no=a.menu_no
+inner join tb_cm_pgm c
+on c.pgm_id=b.pgm_id
+inner join tb_cm_user d
+on d.user_no = a.user_no
+where  a.user_no=#{USER_NO} 
+and exists (select '1' from TB_CM_USER_ROLE_CD e where d.user_no=e.user_no)
+order by b.ord asc
+</select> 
+</mapper>

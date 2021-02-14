@@ -29,34 +29,48 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert /* 구분생성시 null인것은 보내지 않는다. */
 @Data
 @Entity
-@Table(name = "tb_cm_user")
-public class CmUser {
+@Table(name = "tb_cm_brd")
+//https://gangnam-americano.tistory.com/25
+public class CmBoard {
+	@Column(nullable = false,  name = "grp_seq")
+	long grpSeq;
+
 	@Id
-	@Column(nullable = false, name = "user_no")
-	long userNo;
+	@Column(nullable = false, name = "brd_seq")
+	long brdSeq;
 
-	@Column(nullable = false, length = 100, name = "user_nm")
-	String userNm;
+	@Column(nullable = false, name = "prnt_brd_seq")
+	long prntBrdSeq;	
 
-	@Column(nullable = false, length = 100, name = "user_id")
-	String userId;
+	@Column(nullable = false, name = "root_brd_seq")
+	long rootBrdSeq;
 
-	@Column(nullable = false, length = 100, name = "user_pwd")
-	String userPwd;
+	@Column(nullable = false, name = "brd_rply_ord")
+	long brdRplyOrd;
 
-	@Column(nullable = true, length = 100, name = "email")
-	String email;
+	@Column(nullable = false, name = "brd_dpth")
+	long brdDpth;
 
-	@Column(nullable = false, length = 1, name = "use_yn")
-	String useYn;
+	@Column(nullable = true, length = 4000, name = "ttl")
+	String ttl;
 
-	/*출처: https://juntcom.tistory.com/94 [쥬니의 개발블로그]*/
-	@Column(nullable = true, length = 4000, name = "rmk")
-	String rmk;
+	@Column(nullable = true, length = 4000, name = "ttl_text")
+	String ttlText;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, name = "lst_acc_dtm")
-	Date lstAccDtm;
+	@Column(nullable = false, length = 4000, name = "cntnt")
+	String cntnt;
+
+	@Column(nullable = false, length = 4000, name = "cntnt_text")
+	String cntntText;
+
+	@Column(nullable = false, name = "lk_cnt")
+	long lkCnt;
+
+	@Column(nullable = false, name = "dslk_cnt")
+	long dislkCnt;
+
+	@Column(nullable = false, length = 1, name = "del_yn")
+	String delYn;
 	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;
@@ -72,10 +86,12 @@ public class CmUser {
 	@Column(nullable = false, name = "updt_dtm")
 	Date updtDtm;
 
-	/*
-	
+
+	@ManyToOne
+	@JoinColumn(name="grp_seq", insertable=false, updatable=false)   //부모 테이블의 조인필드(기본키) 이름
+	CmBoardGroup orfCmBoardGroup;
+
 	@Builder.Default
-	@OneToMany(mappedBy = "cmUser")  
-	List<CmUserRoleCd> cmUserRoleCds = new ArrayList<CmUserRoleCd>();
-	*/
+	@OneToMany(mappedBy = "orfCmBoard")  
+	List<CmBoardCmt> al_cmBoardCmt = new ArrayList<CmBoardCmt>();
 }

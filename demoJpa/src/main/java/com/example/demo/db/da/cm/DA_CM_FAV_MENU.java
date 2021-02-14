@@ -54,31 +54,6 @@ public class DA_CM_FAV_MENU {
 	
 		return tmp;
 	}
-
-	public List<com.querydsl.core.Tuple> findFavMenuByUserNo(long USER_NO) {
-		List<com.querydsl.core.Tuple> tmp =qf.from(QCmFavMenu.cmFavMenu)
-		.leftJoin(QCmMenu.cmMenu)
-		.on(QCmFavMenu.cmFavMenu.menuNo.eq(QCmMenu.cmMenu.menuNo))
-		.leftJoin(QCmPgm.cmPgm)
-		.on(QCmPgm.cmPgm.pgmId.eq(QCmMenu.cmMenu.pgmId))
-		.leftJoin(QCmUser.cmUser)
-		.on(QCmUser.cmUser.userNo.eq(QCmFavMenu.cmFavMenu.userNo))
-		.where(QCmFavMenu.cmFavMenu.userNo.eq(USER_NO))
-		.select(QCmFavMenu.cmFavMenu.favNo
-				,QCmFavMenu.cmFavMenu.menuNo
-				,QCmFavMenu.cmFavMenu.userNo
-				,QCmUser.cmUser.userId
-				,QCmMenu.cmMenu.menuNm
-				,QCmMenu.cmMenu.pgmId
-				,QCmPgm.cmPgm.pgmNm
-				,QCmPgm.cmPgm.pgmLink
-				,QCmPgm.cmPgm.dirLink
-				)
-		.fetch();
-		
-		return tmp;
-	}
-	
 	
 	public CmFavMenu findFavMenuByMenuCdAndUserNo(long USER_NO,long MENU_NO){
 		CmFavMenu c =  qf

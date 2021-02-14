@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.example.demo.db.da.cm.DA_CM_MENU_ROLE_CD_MAPPER">
+<select id="findMenuRoot" parameterType="map" resultType="hashmap">
+	select 
+	a.pgm_id
+	,a.prnt_menu_cd
+	,a.ord
+	,a.menu_no
+	,a.menu_cd
+	,a.menu_nm
+	,a.menu_path
+	,a.menu_kind
+	,(case when (select count(1) from tb_cm_menu_role_cd b where b.menu_no=a.menu_no and b.role_cd=#{ROLE_CD})>0 then 'Y' ELSE 'N' END) as  role_yn
+	,#{ROLE_CD}  as  role_cd
+	from tb_cm_menu a
+	where a.prnt_menu_cd is null
+	order by a.ord asc
+</select> 
+<select id="findSubMenuRoot" parameterType="map" resultType="hashmap"> 
+select 
+	a.pgm_id
+	,a.prnt_menu_cd
+	,a.ord
+	,a.menu_no
+	,a.menu_cd
+	,a.menu_nm
+	,a.menu_path
+	,a.menu_kind
+	,(case when (select count(1) from tb_cm_menu_role_cd b where b.menu_no=a.menu_no and b.role_cd=#{ROLE_CD})>0 then 'Y' ELSE 'N' END) as  role_yn
+	,#{ROLE_CD}  as  role_cd
+	from tb_cm_menu a
+	where a.prnt_menu_cd = #{MENU_CD}
+	order by a.ord asc		
+</select> 
+<select id="findMenuRoleCdParent" parameterType="map" resultType="hashmap"> 
+WITH RECURSIVE subdepartment AS
+(	
+    -- non-recursive term
+    SELECT a.menu_no,b.menu_cd,b.prnt_menu_cd FROM tb_cm_menu_role_cd  a
+	inner join tb_cm_menu b 
+	on a.menu_no=b.menu_no
+	WHERE role_cd =  #{ROLE_CD}
+
+    UNION ALL
+
+    -- recursive term
+    SELECT d.menu_no,d.menu_cd,d.prnt_menu_cd FROM tb_cm_menu  d
+    JOIN subdepartment sd 
+	ON (d.menu_cd = sd.prnt_menu_cd)
+)
+select 
+	a.menu_no
+	,#{ROLE_CD} role_cd
+	, NOW() crt_dtm
+from tb_cm_menu a 	
+where exists (select '1' from subdepartment b where a.menu_no=b.menu_no)
+and not exists (select '1' from tb_cm_menu_role_cd c WHERE a.menu_no=c.menu_no and c.role_cd = #{ROLE_CD}  )	
+</select> 
+
+<update  id="reSyncMenuRoleCdParent" parameterType="map"> 
+WITH RECURSIVE subdepartment AS
+(	
+    -- non-recursive term
+    SELECT a.menu_no,b.menu_cd,b.prnt_menu_cd FROM tb_cm_menu_role_cd  a
+	inner join tb_cm_menu b 
+	on a.menu_no=b.menu_no
+	WHERE role_cd =  #{ROLE_CD}
+
+    UNION ALL
+
+    -- recursive term
+    SELECT d.menu_no,d.menu_cd,d.prnt_menu_cd FROM tb_cm_menu  d
+    JOIN subdepartment sd 
+	ON (d.menu_cd = sd.prnt_menu_cd)
+)
+insert into tb_cm_menu_role_cd 
+(
+	menu_no
+	,role_cd
+	,crt_usr_no
+	,crt_dtm
+)
+select 
+	a.menu_no
+	,#{ROLE_CD} role_cd
+	,#{UPDT_USR_NO} crt_usr_no
+	, NOW() crt_dtm
+from tb_cm_menu a 	
+where exists (select '1' from subdepartment b where a.menu_no=b.menu_no)
+and not exists (select '1' from tb_cm_menu_role_cd c WHERE a.menu_no=c.menu_no and c.role_cd = #{ROLE_CD}  )
+</update> 
+
+<select id="findMainMenuRootByUserNo"  parameterType="map" resultType="hashmap"> 
+    SELECT 
+	a.pgm_id
+	,a.prnt_menu_cd 
+	,a.ord
+	,a.menu_no
+	,a.menu_cd	
+	,a.menu_nm
+	,a.menu_kind
+	from tb_cm_menu a
+	where a.prnt_menu_cd is null
+	and EXISTS (
+		SELECT 1 FROM TB_CM_MENU_ROLE_CD B
+		INNER JOIN TB_CM_USER_ROLE_CD C
+		ON C.ROLE_CD = B.ROLE_CD
+		INNER JOIN TB_CM_USER D
+		ON D.USER_NO=C.USER_NO
+		WHERE D.USER_NO= #{USER_NO}
+		AND B.MENU_NO =A.MENU_NO
+	)
+	order by ord asc
+</select>
+<select id="findSubMenuByUserNo"  parameterType="map" resultType="hashmap"> 
+    SELECT 
+	a.pgm_id
+	,a.prnt_menu_cd 
+	,a.ord
+	,a.menu_no
+	,a.menu_cd	
+	,a.menu_nm
+	,a.menu_kind
+	from tb_cm_menu a
+	where a.prnt_menu_cd =  #{MENU_CD}
+	and EXISTS (
+		SELECT 1 FROM TB_CM_MENU_ROLE_CD B
+		INNER JOIN TB_CM_USER_ROLE_CD C
+		ON C.ROLE_CD = B.ROLE_CD
+		INNER JOIN TB_CM_USER D
+		ON D.USER_NO=C.USER_NO
+		WHERE D.USER_NO= #{USER_NO}
+		AND B.MENU_NO =A.MENU_NO
+	)
+	order by ord asc
+</select>
+</mapper>

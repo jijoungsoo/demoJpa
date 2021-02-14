@@ -4,14 +4,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.demo.db.domain.cm.CmMenu;
+import com.example.demo.db.domain.cm.CmMenuRoleCd;
 import com.example.demo.db.domain.cm.CmRoleCd;
+import com.example.demo.db.domain.cm.QCmMenu;
 import com.example.demo.db.domain.cm.QCmRoleCd;
 import com.example.demo.db.repository.cm.CmRoleCdRepository;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DA_CM_ROLE_CD {
@@ -22,10 +31,15 @@ public class DA_CM_ROLE_CD {
 	@Autowired
 	CmRoleCdRepository cmRoleR;
 	
-	public List<CmRoleCd> findCmRoleCd() {
-		List<CmRoleCd> al =  qf
-	                .selectFrom(QCmRoleCd.cmRoleCd)
-	                .orderBy(QCmRoleCd.cmRoleCd.roleCd.asc())
+	public List<CmRoleCd> findCmRoleCd(String USE_YN) {
+
+		JPAQuery<CmRoleCd>  c = qf.selectFrom(QCmRoleCd.cmRoleCd);
+		if(USE_YN!=null && !PjtUtil.isEmpty(USE_YN)) {
+			c.where(QCmRoleCd.cmRoleCd.useYn.eq(USE_YN));
+		}
+	                
+		List<CmRoleCd> al =  c
+					.orderBy(QCmRoleCd.cmRoleCd.roleCd.asc())
 	                .fetch();
 		 return al;
 		 
@@ -86,4 +100,5 @@ public class DA_CM_ROLE_CD {
 			) {
 		cmRoleR.deleteById(ROLE_CD);
 	}
+
 }

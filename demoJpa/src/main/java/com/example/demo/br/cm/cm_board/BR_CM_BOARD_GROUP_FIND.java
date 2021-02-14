@@ -1,10 +1,10 @@
-package com.example.demo.br.cm.cm_role_cd;
+package com.example.demo.br.cm.cm_board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.db.da.cm.DA_CM_ROLE_CD;
-import com.example.demo.db.domain.cm.CmRoleCd;
+import com.example.demo.db.da.cm.DA_CM_BOARD_GROUP;
+import com.example.demo.db.domain.cm.CmBoardGroup;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,69 +25,50 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "CM_ROLE_CD", description = "역할코드")
+@Tag(name = "CM_BOARD", description = "공통게시판")
 @Slf4j
 @RestController
-public class BR_CM_ROLE_CD_FIND {
+public class BR_CM_BOARD_GROUP_FIND {
 
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_CM_ROLE_CD_FIND")
+	@ApiModel(value="IN_DS-BR_CM_BOARD_GROUP_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
-		@Schema(name = "brRq", example = "IN_DATA", description = "입력 데이터명")
+		@Schema(name = "brRq", example = "", description = "입력 데이터명")
 		String brRq;
 
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
-
-		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_CM_ROLE_CD_FIND", description = "입력 데이터")
-		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
-	}
-
-	
-	@ApiModel(value="IN_DATA_ROW-BR_CM_ROLE_CD_FIND")
-	@Data
-	static class IN_DATA_ROW {
-		@JsonProperty("USE_YN")
-		@Schema(name = "USE_YN", example = "", description = "사용여부")
-		String USE_YN = "";
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_CM_ROLE_CD_FIND")
+	@ApiModel(value="OUT_DS-BR_CM_BOARD_GROUP_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_CM_ROLE_CD_FIND", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_CM_BOARD_GROUP_FIND", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BR_CM_ROLE_CD_FIND")
+	@ApiModel(value="OUT_DATA_ROW-BR_CM_BOARD_GROUP_FIND")
 	@Data
 	static class OUT_DATA_ROW {
-		@JsonProperty("ROLE_CD")
-		@Schema(name = "ROLE_CD", example = "ADMIN", description = "역할코드")
-		String ROLE_CD = null;
-		
-		@JsonProperty("ROLE_NM")
-		@Schema(name = "ROLE_NM", example = "관리자", description = "역할명")
-		String ROLE_NM = null;
-		
-		@JsonProperty("USE_YN")
-		@Schema(name = "USE_YN", example = "(Y-사용,N-미사용)", description = "사용여부")
-		String USE_YN = null;
-		
-		@JsonProperty("ORD")
-		@Schema(name = "ORD", example = "001", description = "정렬")
-		String ORD = null;
-		
+		@JsonProperty("GRP_SEQ")
+		@Schema(name = "GRP_SEQ", example = "1", description = "게시판관리번호")
+		String GRP_SEQ = null;
+		@JsonProperty("GRP_NM")
+		@Schema(name = "GRP_NM", example = "일반게시판", description = "게시판관리명")
+		String GRP_NM = null;
 		@JsonProperty("RMK")
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
-
+		
+		@JsonProperty("USE_YN")
+		@Schema(name = "USE_YN", example = "Y,N", description = "사용여부")
+		String USE_YN = null;
+				
 		@JsonProperty("CRT_USR_NO")
 		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
 		String CRT_USR_NO = null;
@@ -106,35 +87,27 @@ public class BR_CM_ROLE_CD_FIND {
 	}
 	
 	@Autowired
-	DA_CM_ROLE_CD daRoleCd;
+	DA_CM_BOARD_GROUP daBrdGrp;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"CM_ROLE_CD"},value = "역할코드를 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_ROLE_CD_FIND", consumes = "application/json", produces = "application/json")
-	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
-		String USE_YN=null;
-
-		if(inDS.IN_DATA.size()>0){
-			USE_YN = inDS.IN_DATA.get(0).getUSE_YN();
-		}
-
-		List<CmRoleCd>  al =daRoleCd.findCmRoleCd(USE_YN);
+	@ApiOperation(tags={"CM_BOARD"},value = "게시판관리를 조회한다.", notes = "")
+	@PostMapping(path= "/api/BR_CM_BOARD_GROUP_FIND", consumes = "application/json", produces = "application/json")
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
+		List<CmBoardGroup>  al =daBrdGrp.findBrdGrp();
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
-			CmRoleCd cm=al.get(i);
+			CmBoardGroup cm=al.get(i);
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.ROLE_CD= cm.getRoleCd();
-			row.ROLE_NM= cm.getRoleNm();
+			row.GRP_SEQ= String.valueOf(cm.getGrpSeq());
+			row.GRP_NM= cm.getGrpNm();
 			row.USE_YN= cm.getUseYn();
-			row.ORD= String.valueOf(cm.getOrd());
 			row.RMK= cm.getRmk();
 			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
-
 		return outDs;
-	}	
+	}
 }
