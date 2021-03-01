@@ -113,7 +113,7 @@ public class BR_CM_USER_SAVE {
 	})
 	@ApiOperation(tags={"CM_USER"},value = "사용자 저장.", notes = "")
 	@PostMapping(path= "/api/BR_CM_USER_SAVE", consumes = "application/json", produces = "application/json")
-	public OUT_DS saveCmUser(@RequestBody IN_DS inDS) throws BizException {
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
@@ -168,6 +168,9 @@ public class BR_CM_USER_SAVE {
 						,EMAIL
 						,USE_YN
 						,RMK
+						,"JI"
+						,"0"
+						,""
 						,L_LSESSION_USER_NO
 						);
 			} else {

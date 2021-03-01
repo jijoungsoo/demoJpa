@@ -87,6 +87,15 @@ public class BR_CM_USER_FIND {
 		@JsonProperty("RMK")
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
+
+		@JsonProperty("SNS_GUBUN")
+		@Schema(name = "SNS_GUBUN", example = "kakao, google", description = "SNS로그인 구분")
+		String SNS_GUBUN = null;
+
+		@JsonProperty("SNS_ID")
+		@Schema(name = "SNS_ID", example = "1", description = "SNS로그인 실별자")
+		String SNS_ID = null;
+
 		
 		@JsonProperty("LST_ACC_DTM")
 		@Schema(name = "LST_ACC_DTM", example = "202012311640", description = "마지막접속일")
@@ -139,6 +148,8 @@ public class BR_CM_USER_FIND {
 			row.EMAIL=cm.getEmail();
 			row.USE_YN=cm.getUseYn();
 			row.RMK=cm.getRmk();			
+			row.SNS_GUBUN=cm.getSnsGubun();		
+			row.SNS_ID=cm.getSnsId();		
 			row.LST_ACC_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getLstAccDtm());
 			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());

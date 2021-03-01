@@ -8,6 +8,7 @@ import com.example.demo.db.domain.cm.CmBoard;
 import com.example.demo.db.domain.cm.QCmBoard;
 import com.example.demo.db.repository.cm.CmBoardRepository;
 import com.example.demo.exception.BizException;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,21 @@ public class DA_CM_BOARD {
 	@Autowired
 	CmBoardRepository cmBoardR;
 	
-	public List<CmBoard> findBrd() {
+	public List<CmBoard> findBrd(Long L_GRP_SEQ) {
+		JPAQuery<CmBoard> c = qf
+	                .selectFrom(QCmBoard.cmBoard)
+	                .orderBy(QCmBoard.cmBoard.brdSeq.desc());
+		if(L_GRP_SEQ!=null){
+			c= c.where(QCmBoard.cmBoard.grpSeq.eq(L_GRP_SEQ));
+		}
+		List<CmBoard> al =  c.fetch();
+		return al;
+	}
+
+	public List<CmBoard> findBrdByBrdSeq(Long L_BRD_SEQ) {
 		List<CmBoard> al =  qf
 	                .selectFrom(QCmBoard.cmBoard)
+					.where(QCmBoard.cmBoard.brdSeq.eq(L_BRD_SEQ))
 	                .orderBy(QCmBoard.cmBoard.brdSeq.desc())
 	                .fetch();
 		 return al;

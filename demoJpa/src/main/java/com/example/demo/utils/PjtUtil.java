@@ -17,6 +17,9 @@ public class PjtUtil {
 	}
 	static DateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static String getYyyy_MM_dd_HHMMSS(java.util.Date inDate) {
+		if(inDate==null){
+			return null;
+		}
 
 		return dateformat2.format(inDate);
 	}

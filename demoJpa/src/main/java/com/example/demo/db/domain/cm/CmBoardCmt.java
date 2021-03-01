@@ -52,10 +52,10 @@ public class CmBoardCmt {
 	long prntCmtSeq;
 
 	@Column(nullable = false, length = 4000, name = "cntnt_text")
-	String cntnt_text;
+	String cntntText;
 
-	@Column(nullable = false, length = 4000, name = "cntnt_html")
-	String cntnt_html;
+	@Column(nullable = false, length = 4000, name = "cntnt")
+	String cntnt;
 
 	@Column(nullable = false, name = "lk_cnt")
 	long lkCnt;

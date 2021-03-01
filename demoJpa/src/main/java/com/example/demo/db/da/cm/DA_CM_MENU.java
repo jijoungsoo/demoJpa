@@ -8,7 +8,8 @@ import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.db.domain.cm.QCmMenu;
 import com.example.demo.db.repository.cm.CmMenuRepository;
 import com.example.demo.exception.BizException;
-import com.querydsl.core.Tuple;
+import com.example.demo.utils.PjtUtil;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +24,33 @@ public class DA_CM_MENU {
 	@Autowired
 	CmMenuRepository cmMenuR;
 	
-	public List<CmMenu> findMenu() {
-		List<CmMenu> al =  qf
-	                .selectFrom(QCmMenu.cmMenu)
-	                .orderBy(QCmMenu.cmMenu.ord.asc())
-	                .fetch();
+	public List<CmMenu> findMenu(
+		String PRNT_MENU_CD,
+		String MENU_KIND
+
+	) {
+		JPAQuery<CmMenu> c = qf
+		.selectFrom(QCmMenu.cmMenu)
+		.orderBy(QCmMenu.cmMenu.ord.asc());
+		if(!PjtUtil.isEmpty(PRNT_MENU_CD)){
+			c=c.where(QCmMenu.cmMenu.prntMenuCd.eq(PRNT_MENU_CD));
+		}
+		if(!PjtUtil.isEmpty(MENU_KIND)){
+			c=c.where(QCmMenu.cmMenu.menuKind.eq(MENU_KIND));
+		}
+		List<CmMenu> al =  c.fetch();
 		 return al;
 	}
-	
 
 	public List<CmMenu> findMenuRoot() {
-			List<CmMenu> al =  qf
-		                .selectFrom(QCmMenu.cmMenu)
-		                .where(QCmMenu.cmMenu.prntMenuCd.isNull())
-		                .orderBy(QCmMenu.cmMenu.ord.asc())
-		                .fetch();
-		                
-			 return al;
+		JPAQuery<CmMenu> c =  qf
+		.selectFrom(QCmMenu.cmMenu)
+		.where(QCmMenu.cmMenu.prntMenuCd.isNull())
+		.orderBy(QCmMenu.cmMenu.ord.asc());
 		
+
+		List<CmMenu> al =  c.fetch();
+		return al;	
 	}
 
 	

@@ -3,20 +3,22 @@ package com.example.demo.br.av.av_mv;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.av.DA_AV_MV;
 import com.example.demo.db.da.cm.DA_CM_EXCEL_UPLD;
+import com.example.demo.db.da.cm.DA_CM_SEQ;
+import com.example.demo.db.domain.av.AvMv;
 import com.example.demo.db.domain.cm.CmExcelUpld;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -74,6 +76,9 @@ public class BR_AV_MV_EXCEL_SAVE {
 	DA_AV_MV daAvMv;
 
 	@Autowired
+	DA_CM_SEQ daCmSeq;
+
+	@Autowired
 	DA_CM_EXCEL_UPLD daCmExcelUpld;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
@@ -105,10 +110,11 @@ public class BR_AV_MV_EXCEL_SAVE {
 				String  TTL 	= PjtUtil.str(rs.getCol01());
 				String  CNTNT	= PjtUtil.str(rs.getCol02());
 				String  MSC_CD 	= PjtUtil.str(rs.getCol03());
-				String  ORD 	= PjtUtil.str(rs.getCol04());
-				String  RMK 	= PjtUtil.str(rs.getCol05());		
-				String  CPTN_YN = PjtUtil.str(rs.getCol06());
-				String  MK_DT 	= PjtUtil.str(rs.getCol07());
+				String  VR_YN  	= PjtUtil.str(rs.getCol04());  
+				String  ORD 	= PjtUtil.str(rs.getCol05());
+				String  RMK 	= PjtUtil.str(rs.getCol06());		
+				String  CPTN_YN = PjtUtil.str(rs.getCol07());
+				String  MK_DT 	= PjtUtil.str(rs.getCol08());
 				
 				if(PjtUtil.isEmpty(AV_NM)) {
 					throw new BizRuntimeException("품번이 입력되지 않았습니다.");
@@ -120,17 +126,39 @@ public class BR_AV_MV_EXCEL_SAVE {
 					throw new BizRuntimeException("자막 유무가 입력되지 않았습니다.");
 				}
 				
-				daAvMv.saveExcelAvMv(
-						AV_NM.toUpperCase().trim()
-						,TTL
-						,CNTNT
-						,MSC_CD
-						,ORD
-						,RMK
-						,CPTN_YN
-						,MK_DT
-						,L_SESSION_USER_NO
-						);
+				/*품번이 중복 되지 않는지 조회 해야한다.*/
+				List<AvMv> al2=  daAvMv.findByAvNm(AV_NM.toUpperCase().trim());
+				if(al2.size()>0) {
+					long L_AV_SEQ =al2.get(0).getAvSeq();
+					daAvMv.updateAvMv(
+							L_AV_SEQ
+							,AV_NM.toUpperCase().trim()
+							,TTL
+							,CNTNT
+							,MSC_CD
+							,VR_YN
+							,ORD
+							,RMK
+							,CPTN_YN
+							,MK_DT
+							,L_SESSION_USER_NO
+							);
+					
+				} else {
+					long L_AV_SEQ =daCmSeq.increate("AV_MV_AV_SEQ");
+					daAvMv.createAvMv(L_AV_SEQ
+					,AV_NM.toUpperCase().trim()
+					,TTL
+					,CNTNT
+					,MSC_CD
+					,VR_YN
+					,ORD
+					,RMK
+					,CPTN_YN
+					,MK_DT
+					,L_SESSION_USER_NO
+					);
+				}
 			}
 		}
 		OUT_DS outDs = new OUT_DS(); 

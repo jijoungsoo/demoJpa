@@ -41,15 +41,31 @@ public class BR_AV_MV_FIND {
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
-		@Schema(name = "brRq", example = "", description = "입력 데이터명")
+		@Schema(name = "brRq", example = "IN_DATA", description = "입력 데이터명")
 		String brRq;
 
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
+		@JsonProperty("IN_DATA")
+		@Schema(name="IN_DATA-BR_AV_MV_FIND", description = "입력 데이터")
+		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 		
 		@JsonProperty("PAGE_DATA")
 		PAGE_DATA_ROW PAGE_DATA = new PAGE_DATA_ROW();
+	}
+
+	@ApiModel(value="IN_DATA_ROW-BR_AV_MV_FIND")
+	@Data
+	static class IN_DATA_ROW {
+		@JsonProperty("MSC_CD")
+		@Schema(name = "MSC_CD", example = "(U-유출,M-모자이크,A-모자이크AI,N-노모)", description = "모자이크 코드")
+		String MSC_CD = null;
+		
+		@JsonProperty("VR_YN")
+		@Schema(name = "VR_YN", example = "(Y-vr,N-vr아님)", description = "VR여부")
+		String VR_YN = null;
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -87,6 +103,10 @@ public class BR_AV_MV_FIND {
 		@JsonProperty("LK_CNT")
 		@Schema(name = "LK_CNT", example = "1", description = "좋아요 카운트")
 		String LK_CNT = null;
+
+		@JsonProperty("DSLK_CNT")
+		@Schema(name = "DSLK_CNT", example = "1", description = "싫어요 카운트")
+		String DSLK_CNT = null;
 		
 		@JsonProperty("MSC_CD")
 		@Schema(name = "MSC_CD", example = "(U-유출,M-모자이크,A-모자이크AI,N-노모)", description = "모자이크 코드")
@@ -99,6 +119,10 @@ public class BR_AV_MV_FIND {
 		@JsonProperty("RMK")
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
+
+		@JsonProperty("VR_YN")
+		@Schema(name = "VR_YN", example = "(Y-vr,N-vr아님)", description = "VR여부")
+		String VR_YN = null;
 		
 		@JsonProperty("CPTN_YN")
 		@Schema(name = "CPTN_YN", example = "(Y-자막있음,N-자막없음)", description = "자막YN")
@@ -134,12 +158,26 @@ public class BR_AV_MV_FIND {
 	@ApiOperation(tags={"AV"},value = "AV작품을 조회한다.", notes = "페이징 처리")
 	@PostMapping(path= "/api/BR_AV_MV_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
+
+		if(inDS.IN_DATA==null) {
+			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
+		}
+		if(inDS.IN_DATA.size()!=1) {
+			throw new BizRuntimeException("[IN_DATA]입력파라미터의 ["+inDS.IN_DATA.size()+"]행수가 잘못되었습니다.");
+		}
+		
+		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
+		String  MSC_CD 		= PjtUtil.str(rs.MSC_CD);
+		String  VR_YN 		= PjtUtil.str(rs.VR_YN);
+
+
+
 		if(inDS.PAGE_DATA==null) {
 			throw new BizRuntimeException("[PAGE_DATA]입력파라미터가 전달되지 않았습니다.");
 		}
 		Pageable p = inDS.PAGE_DATA.getPageable();
 		
-		Page<AvMv>  pg = daAvMv.findAvMv(p);
+		Page<AvMv>  pg = daAvMv.findAvMv(MSC_CD,VR_YN,p);
 		List<AvMv> al=pg.toList();
 		
 		OUT_DS outDs = new OUT_DS();
@@ -152,7 +190,9 @@ public class BR_AV_MV_FIND {
 			row.TTL=c.getTtl();
 			row.CNTNT=c.getCntnt();
 			row.LK_CNT=String.valueOf(c.getLkCnt());
+			row.DSLK_CNT=String.valueOf(c.getDslkCnt());
 			row.MSC_CD=c.getMscCd();
+			row.VR_YN=c.getVrYn();
 			row.ORD=c.getOrd();
 			row.RMK=c.getRmk();
 			row.CPTN_YN=c.getCptnYn();

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.example.demo.db.da.cm.DA_CM_MENU_MAPPER">
+<select id="findMenu" parameterType="map" resultType="hashmap">
+WITH RECURSIVE subdepartment AS
+(	
+    -- non-recursive term
+    SELECT a.menu_no
+	,a.menu_cd
+	,a.menu_kind
+	,a.menu_lvl
+	,a.menu_nm
+	,a.prnt_menu_cd 
+	,a.ord
+	,a.pgm_id
+	,a.rmk
+	,a.menu_path
+	,a.crt_dtm
+	,a.updt_dtm
+	,a.menu_cd::text as menu_cd_path
+	FROM tb_cm_menu a 
+	where a.prnt_menu_cd is null
+	
+
+    UNION ALL
+
+    -- recursive term
+    SELECT d.menu_no
+	,d.menu_cd
+	,d.menu_kind
+	,d.menu_lvl
+	,d.menu_nm
+	,d.prnt_menu_cd 
+	,d.ord
+	,d.pgm_id
+	,d.rmk
+	,d.menu_path
+	,d.crt_dtm
+	,d.updt_dtm
+	,sd.menu_cd_path ||'>'|| d.menu_cd as menu_cd_path
+	
+	FROM tb_cm_menu  d
+    JOIN subdepartment sd 
+	ON (d.prnt_menu_cd = sd.menu_cd)
+)
+select 
+d.menu_no
+	,d.menu_cd
+	,d.menu_kind
+	,d.menu_lvl
+	,d.menu_nm
+	,d.prnt_menu_cd 
+	,d.ord
+	,d.pgm_id
+	,d.rmk
+	,d.menu_path
+	,d.crt_dtm
+	,d.updt_dtm
+	,d.menu_cd_path
+from subdepartment d
+where 1=1
+<if test="PRNT_MENU_CD != null and !PRNT_MENU_CD.equals('') ">
+and d.menu_cd_path like '%' || #{PRNT_MENU_CD} || '%'
+</if>
+<if test="MENU_KIND != null and !MENU_KIND.equals('') ">
+and d.menu_kind = #{MENU_KIND}
+</if>
+order by d.ord asc
+</select>
+</mapper>

@@ -2,18 +2,18 @@ package com.example.demo.br.cm.cm_menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.example.demo.db.da.cm.DA_CM_MENU_MAPPER;
+import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.db.da.cm.DA_CM_MENU;
-import com.example.demo.db.domain.cm.CmMenu;
-import com.example.demo.exception.BizException;
-import com.example.demo.utils.PjtUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +41,24 @@ public class BR_CM_MENU_FIND {
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
+		
+		@JsonProperty("IN_DATA")
+		@Schema(name="IN_DATA-BR_CM_MENU_FIND", description = "입력 데이터")
+		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
+	}
+	
+	
+	@ApiModel(value="IN_DATA_ROW-BR_CM_MENU_FIND")
+	@Data
+	static class IN_DATA_ROW {
+		@JsonProperty("MENU_KIND")
+		@Schema(name = "MENU_KIND", example = "M-메뉴, S-화면", description = "메뉴종류")
+		String MENU_KIND = "";
+
+		@JsonProperty("PRNT_MENU_CD")
+		@Schema(name = "PRNT_MENU_CD", example = "CM_0100", description = "부모메뉴코드")
+		String PRNT_MENU_CD = "";
 	}
 
 	@JsonRootName("OUT_DS")
@@ -57,7 +75,7 @@ public class BR_CM_MENU_FIND {
 	static class OUT_DATA_ROW {
 		@JsonProperty("MENU_NO")
 		@Schema(name = "MENU_NO", example = "1", description = "MENU_NO")
-		Long MENU_NO = null;
+		String MENU_NO = null;
 		@JsonProperty("MENU_CD")
 		@Schema(name = "MENU_CD", example = "CM_001", description = "MENU_CD")
 		String MENU_CD = null;
@@ -95,31 +113,40 @@ public class BR_CM_MENU_FIND {
 		String UPDT_DTM = null;
 	}
 	@Autowired
-	DA_CM_MENU daMenu;
+	DA_CM_MENU_MAPPER daMenuM;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_MENU"},value = "메뉴 조회.", notes = "")
 	@PostMapping(path= "/api/BR_CM_MENU_FIND", consumes = "application/json", produces = "application/json")
-	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
-		List<CmMenu>  al =daMenu.findMenu();
+	public OUT_DS  run(@RequestBody IN_DS inDS) throws Exception {
+		String PRNT_MENU_CD  =  null;
+		String MENU_KIND  =  null;
+		if(inDS.IN_DATA!=null) {
+			if(inDS.IN_DATA.size()>0){
+				IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
+				PRNT_MENU_CD 	=rs.PRNT_MENU_CD;
+				MENU_KIND 		=rs.MENU_KIND;
+			}
+		}
+		List<Map>  al =daMenuM.findMenu(PRNT_MENU_CD,MENU_KIND);
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
-			CmMenu cm=al.get(i);
+			Map cm=al.get(i);
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.MENU_NO= cm.getMenuNo();
-			row.MENU_CD= cm.getMenuCd();
-			row.MENU_NM= cm.getMenuNm();
-			row.PRNT_MENU_CD= cm.getPrntMenuCd();
-			row.ORD= cm.getOrd();
-			row.PGM_ID= cm.getPgmId();
-			row.MENU_KIND= cm.getMenuKind();
-			row.RMK= cm.getRmk();
-			row.MENU_LVL= cm.getMenuLvl();
-			row.MENU_PATH= cm.getMenuPath();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.MENU_NO= PjtUtil.str(cm.get("menu_no"));
+			row.MENU_CD= PjtUtil.str(cm.get("menu_cd"));
+			row.MENU_NM= PjtUtil.str(cm.get("menu_nm"));
+			row.PRNT_MENU_CD= PjtUtil.str(cm.get("prnt_menu_cd"));
+			row.ORD= PjtUtil.str(cm.get("ord"));
+			row.PGM_ID= PjtUtil.str(cm.get("pgm_id"));
+			row.MENU_KIND= PjtUtil.str(cm.get("menu_kind"));
+			row.RMK= PjtUtil.str(cm.get("rmk"));
+			row.MENU_LVL= PjtUtil.str(cm.get("menu_lvl"));
+			row.MENU_PATH= PjtUtil.str(cm.get("menu_path"));
+			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("crt_dtm"));
+			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("updt_dtm"));
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

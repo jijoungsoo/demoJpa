@@ -1,25 +1,25 @@
 package com.example.demo.br.av.av_mv;
 
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
-import com.example.demo.br.av.av_mv.BR_AV_MV_RM.OUT_DS;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.av.DA_AV_MV;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
+import com.example.demo.db.domain.av.AvMv;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -84,6 +84,10 @@ public class BR_AV_MV_SAVE {
 		@JsonProperty("MSC_CD")
 		@Schema(name = "MSC_CD", example = "(U-유출,M-모자이크,A-모자이크AI,N-노모)", description = "모자이크 코드")
 		String MSC_CD = null;
+
+		@JsonProperty("VR_YN")
+		@Schema(name = "VR_YN", example = "(Y-VR,N-N-VR)", description = "VR여부")
+		String VR_YN = null;
 		
 		@JsonProperty("ORD")
 		@Schema(name = "ORD", example = "001", description = "정렬")
@@ -138,6 +142,7 @@ public class BR_AV_MV_SAVE {
 			String  TTL 	= PjtUtil.str(rs.TTL);
 			String  CNTNT 	= PjtUtil.str(rs.CNTNT);
 			String  MSC_CD 	= PjtUtil.str(rs.MSC_CD);
+			String  VR_YN 	= PjtUtil.str(rs.VR_YN);
 			String  ORD 	= PjtUtil.str(rs.ORD);
 			String  RMK 	= PjtUtil.str(rs.RMK);
 			String  CPTN_YN = PjtUtil.str(rs.CPTN_YN);
@@ -148,8 +153,8 @@ public class BR_AV_MV_SAVE {
 			}
 			
 			/*품번이 중복 되지 않는지 조회 해야한다.*/
-			long cnt = daAvMv.getCntByAvNm(AV_NM.toUpperCase().trim());
-			if(cnt>0) {
+			List<AvMv> al=  daAvMv.findByAvNm(AV_NM.toUpperCase().trim());
+			if(al.size()>0) {
 				throw new BizRuntimeException("작품명이 기존에 입력되어있던 작품과 중복됩니다.");
 			}
 			
@@ -160,6 +165,9 @@ public class BR_AV_MV_SAVE {
 			if(PjtUtil.isEmpty(CPTN_YN)) {
 				throw new BizRuntimeException("자막유무가 입력되지 않았습니다.");
 			}	
+			if(PjtUtil.isEmpty(VR_YN)) {
+				throw new BizRuntimeException("VR여부가 입력되지 않았습니다.");
+			}	
 			
 			long L_AV_SEQ =daCmSeq.increate("AV_MV_AV_SEQ");
 			
@@ -169,6 +177,7 @@ public class BR_AV_MV_SAVE {
 					,TTL
 					,CNTNT
 					,MSC_CD
+					,VR_YN
 					,ORD
 					,RMK
 					,CPTN_YN
@@ -184,6 +193,7 @@ public class BR_AV_MV_SAVE {
 			String  TTL 	= PjtUtil.str(rs.TTL);
 			String  CNTNT 	= PjtUtil.str(rs.CNTNT);
 			String  MSC_CD 	= PjtUtil.str(rs.MSC_CD);
+			String  VR_YN 	= PjtUtil.str(rs.VR_YN);
 			String  ORD 	= PjtUtil.str(rs.ORD);		
 			String  RMK 	= PjtUtil.str(rs.RMK);
 			String  CPTN_YN = PjtUtil.str(rs.CPTN_YN);
@@ -202,6 +212,9 @@ public class BR_AV_MV_SAVE {
 			if(PjtUtil.isEmpty(CPTN_YN)) {
 				throw new BizRuntimeException("자막유무가 입력되지 않았습니다.");
 			}	
+			if(PjtUtil.isEmpty(VR_YN)) {
+				throw new BizRuntimeException("VR여부가 입력되지 않았습니다.");
+			}	
 			long L_AV_SEQ =Long.parseLong(AV_SEQ);
 			daAvMv.updateAvMv(
 					L_AV_SEQ
@@ -209,6 +222,7 @@ public class BR_AV_MV_SAVE {
 					,TTL
 					,CNTNT
 					,MSC_CD
+					,VR_YN
 					,ORD
 					,RMK
 					,CPTN_YN

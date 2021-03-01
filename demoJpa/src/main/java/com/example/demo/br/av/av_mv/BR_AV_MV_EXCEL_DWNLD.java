@@ -67,13 +67,13 @@ public class BR_AV_MV_EXCEL_DWNLD {
 		@Schema(name = "CNTNT", example = "내용입니다.", description = "내용")
 		String CNTNT = null;
 		
-		@JsonProperty("LK_CNT")
-		@Schema(name = "LK_CNT", example = "1", description = "좋아요 카운트")
-		String LK_CNT = null;
-		
 		@JsonProperty("MSC_CD")
 		@Schema(name = "MSC_CD", example = "(U-유출,M-모자이크,A-모자이크AI,N-노모)", description = "모자이크 코드")
 		String MSC_CD = null;
+
+		@JsonProperty("VR_YN")
+		@Schema(name = "VR_YN", example = "(Y-VR,N-NO-VR)", description = "VR여부")
+		String VR_YN = null;
 		
 		@JsonProperty("ORD")
 		@Schema(name = "ORD", example = "001", description = "정렬")
@@ -101,15 +101,15 @@ public class BR_AV_MV_EXCEL_DWNLD {
 	@ApiOperation(tags={"AV"},value = "AV작품을 엑셀다운로드한다..", notes = "")
 	@PostMapping(path= "/api/BR_AV_MV_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
-		Page<AvMv>  pg = daAvMv.findAvMv(null);
+		Page<AvMv>  pg = daAvMv.findAvMv(null,null,null);
 		List<AvMv> al=pg.toList();
 		OUT_DS outDs = new OUT_DS();
 		OUT_DATA_ROW row = new OUT_DATA_ROW();
 		row.AV_NM="AV작품명";
 		row.TTL="제목";
 		row.CNTNT="내용";
-		row.LK_CNT="좋아요.카운트";
 		row.MSC_CD="모자이크 코드";
+		row.VR_YN="VR여부";
 		row.ORD="정렬";
 		row.RMK="비고";
 		row.CPTN_YN="자막YN";
@@ -121,8 +121,8 @@ public class BR_AV_MV_EXCEL_DWNLD {
 			row.AV_NM=c.getAvNm();
 			row.TTL=c.getTtl();
 			row.CNTNT=c.getCntnt();
-			row.LK_CNT=String.valueOf(c.getLkCnt());
 			row.MSC_CD=c.getMscCd();
+			row.VR_YN=c.getVrYn();
 			row.ORD=c.getOrd();
 			row.RMK=c.getRmk();
 			row.CPTN_YN=c.getCptnYn();

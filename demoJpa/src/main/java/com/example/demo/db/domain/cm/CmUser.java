@@ -54,9 +54,26 @@ public class CmUser {
 	@Column(nullable = true, length = 4000, name = "rmk")
 	String rmk;
 
+	
+	/*카카오계정 정보(kakao_account)===>  생일, MMDD 형식 */
+	@Column(nullable = true, length = 12, name = "brthday")
+	String brthday;
+
+	/*카카오계정 정보(kakao_account)===>  성별, female/male */
+	@Column(nullable = true, length = 4, name = "gndr")
+	String gndr;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "lst_acc_dtm")
 	Date lstAccDtm;
+
+
+	/*kakao, google, naver. */
+	@Column(nullable = true, length = 4000, name = "sns_gubun")
+	String snsGubun;
+
+	@Column(nullable = true, length = 4000, name = "sns_id")
+	String snsId;
 	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;

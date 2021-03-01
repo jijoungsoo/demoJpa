@@ -3,21 +3,21 @@ package com.example.demo.br.cm.cm_pgm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.db.da.cm.DA_CM_PGM;
+import com.example.demo.db.domain.cm.CmPgm;
+import com.example.demo.exception.BizException;
+import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.utils.PjtUtil;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.db.da.cm.DA_CM_PGM;
-import com.example.demo.db.domain.cm.CmPgm;
-import com.example.demo.exception.BizException;
-import com.example.demo.utils.PjtUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,13 +36,27 @@ public class BR_CM_PGM_FIND {
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
-		@Schema(name = "brRq", example = "", description = "입력 데이터명")
+		@Schema(name = "brRq", example = "IN_DATA", description = "입력 데이터명")
 		String brRq;
 
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
+		@JsonProperty("IN_DATA")
+		@Schema(name="IN_DATA-BR_CM_PGM_FIND", description = "입력 데이터")
+		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
+
+	
+	@ApiModel(value="IN_DATA_ROW-BR_CM_PGM_FIND")
+	@Data
+	static class IN_DATA_ROW {
+		@JsonProperty("CATEGORY")
+		@Schema(name = "CATEGORY", example = "CM", description = "카테고리")
+		String CATEGORY = "";
+	}
+	
 
 	@JsonRootName("OUT_DS")
 	@ApiModel(value="OUT_DS-BR_CM_PGM_FIND")
@@ -97,7 +111,15 @@ public class BR_CM_PGM_FIND {
 	@ApiOperation(tags={"CM_PGM"},value = "프로그램 조회.", notes = "")
 	@PostMapping(path= "/api/BR_CM_PGM_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
-		List<CmPgm>  al =daPgm.findPgm();
+		String  CATEGORY = null;
+		if(inDS.IN_DATA!=null) {
+			if(inDS.IN_DATA.size()>0) {
+				IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
+				CATEGORY 		= PjtUtil.str(rs.CATEGORY);
+			}
+		}
+		
+		List<CmPgm>  al =daPgm.findPgm(CATEGORY);
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
 			CmPgm cm=al.get(i);

@@ -41,6 +41,9 @@ public class AvMv {
 		
 	@Column(nullable = true, name="lk_cnt")
 	int lkCnt;
+
+	@Column(nullable = true, name = "dslk_cnt")
+	long dslkCnt;
 	
 	@Column(nullable = true, length = 5 ,name="ord")
 	String ord;
@@ -50,6 +53,9 @@ public class AvMv {
 	
 	@Column(nullable = false, length = 1 ,name="msc_cd")
 	String mscCd;
+
+	@Column(nullable = false, length = 1 ,name="vr_yn")
+	String vrYn;
 	
 	@Column(nullable = false, length = 1 ,name="cptn_yn")
 	String cptnYn;

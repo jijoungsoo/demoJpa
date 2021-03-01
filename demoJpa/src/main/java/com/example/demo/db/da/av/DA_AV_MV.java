@@ -15,6 +15,7 @@ import com.example.demo.db.repository.av.AvMvRepository;
 import com.example.demo.db.domain.av.AvMv;
 import com.example.demo.db.domain.av.QAvMv;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -29,13 +30,19 @@ public class DA_AV_MV {
 	@Autowired
 	AvMvRepository avMvR;
 	
-	public Page<AvMv> findAvMv(Pageable p) {
+	public Page<AvMv> findAvMv(String MSC_CD , String VR_YN, Pageable p) {
 		JPAQuery<AvMv> c= qf.selectFrom(QAvMv.avMv);
 		c= c.orderBy(
 				QAvMv.avMv.avNm.asc(),
 				QAvMv.avMv.ord.asc(),
 				QAvMv.avMv.avSeq.asc()
 				);
+		if(!PjtUtil.isEmpty(MSC_CD)){
+			c=c.where(QAvMv.avMv.mscCd.eq(MSC_CD));
+		}
+		if(!PjtUtil.isEmpty(VR_YN)){
+			c=c.where(QAvMv.avMv.vrYn.eq(VR_YN));
+		}
 		if(p!=null) {
 			c= c.offset(p.getOffset()); // offset과
 			c= c.limit(p.getPageSize()); // Limit 을 지정할 수 있고			
@@ -53,6 +60,7 @@ public class DA_AV_MV {
 			, String TTL
 			, String CNTNT
 			, String MSC_CD
+			, String VR_YN
 			, String ORD
 			, String RMK
 			, String CPTN_YN
@@ -67,7 +75,9 @@ public class DA_AV_MV {
 				.ttl(TTL)
 				.cntnt(CNTNT)
 				.lkCnt(0)
+				.dslkCnt(0)
 				.mscCd(MSC_CD)
+				.vrYn(VR_YN)
 				.ord(ORD)
 				.rmk(RMK)
 				.cptnYn(CPTN_YN)
@@ -85,6 +95,7 @@ public class DA_AV_MV {
 			, String TTL
 			, String CNTNT
 			, String MSC_CD
+			, String VR_YN
 			, String ORD
 			, String RMK
 			, String CPTN_YN
@@ -101,6 +112,7 @@ public class DA_AV_MV {
 		tmp.setTtl(TTL);
 		tmp.setCntnt(CNTNT);
 		tmp.setMscCd(MSC_CD);
+		tmp.setVrYn(VR_YN);
 		tmp.setOrd(ORD);
 		tmp.setRmk(RMK);
 		tmp.setCptnYn(CPTN_YN);
@@ -116,45 +128,16 @@ public class DA_AV_MV {
 		return avMvR.findById(L_AV_SEQ);
 	}
 	
-	public  long getCntByAvNm(String avNm){
+	public  List<AvMv>  findByAvNm(String avNm){
 		return qf.selectFrom(QAvMv.avMv)
 		.where(QAvMv.avMv.avNm.eq(avNm))
-		.fetchCount();
+		.fetch();
 		
 	}
 	
 	
 	public void rmAvMv(long L_AV_SEQ) {
 		avMvR.deleteById(L_AV_SEQ);
-		
-	}
-
-	public void saveExcelAvMv(String AV_NM
-			, String TTL
-			, String CNTNT
-			, String MSC_CD
-			, String ORD
-			, String RMK
-			, String CPTN_YN
-			, String MK_DT
-			, Long L_SESSION_USER_NO) {
-		
-		List<AvMv> al= qf.selectFrom(QAvMv.avMv)
-				.where(QAvMv.avMv.avNm.eq(AV_NM))
-				.fetch();
-		for(int i=0;i<al.size();i++) {
-			AvMv tmp= al.get(i);
-			tmp.setTtl(TTL);
-			tmp.setCntnt(CNTNT);
-			tmp.setMscCd(MSC_CD);
-			tmp.setOrd(ORD);
-			tmp.setRmk(RMK);
-			tmp.setCptnYn(CPTN_YN);
-			tmp.setMkDt(MK_DT);
-			tmp.setUpdtUsrNo(L_SESSION_USER_NO);
-			tmp.setUpdtDtm(new Date());
-			avMvR.save(tmp);
-		}
 		
 	}
 }

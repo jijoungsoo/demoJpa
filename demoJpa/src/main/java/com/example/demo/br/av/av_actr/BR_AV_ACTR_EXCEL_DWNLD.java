@@ -6,29 +6,20 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.example.demo.ctrl.PAGE_DATA_ROW;
+import com.example.demo.db.da.av.DA_AV_ACTR;
+import com.example.demo.db.domain.av.QAvActr;
+import com.example.demo.exception.BizException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.querydsl.core.Tuple;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.br.av.av_actr.BR_AV_ACTR_FIND.IN_DS;
-import com.example.demo.br.av.av_actr.BR_AV_ACTR_FIND.OUT_DATA_ROW;
-import com.example.demo.br.av.av_actr.BR_AV_ACTR_FIND.OUT_DS;
-import com.example.demo.ctrl.LSESSION_ROW;
-import com.example.demo.ctrl.PAGE_DATA_ROW;
-import com.example.demo.db.da.av.DA_AV_ACTR;
-import com.example.demo.db.da.cm.DA_CM_EXCEL_UPLD;
-import com.example.demo.db.domain.av.QAvActr;
-import com.example.demo.db.domain.cm.CmExcelUpld;
-import com.example.demo.exception.BizException;
-import com.example.demo.exception.BizRuntimeException;
-import com.example.demo.utils.PjtUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.querydsl.core.Tuple;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;

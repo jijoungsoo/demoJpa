@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,12 +22,14 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
+@IdClass(CmExcelUpldExcelSeq.class)  
 @Table(name="tb_cm_excel_upld")
 public class CmExcelUpld {
 	@Id
 	@Column(nullable = false, length = 200 ,name="excel_upld_id")
 	String excelUpldId;
 
+	@Id
 	@Column(nullable = false, name="excel_seq")
 	int excelSeq;
 

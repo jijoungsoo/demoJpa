@@ -33,6 +33,21 @@ public class DA_CM_USER {
 	                .fetch();
 		 return al;
 	}
+
+	public List<CmUser> findCmUserBySnsId(
+		String SNS_GUBUN,
+		String SNS_ID
+
+
+	) {
+		List<CmUser> al =  qf
+	                .selectFrom(QCmUser.cmUser)
+					.where(QCmUser.cmUser.snsGubun.eq(SNS_GUBUN))
+					.where(QCmUser.cmUser.snsId.eq(SNS_ID))
+	                .orderBy(QCmUser.cmUser.crtDtm.desc())
+	                .fetch();
+		 return al;
+	}
 	
 	public CmUser findByUserId(String USER_ID) {
 		CmUser c = cmUserR.findByUserId(USER_ID);
@@ -54,6 +69,9 @@ public class DA_CM_USER {
 			,String EMAIL
 			,String USE_YN
 			,String RMK
+			,String SNS_GUBUN
+			,String SNS_ID
+			,String GNDR
 			,Long L_LSESSION_USER_NO
 			) {
 
@@ -66,6 +84,9 @@ public class DA_CM_USER {
 				.email(EMAIL)
 				.useYn(USE_YN)
 				.rmk(RMK)
+				.snsGubun(SNS_GUBUN)
+				.snsId(SNS_ID)
+				.gndr(GNDR)
 				.lstAccDtm(new Date())
 				.crtUsrNo(L_LSESSION_USER_NO)
 				.updtUsrNo(L_LSESSION_USER_NO)

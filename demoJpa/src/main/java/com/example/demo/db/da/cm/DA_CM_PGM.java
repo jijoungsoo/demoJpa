@@ -4,14 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.db.domain.cm.CmPgm;
+import com.example.demo.db.domain.cm.QCmPgm;
+import com.example.demo.db.repository.cm.CmPgmRepository;
+import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.db.domain.cm.CmPgm;
-import com.example.demo.db.repository.cm.CmPgmRepository;
-import com.example.demo.db.domain.cm.QCmPgm;
-import com.example.demo.exception.BizException;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class DA_CM_PGM {
@@ -24,11 +26,14 @@ public class DA_CM_PGM {
 	@Autowired
 	CmPgmRepository cmPgmR;
 	
-	public List<CmPgm> findPgm() {
-		List<CmPgm> al =  qf
-	                .selectFrom(QCmPgm.cmPgm)
-	                .orderBy(QCmPgm.cmPgm.pgmId.asc())
-	                .fetch();
+	public List<CmPgm> findPgm(String CATEGORY) {
+		JPAQuery<CmPgm> c = qf
+		.selectFrom(QCmPgm.cmPgm)
+		.orderBy(QCmPgm.cmPgm.pgmId.asc());
+		if(!PjtUtil.isEmpty(CATEGORY)){
+			c=c.where(QCmPgm.cmPgm.category.eq(CATEGORY));
+		}
+		List<CmPgm> al =  c.fetch();
 		 return al;
 	}
 	

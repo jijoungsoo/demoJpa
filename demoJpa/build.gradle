@@ -29,7 +29,7 @@ dependencies {
 	implementation 'javax.servlet:jstl'
    	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'   /*jsp */
 	
-	implementation('org.apache.httpcomponents:httpclient')   /*외부api 호출을 위해서 */
+	implementation('org.apache.httpcomponents:httpclient:4.5.13')   /*외부api 호출을 위해서 */
 	
 	
 	implementation 'org.reflections:reflections:0.9.12'  /*메소드 파라미터 name을 얻어오기 위해 달아보았다.*/
@@ -37,8 +37,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3' 
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'  /*jackson-mapper-asl 이건 view 리턴을 data리턴으로 잡아주는 것!!*/
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
-	
-	
+		
 	//implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1' /*log 출력을 위해서   출처: https://goddaehee.tistory.com/207 [갓대희의 작은공간]  */
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     //implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  //이것도 docker에서 위에 compileOnly를 못읽어서 넣어주었다.
@@ -88,8 +87,16 @@ dependencies {
     
     //https://github.com/springfox/springfox
     implementation "io.springfox:springfox-boot-starter:3.0.0"
-    
 
+
+	//html태그를 제거하기위해서 쓰려고함 
+	//https://java2020.com/q/hwprbhse
+	// https://mvnrepository.com/artifact/org.jsoup/jsoup
+	implementation "org.jsoup:jsoup:1.13.1"
+
+    
+	//java9이상 컴파일시 기존에 java8 이전에 포함되었던 이것이 없어서 문제가 된다고 한다.
+	compile "javax.xml.bind:jaxb-api"
 }
 /* 유투브보고 querydsl 설정했다.
 https://www.youtube.com/watch?v=hIw4EuhF9o8

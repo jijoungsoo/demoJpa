@@ -41,7 +41,9 @@ public class BR_CM_MENU_FIND_TREE {
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
 	}
+
 
 	@JsonRootName("OUT_DS")
 	@ApiModel(value="OUT_DS-BR_CM_MENU_FIND_TREE")
@@ -99,7 +101,9 @@ public class BR_CM_MENU_FIND_TREE {
 	})
 	@ApiOperation(tags={"CM_MENU"},value = "메뉴tree 조회.", notes = "")
 	@PostMapping(path= "/api/BR_CM_MENU_FIND_TREE", consumes = "application/json", produces = "application/json")
-	public OUT_DS run(@RequestBody IN_DS inDs) throws BizException {
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
+		
+
 		OUT_DS  outDs =  new OUT_DS();
 		ArrayList<OUT_DATA_ROW>  OUT_DATA =  new ArrayList<OUT_DATA_ROW>();
 		List<CmMenu> al= daMenu.findMenuRoot();//파라미터 사용안함
