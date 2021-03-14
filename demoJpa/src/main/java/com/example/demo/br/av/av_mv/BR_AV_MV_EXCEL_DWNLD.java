@@ -2,16 +2,20 @@ package com.example.demo.br.av.av_mv;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.db.da.av.DA_AV_MV;
 import com.example.demo.db.domain.av.AvMv;
 import com.example.demo.exception.BizException;
+import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -23,8 +27,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
@@ -35,12 +37,28 @@ public class BR_AV_MV_EXCEL_DWNLD {
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
-		@Schema(name = "brRq", example = "", description = "입력 데이터명")
+		@Schema(name = "brRq", example = "IN_DATA", description = "입력 데이터명")
 		String brRq;
 
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
+		@JsonProperty("IN_DATA")
+		@Schema(name="IN_DATA-BR_AV_MV_EXCEL_DWNLD", description = "입력 데이터")
+		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
+	}
+	
+	@ApiModel(value="IN_DATA_ROW-BR_AV_MV_EXCEL_DWNLD")
+	@Data
+	static class IN_DATA_ROW {
+		@JsonProperty("MSC_CD")
+		@Schema(name = "MSC_CD", example = "(U-유출,M-모자이크,A-모자이크AI,N-노모)", description = "모자이크 코드")
+		String MSC_CD = null;
+		
+		@JsonProperty("VR_YN")
+		@Schema(name = "VR_YN", example = "(Y-vr,N-vr아님)", description = "VR여부")
+		String VR_YN = null;
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -101,7 +119,19 @@ public class BR_AV_MV_EXCEL_DWNLD {
 	@ApiOperation(tags={"AV"},value = "AV작품을 엑셀다운로드한다..", notes = "")
 	@PostMapping(path= "/api/BR_AV_MV_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
-		Page<AvMv>  pg = daAvMv.findAvMv(null,null,null);
+		
+		if(inDS.IN_DATA==null) {
+			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
+		}
+		if(inDS.IN_DATA.size()!=1) {
+			throw new BizRuntimeException("[IN_DATA]입력파라미터의 ["+inDS.IN_DATA.size()+"]행수가 잘못되었습니다.");
+		}
+		
+		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
+		String  MSC_CD 		= PjtUtil.str(rs.MSC_CD);
+		String  VR_YN 		= PjtUtil.str(rs.VR_YN);
+
+		Page<AvMv>  pg = daAvMv.findAvMv(MSC_CD,VR_YN,null);
 		List<AvMv> al=pg.toList();
 		OUT_DS outDs = new OUT_DS();
 		OUT_DATA_ROW row = new OUT_DATA_ROW();

@@ -21,9 +21,10 @@ public class DA_CM_EXCEL_UPLD {
 	@Autowired
 	CmExcelFileUpldRepository cmExcelUpldR;
 	
-	public List<CmExcelUpld> findExcelUpld(String excelUpldSeq) {
+	public List<CmExcelUpld> findExcelUpld(String EXCEL_UPLD_ID) {
 		List<CmExcelUpld> al =  qf
 	                .selectFrom(QCmExcelUpld.cmExcelUpld)
+					.where(QCmExcelUpld.cmExcelUpld.excelUpldId.eq(EXCEL_UPLD_ID))
 	                .orderBy(QCmExcelUpld.cmExcelUpld.excelSeq.asc())
 	                .fetch();
 	                

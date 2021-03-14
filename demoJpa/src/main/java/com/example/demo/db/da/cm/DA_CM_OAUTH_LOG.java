@@ -28,9 +28,9 @@ public class DA_CM_OAUTH_LOG {
 	@Autowired
 	CmOauthLogRepository cmOauthLogR;
 
-	public List<CmOauthLog> findCmOauthLogCmCd(String GRP_CD,String USE_YN) {
+	public List<CmOauthLog> findCmOauthLogCmCd() {
 		List<CmOauthLog> al =qf.selectFrom(QCmOauthLog.cmOauthLog)
-								.orderBy(QCmOauthLog.cmOauthLog.seqNo.asc())
+								.orderBy(QCmOauthLog.cmOauthLog.seqNo.desc())
 								.fetch();
 		return al;
 	}
@@ -49,12 +49,12 @@ public class DA_CM_OAUTH_LOG {
 		cmOauthLogR.save(
 			CmOauthLog.builder()
 			.seqNo(L_SEQ_NO)
-		.gbnId(AUTH_ID)
+		.gbnId(GBN_ID)
 		.authId(AUTH_ID)
-		.ncknm(NCK_NM)
+		.nckNm(NCK_NM)
 		.prfImg(PRF_IMG)
 		.thmbImg(THMB_IMG)
-		.email(EMAIL)
+		.eml(EMAIL)
 		.brthday(BRTHDAY)
 		.gndr(GNDR)
 		.crtDtm(new Date()).build());

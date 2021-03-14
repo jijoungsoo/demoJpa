@@ -69,7 +69,17 @@ public class BR_AV_MV_EXCEL_SAVE {
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
 		@Schema(name = "OUT_DATA", title="OUT_DATA-BR_AV_MV_EXCEL_SAVE", description = "출력 데이터")
-		ArrayList<String> OUT_DATA = new ArrayList<String>();
+		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
+	}
+
+	
+	@ApiModel(value="OUT_DATA_ROW-BR_AV_MV_EXCEL_SAVE")
+	@Data
+	static class OUT_DATA_ROW {
+		
+		@JsonProperty("ROW_CNT")
+		@Schema(name = "ROW_CNT", example = "1", description = "반영-수")
+		Long ROW_CNT = null;
 	}
 	
 	@Autowired
@@ -102,6 +112,8 @@ public class BR_AV_MV_EXCEL_SAVE {
 		String FILE_ID = inDS.IN_DATA.get(0).FILE_ID;
 		
 		List<CmExcelUpld>  al = daCmExcelUpld.findExcelUpld(FILE_ID);
+
+		int ROW_CNT=0;
 				
 		for( int i=0;i<al.size();i++) {
 			CmExcelUpld  rs =al.get(i);
@@ -143,7 +155,7 @@ public class BR_AV_MV_EXCEL_SAVE {
 							,MK_DT
 							,L_SESSION_USER_NO
 							);
-					
+							ROW_CNT=ROW_CNT+1;
 				} else {
 					long L_AV_SEQ =daCmSeq.increate("AV_MV_AV_SEQ");
 					daAvMv.createAvMv(L_AV_SEQ
@@ -158,10 +170,16 @@ public class BR_AV_MV_EXCEL_SAVE {
 					,MK_DT
 					,L_SESSION_USER_NO
 					);
+							ROW_CNT=ROW_CNT+1;
 				}
 			}
 		}
 		OUT_DS outDs = new OUT_DS(); 
+
+		OUT_DATA_ROW odr = new OUT_DATA_ROW();
+		odr.ROW_CNT= (long) ROW_CNT;
+	
+		outDs.OUT_DATA.add(odr);
 		return outDs;
 	}
 }

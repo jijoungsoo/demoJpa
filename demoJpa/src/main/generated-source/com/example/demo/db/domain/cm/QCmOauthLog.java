@@ -25,15 +25,13 @@ public class QCmOauthLog extends EntityPathBase<CmOauthLog> {
 
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
-    public final StringPath email = createString("email");
+    public final StringPath eml = createString("eml");
 
     public final StringPath gbnId = createString("gbnId");
 
     public final StringPath gndr = createString("gndr");
 
-    public final DateTimePath<java.util.Date> lstDt = createDateTime("lstDt", java.util.Date.class);
-
-    public final StringPath ncknm = createString("ncknm");
+    public final StringPath nckNm = createString("nckNm");
 
     public final StringPath prfImg = createString("prfImg");
 

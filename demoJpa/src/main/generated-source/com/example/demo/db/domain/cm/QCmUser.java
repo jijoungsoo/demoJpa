@@ -19,11 +19,15 @@ public class QCmUser extends EntityPathBase<CmUser> {
 
     public static final QCmUser cmUser = new QCmUser("cmUser");
 
+    public final StringPath brthday = createString("brthday");
+
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
     public final NumberPath<Long> crtUsrNo = createNumber("crtUsrNo", Long.class);
 
     public final StringPath email = createString("email");
+
+    public final StringPath gndr = createString("gndr");
 
     public final DateTimePath<java.util.Date> lstAccDtm = createDateTime("lstAccDtm", java.util.Date.class);
 

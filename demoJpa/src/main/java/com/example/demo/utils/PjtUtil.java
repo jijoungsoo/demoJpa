@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PjtUtil {
+
 	static DateFormat dateformat1 = new SimpleDateFormat("yyyyMMddHHmmss");
 	public static String getYyyyMMddHHMMSS(java.util.Date inDate) {
 		

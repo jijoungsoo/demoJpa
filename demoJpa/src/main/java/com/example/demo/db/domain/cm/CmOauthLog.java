@@ -52,8 +52,8 @@ public class CmOauthLog {
 	String authId;
 
 	/*사용자 프로퍼티(Property)===>  사용자가 해당 서비스에서 설정한 닉네임 기본 값은 카카오계정 닉네임   */
-	@Column(nullable = true,length = 100, name = "ncknm")
-	String ncknm;
+	@Column(nullable = true,length = 100, name = "nck_nm")
+	String nckNm;
 
 	/*사용자 프로퍼티(Property)===>  프로필 이미지 URL, 640px * 640px 또는 480px * 480px  */
 	@Column(nullable = true,length = 4000, name = "prf_img")
@@ -65,7 +65,7 @@ public class CmOauthLog {
 
 	/*카카오계정 정보(kakao_account)===>  카카오계정 대표 이메일 */
 	@Column(nullable = true, length = 500, name = "eml")
-	String email;
+	String eml;
 	
 	/*카카오계정 정보(kakao_account)===>  생일, MMDD 형식 */
 	@Column(nullable = true, length = 12, name = "brthday")

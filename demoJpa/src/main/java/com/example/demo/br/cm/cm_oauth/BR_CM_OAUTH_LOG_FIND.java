@@ -3,19 +3,19 @@ package com.example.demo.br.cm.cm_oauth;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.ctrl.LSESSION_ROW;
-import com.example.demo.db.da.cm.DA_CM_USER;
-import com.example.demo.db.domain.cm.CmUser;
+import com.example.demo.db.da.cm.DA_CM_OAUTH_LOG;
+import com.example.demo.db.domain.cm.CmOauthLog;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -60,66 +60,49 @@ public class BR_CM_OAUTH_LOG_FIND {
 	@ApiModel(value="OUT_DATA_ROW-BR_CM_OAUTH_LOG_FIND")
 	@Data
 	static class OUT_DATA_ROW {
-		@JsonProperty("USER_NO")
-		@Schema(name = "USER_NO", example = "1", description = "사용자NO")
-		String USER_NO = null;
+		@JsonProperty("SEQ_NO")
+		@Schema(name = "SEQ_NO", example = "1", description = "SEQ_NO")
+		Long SEQ_NO = null;
 		
-		@JsonProperty("USER_NM")
-		@Schema(name = "USER_NM", example = "홍길동", description = "사용자명")
-		String USER_NM = null;
+		@JsonProperty("GBN_ID")
+		@Schema(name = "GBN_ID", example = "google", description = "구분ID")
+		String GBN_ID = null;
 		
-		@JsonProperty("USER_ID")
-		@Schema(name = "USER_ID", example = "admin", description = "사용자ID")
-		String USER_ID = null;
+		@JsonProperty("AUTH_ID")
+		@Schema(name = "AUTH_ID", example = "4616656", description = "인증ID")
+		String AUTH_ID = null;
 		
-		@JsonProperty("USER_PWD")
-		@Schema(name = "USER_PWD", example = "****", description = "패스워드")
-		String USER_PWD = null;
+		@JsonProperty("NCK_NM")
+		@Schema(name = "NCK_NM", example = "가자", description = "닉네임")
+		String NCK_NM = null;
 		
-		@JsonProperty("EMAIL")
-		@Schema(name = "EMAIL", example = "admin@gogo.com", description = "이메일")
-		String EMAIL = null;
-		
-		@JsonProperty("USE_YN")
-		@Schema(name = "USE_YN", example = "(Y,N)", description = "사용여부")
-		String USE_YN = null;
-		
-		@JsonProperty("RMK")
-		@Schema(name = "RMK", example = "비고", description = "비고")
-		String RMK = null;
+		@JsonProperty("PRF_IMG")
+		@Schema(name = "PRF_IMG", example = "abc.jpg", description = "프로필이미지")
+		String PRF_IMG = null;
 
-		@JsonProperty("SNS_GUBUN")
-		@Schema(name = "SNS_GUBUN", example = "kakao, google", description = "SNS로그인 구분")
-		String SNS_GUBUN = null;
+		@JsonProperty("THUMB_IMG")
+		@Schema(name = "THUMB_IMG", example = "abc.jpg", description = "썸네일이미지")
+		String THUMB_IMG = null;
 
-		@JsonProperty("SNS_ID")
-		@Schema(name = "SNS_ID", example = "1", description = "SNS로그인 실별자")
-		String SNS_ID = null;
+		@JsonProperty("EML")
+		@Schema(name = "EML", example = "abc@sadf.cocm", description = "이메일")
+		String EML = null;
 
-		
-		@JsonProperty("LST_ACC_DTM")
-		@Schema(name = "LST_ACC_DTM", example = "202012311640", description = "마지막접속일")
-		String LST_ACC_DTM = null;
-		
-		@JsonProperty("CRT_USR_NO")
-		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
-		String CRT_USR_NO = null;
-		
-		@JsonProperty("UPDT_USR_NO")
-		@Schema(name = "UPDT_USR_NO", example = "1", description = "수정자NO")
-		String UPDT_USR_NO = null;
+		@JsonProperty("BRTH_DAY")
+		@Schema(name = "BRTH_DAY", example = "1231(MMDD)", description = "생일")
+		String BRTH_DAY = null;
+
+		@JsonProperty("GNDR")
+		@Schema(name = "GNDR", example = "MALE,FEMALE", description = "GNDR")
+		String GNDR = null;		
 		
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
-		String CRT_DTM = null;
-		
-		@JsonProperty("UPDT_DTM")
-		@Schema(name = "UPDT_DTM", example = "202012311640", description = "수정일시")
-		String UPDT_DTM = null;
+		String CRT_DTM = null;		
 	}
 	
 	@Autowired
-	DA_CM_USER daCmUser;
+	DA_CM_OAUTH_LOG daCmOathLog;
 
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -130,29 +113,22 @@ public class BR_CM_OAUTH_LOG_FIND {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
-		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
-			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
-		}
-		Long L_USER_NO = Long.parseLong(USER_NO);
 		
-		List<CmUser>  al =daCmUser.findCmUser();
+		List<CmOauthLog>  al =daCmOathLog.findCmOauthLogCmCd();
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
-			CmUser cm=al.get(i);
+			CmOauthLog cm=al.get(i);
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.USER_NO=String.valueOf(cm.getUserNo());
-			row.USER_NM=cm.getUserNm();
-			row.USER_ID=cm.getUserId();
-			row.USER_PWD=cm.getUserPwd();
-			row.EMAIL=cm.getEmail();
-			row.USE_YN=cm.getUseYn();
-			row.RMK=cm.getRmk();			
-			row.SNS_GUBUN=cm.getSnsGubun();		
-			row.SNS_ID=cm.getSnsId();		
-			row.LST_ACC_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getLstAccDtm());
+			row.SEQ_NO=cm.getSeqNo();
+			row.GBN_ID=cm.getGbnId();
+			row.AUTH_ID=cm.getAuthId();
+			row.NCK_NM=cm.getNckNm();
+			row.PRF_IMG=cm.getPrfImg();
+			row.THUMB_IMG=cm.getThmbImg();
+			row.EML=cm.getEml();			
+			row.BRTH_DAY=cm.getBrthday();		
+			row.GNDR=cm.getGndr();		
 			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;
