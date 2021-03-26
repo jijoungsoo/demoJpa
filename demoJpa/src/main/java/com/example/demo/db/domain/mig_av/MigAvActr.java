@@ -30,6 +30,15 @@ public class MigAvActr {
 	@Column(nullable = true,unique=false, length = 1000 ,name="img_s")
 	String imgS;
 
+	@Column(nullable = true,unique=false, length = 1000 ,name="img")
+	String img;
+
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_ls")
+	String imgLs;
+
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_l")
+	String imgL;
+
 	
 	@Column(nullable = true,unique=false, length = 100 ,name="debut_dt")
 	String debutDt;	
@@ -49,9 +58,6 @@ public class MigAvActr {
 
 	@Column(nullable = true,unique=false, length = 100 ,name="name_cn")
 	String nmCn;
-
-	@Column(nullable = true,unique=false, length = 1000 ,name="img")
-	String img;
 
 	@Column(nullable = true,unique=false, length = 100 ,name="birth")
 	String brth;
@@ -73,6 +79,15 @@ public class MigAvActr {
 
 	@Column(nullable = true,unique=false, length = 4000 ,name="dscr")
 	String dscr;	 //배우설명
+
+	@Column(nullable = true,unique=false, length = 100 ,name="size_b")
+	String sizeB;	 //가슴(bust)
+
+	@Column(nullable = true,unique=false, length = 100 ,name="size_w")
+	String sizeW;	 //허리(Waist)
+
+	@Column(nullable = true,unique=false, length = 100 ,name="size_h")
+	String sizeH;	 //엉덩이(hip)
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "crt_dtm")

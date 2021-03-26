@@ -3,7 +3,9 @@ package com.example.demo.br.av.mig_av;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
+import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
@@ -11,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +45,10 @@ public class BR_MIG_AV_MV_FIND {
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
+
+		
+		@JsonProperty("PAGE_DATA")
+		PAGE_DATA_ROW PAGE_DATA;
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -50,6 +58,10 @@ public class BR_MIG_AV_MV_FIND {
 		@JsonProperty("OUT_DATA")
 		@Schema(name="OUT_DATA-BR_MIG_AV_MV_FIND", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
+
+		@JsonProperty("PAGE_DATA")
+		@Schema(name="PAGE_DATA-BR_MIG_AV_ACTR_FIND", description = "페이지 데이터")
+		PAGE_DATA_ROW PAGE_DATA;
 	}
 
 	@ApiModel(value="OUT_DATA_ROW-BR_MIG_AV_MV_FIND")
@@ -144,7 +156,11 @@ public class BR_MIG_AV_MV_FIND {
 	@ApiOperation(tags={"AV"}, value = "AV작품을 조회한다.", notes = "페이징 처리")
 	@PostMapping(path= "/api/BR_MIG_AV_MV_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
-		List<MigAvMv> al=daMigAvMv.findMigAvMv();
+		PAGE_DATA_ROW rs_page =inDS.PAGE_DATA;
+		Pageable p = rs_page.getPageable();
+		
+		Page<MigAvMv> pg=daMigAvMv.findMigAvMv(p);
+		List<MigAvMv> al=pg.toList();
 
 		OUT_DS outDs = new OUT_DS();
 		for (int i = 0; i < al.size(); i++) {
@@ -174,6 +190,8 @@ public class BR_MIG_AV_MV_FIND {
 			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
+		PAGE_DATA_ROW page_data = new PAGE_DATA_ROW(pg);
+		outDs.PAGE_DATA=page_data;
 		return outDs;
 	}
 }

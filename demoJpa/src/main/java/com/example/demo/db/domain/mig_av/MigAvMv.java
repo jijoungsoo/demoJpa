@@ -43,6 +43,25 @@ public class MigAvMv {
 	@Column(nullable = true,unique=false, length = 1000 ,name="img_ns")
 	String imgNs;
 
+
+	//일반이미지   			https://s3.ap-northeast-2.amazonaws.com/img.avdbs.com/av/v0788/n_1412rebd535_a.jpg
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_la")
+	String imgLA;
+
+	//작은일반이미지   		https://s3.ap-northeast-2.amazonaws.com/img.avdbs.com/av/v0788/n_1412rebd535_as.jpg
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_las")
+	String imgLAs;
+
+	//모자이크이미지   		https://s3.ap-northeast-2.amazonaws.com/img.avdbs.com/av/v0788/n_1412rebd535_n.jpg
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_ln")
+	String imgLN;
+
+	//작은모자이크이미지	https://s3.ap-northeast-2.amazonaws.com/img.avdbs.com/av/v0788/n_1412rebd535_ns.jpg
+	@Column(nullable = true,unique=false, length = 1000 ,name="img_lns")
+	String imgLNs;
+
+
+
 	@Column(nullable = true,unique=false, length = 1000 ,name="mv_nm")
 	String mvNm;
 	
@@ -73,6 +92,9 @@ public class MigAvMv {
 
 	@Column(nullable = false,unique=false, length = 1 ,name="best_yn")
 	String bestYn;
+
+	@Column(nullable = true,unique=false, length = 1 ,name="sample_yn")
+	String sampleYn;
 	
 	@Column(nullable = true,unique=false, length = 1000 ,name="series")
 	String series;

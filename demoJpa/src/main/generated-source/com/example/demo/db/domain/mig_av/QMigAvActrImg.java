@@ -25,6 +25,14 @@ public class QMigAvActrImg extends EntityPathBase<MigAvActrImg> {
 
     public final StringPath img = createString("img");
 
+    public final StringPath imgL = createString("imgL");
+
+    public final StringPath imgLs = createString("imgLs");
+
+    public final StringPath imgS = createString("imgS");
+
+    public final NumberPath<Long> ImgSeq = createNumber("ImgSeq", Long.class);
+
     public QMigAvActrImg(String variable) {
         super(MigAvActrImg.class, forVariable(variable));
     }

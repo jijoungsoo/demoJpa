@@ -37,6 +37,10 @@ public class QMigAvActr extends EntityPathBase<MigAvActr> {
 
     public final StringPath img = createString("img");
 
+    public final StringPath imgL = createString("imgL");
+
+    public final StringPath imgLs = createString("imgLs");
+
     public final StringPath imgS = createString("imgS");
 
     public final StringPath nmCn = createString("nmCn");
@@ -48,6 +52,12 @@ public class QMigAvActr extends EntityPathBase<MigAvActr> {
     public final StringPath oNm = createString("oNm");
 
     public final StringPath size = createString("size");
+
+    public final StringPath sizeB = createString("sizeB");
+
+    public final StringPath sizeH = createString("sizeH");
+
+    public final StringPath sizeW = createString("sizeW");
 
     public final StringPath sync = createString("sync");
 

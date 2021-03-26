@@ -24,8 +24,20 @@ import lombok.NoArgsConstructor;
 @Table(name="mig_av_actr_img")
 public class MigAvActrImg {
 	@Id
-	@Column(nullable = false,unique=false, length = 1000 ,name="img")
+	@Column(nullable = false,unique=true, name="img_seq")
+	Long ImgSeq;
+
+	@Column(nullable = false,unique=true, length = 1000 ,name="img")
 	String img;
+	
+	@Column(nullable = false,unique=true, length = 1000 ,name="img_s")
+	String imgS;
+
+	@Column(nullable = false,unique=true, length = 1000 ,name="img_l")
+	String imgL;
+
+	@Column(nullable = false,unique=true, length = 1000 ,name="img_ls")
+	String imgLs;
 
 	@Column(nullable = false,unique=false ,name="actor_idx")
 	long actrIdx;	

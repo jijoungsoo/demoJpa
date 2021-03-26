@@ -23,7 +23,7 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
 
     public final StringPath bestYn = createString("bestYn");
 
-    public final StringPath comp_nm = createString("comp_nm");
+    public final StringPath cmpNm = createString("cmpNm");
 
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
@@ -36,6 +36,14 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
     public final StringPath imgA = createString("imgA");
 
     public final StringPath imgAs = createString("imgAs");
+
+    public final StringPath imgLA = createString("imgLA");
+
+    public final StringPath imgLAs = createString("imgLAs");
+
+    public final StringPath imgLN = createString("imgLN");
+
+    public final StringPath imgLNs = createString("imgLNs");
 
     public final StringPath imgN = createString("imgN");
 
@@ -53,6 +61,8 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
 
     public final StringPath rnTm = createString("rnTm");
 
+    public final StringPath sampleYn = createString("sampleYn");
+
     public final StringPath series = createString("series");
 
     public final StringPath stryKr = createString("stryKr");
@@ -60,6 +70,8 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
     public final StringPath sync = createString("sync");
 
     public final StringPath ttlKr = createString("ttlKr");
+
+    public final DateTimePath<java.util.Date> updtDtm = createDateTime("updtDtm", java.util.Date.class);
 
     public QMigAvMv(String variable) {
         super(MigAvMv.class, forVariable(variable));

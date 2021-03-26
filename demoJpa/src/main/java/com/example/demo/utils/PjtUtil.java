@@ -1,13 +1,26 @@
 package com.example.demo.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import java.util.regex.Matcher;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 public class PjtUtil {
 
@@ -106,6 +119,114 @@ public class PjtUtil {
 		}
 
 		return responseBody.toString();
+	}
+
+	public static String fileDwnld(String url){
+		if(PjtUtil.isEmpty(url)){
+			return null;
+		}
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		String path = null;
+		try {
+            //String url = "https://i2.avdbs.com/actor/a02/2426_n.jpg";
+            
+            HttpGet request = new HttpGet(url);
+			//String uri = request.getURI().toString();
+			//System.out.println("uri=>"+uri);
+			//String auth = request.getURI().getAuthority();
+			//System.out.println("auth=>"+auth);
+			//String fr = request.getURI().getFragment();
+			//System.out.println("fr=>"+fr);
+			//String host = request.getURI().getHost();
+			//System.out.println("host=>"+host);
+			path = request.getURI().getPath();
+			//System.out.println("path=>"+path);  ////actor/a02/2426_n.jpg
+			//String qu = request.getURI().getQuery();
+			//System.out.println("qu=>"+qu);
+
+
+			String filePath = "d:/avdbs.com"+path;
+			String p = filePath.substring(0,filePath.lastIndexOf("/"));
+			String OsDirPath = p.replace("/", Matcher.quoteReplacement(File.separator));
+			File d = new File(OsDirPath);
+			if(!d.exists()){	//폴더가 없으면 생성 상위 폴더 까지 전부
+				System.out.println(OsDirPath);
+				Boolean b =d.mkdirs();
+				System.out.println(b);
+				System.out.println(OsDirPath);
+			}  			
+			d=null;
+			String OsFilePath = filePath.replace("/", Matcher.quoteReplacement(File.separator));
+			//String lastPath = OsFilePath.replaceAll(Matcher.quoteReplacement(File.separator), "/");
+
+			
+			File f = new File(OsFilePath);
+			if(f.exists()==false){
+				System.out.println(OsFilePath);
+				
+				HttpResponse response = client.execute(request);
+				HttpEntity entity = response.getEntity();
+	 
+				int responseCode = response.getStatusLine().getStatusCode();
+	 
+				System.out.println("Request Url: " + request.getURI());
+				System.out.println("Response Code: " + responseCode);
+	 
+				//String filePath2 = "d:\\avdbs.com\\file.zip";
+
+				System.out.println("fileDwnld=>"+url);
+				InputStream is = entity.getContent();
+				FileOutputStream fos = new FileOutputStream(f);
+ 
+				int inByte;
+				while ((inByte = is.read()) != -1) {
+					fos.write(inByte);
+				}
+	 
+				is.close();
+				fos.close();
+				System.out.println(OsFilePath);
+				System.out.println("File Download Completed!!!");
+			}
+			f=null;
+			client.close();
+
+
+ 
+            
+
+
+		
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+			try {
+				client.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("ccccccc");
+				e1.printStackTrace();
+			}
+        } catch (UnsupportedOperationException e) {
+			System.out.println("bbbbb");
+            e.printStackTrace();
+			try {
+				client.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        } catch (IOException e) {
+			System.out.println("aaaaaaaaa");
+            e.printStackTrace();
+			e.printStackTrace();
+			try {
+				client.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
+		return path;
 	}
 
 }
