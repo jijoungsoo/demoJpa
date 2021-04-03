@@ -3,8 +3,8 @@ package com.example.demo.br.cm.cm_msg;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_MSG_TMPL;
-import com.example.demo.db.domain.cm.CmBoard;
 import com.example.demo.db.domain.cm.CmMsgTmpl;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "CM_MSG", description = "공통메시지")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CM_MSG_TMPL_FIND {
 
 	@JsonRootName("IN_DS")
@@ -127,7 +127,7 @@ public class BR_CM_MSG_TMPL_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_MSG"},value = "메시지 템플릿을 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_MSG_TMPL_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_MSG_TMPL_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		String SND_KIND_CD  =  null;
 		String MSG_TMPL_STATUS_CD  =  null;

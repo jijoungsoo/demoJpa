@@ -1,11 +1,8 @@
 package com.example.demo.br.av.av_actr;
 
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.av.DA_AV_ACTR;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
@@ -15,7 +12,11 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_AV_ACTR_SAVE {
 
 	@JsonRootName("IN_DS")
@@ -113,7 +115,7 @@ public class BR_AV_ACTR_SAVE {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"AV"},value = "AV배우를 저장한다.", notes = "")
-	@PostMapping(path= "/api/BR_AV_ACTR_SAVE", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_AV_ACTR_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");

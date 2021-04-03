@@ -1,19 +1,17 @@
-package com.example.demo.bs.mig.mig_av;
+package com.example.demo.br.av.mig_av;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
-import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.exception.BizException;
-import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_DTL_GET;
-import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MK_SYNC;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -27,12 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
-public class BS_MIG_AV_MK_SYNC {
-
+@OpService
+@Service
+public class BS_MIG_AV_ACTR_AGE_FIND {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BS_MIG_AV_MK_SYNC")
+	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_AGE_FIND")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -42,28 +40,50 @@ public class BS_MIG_AV_MK_SYNC {
 		@JsonProperty("brRs")
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
-	}
 
+	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BS_MIG_AV_MK_SYNC")
+	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_AGE_FIND")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BS_MIG_AV_MK_SYNC", description = "출력데이터")
-		ArrayList<String> OUT_DATA = new ArrayList<String>();
+		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_AGE_FIND", description = "출력 데이터")
+		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
-    @Autowired
-	SA_MIG_AV_MK_SYNC br;
+
+	@ApiModel(value="OUT_DATA_ROW-BS_MIG_AV_ACTR_AGE_FIND")
+	@Data
+	static class OUT_DATA_ROW {
+		@JsonProperty("CD")
+		@Schema(name = "CD", example = "1", description = "CD")
+		String CD = null;
+		@JsonProperty("CD_NM")
+		@Schema(name = "CD_NM", example = "1", description = "CD_NM")
+		String CD_NM = null;		
+	}
+	
+	@Autowired
+	DA_MIG_AV_ACTR daMigAvActr;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"AV"}, value = "회사 mig", notes = "AVDBS 배우 마이그")
-	@GetMapping(path= "/api/BS_MIG_AV_MK_SYNC")
-	public OUT_DS run() throws BizException {
-		br.run();
+	@ApiOperation(tags={"AV"}, value = "AV배우 나이를 조회힌다.")
+	//@PostMapping(path= "/api/BS_MIG_AV_ACTR_AGE_FIND", consumes = "application/json", produces = "application/json")
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
+		
+		List<String> al = daMigAvActr.findActrAge();
+
 		OUT_DS outDs = new OUT_DS();
-		return outDs;		
+		for(int i=0;i<al.size();i++){
+			OUT_DATA_ROW row = new OUT_DATA_ROW();
+			String c= al.get(i);
+			row.CD = c;
+			row.CD_NM = c;
+			outDs.OUT_DATA.add(row);
+		}
+	
+		return outDs;
 	}
 }

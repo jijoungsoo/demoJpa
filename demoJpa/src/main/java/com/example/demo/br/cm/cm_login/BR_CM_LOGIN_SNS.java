@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_LOGIN;
 import com.example.demo.db.da.cm.DA_CM_OAUTH_LOG;
 import com.example.demo.db.da.cm.DA_CM_SEQ;
@@ -18,9 +19,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Transactional
-@RestController
+@OpService
+@Service
 @Tag(name = "CM_USER", description = "사용자정보")
 public class BR_CM_LOGIN_SNS {
 
@@ -165,7 +166,7 @@ public class BR_CM_LOGIN_SNS {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_USER"},value = "SNS 사용자 로그인.", notes = "")
-	@PostMapping(path= "/api/BR_CM_LOGIN_SNS", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_LOGIN_SNS", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 	
 

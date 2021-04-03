@@ -3,7 +3,7 @@ package com.example.demo.anotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target(java.lang.annotation.ElementType.METHOD)   /*method 일거라고 선언 */
+@Target(java.lang.annotation.ElementType.TYPE)   /*method 일거라고 선언 */
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)   /*
 	CLASS 일때도 동작안하고
 	SOURCE 일때도 동작안하고

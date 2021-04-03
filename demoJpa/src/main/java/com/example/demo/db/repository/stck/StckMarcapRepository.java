@@ -1,11 +1,12 @@
 package com.example.demo.db.repository.stck;
 
+import com.example.demo.db.domain.marcap.StckMarcap;
+import com.example.demo.db.domain.marcap.StckMarcapId;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.db.domain.marcap.StckMarcap;
-
 @Repository
-public interface StckMarcapRepository  extends JpaRepository< StckMarcap, String> {
+public interface StckMarcapRepository  extends JpaRepository< StckMarcap, StckMarcapId> {
 	
 }

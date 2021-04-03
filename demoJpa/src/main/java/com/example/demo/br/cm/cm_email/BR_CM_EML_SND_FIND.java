@@ -3,21 +3,19 @@ package com.example.demo.br.cm.cm_email;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_EML_SND;
-import com.example.demo.db.domain.cm.CmEmlSnd;
 import com.example.demo.db.domain.cm.QCmEmlSnd;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "CM_EML", description = "공통메일")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CM_EML_SND_FIND {
 
 	@JsonRootName("IN_DS")
@@ -150,7 +149,7 @@ public class BR_CM_EML_SND_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_MSG"},value = "이메일 전송내역을 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_EML_SND_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_EML_SND_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		
 		List<Tuple>  al =daEmlSnd.findEmlSnd();

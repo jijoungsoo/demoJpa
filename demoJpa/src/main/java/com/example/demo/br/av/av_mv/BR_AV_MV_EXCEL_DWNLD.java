@@ -3,6 +3,7 @@ package com.example.demo.br.av.av_mv;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.av.DA_AV_MV;
 import com.example.demo.db.domain.av.AvMv;
 import com.example.demo.exception.BizException;
@@ -13,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_AV_MV_EXCEL_DWNLD {
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_MV_EXCEL_DWNLD")
@@ -117,7 +118,7 @@ public class BR_AV_MV_EXCEL_DWNLD {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"AV"},value = "AV작품을 엑셀다운로드한다..", notes = "")
-	@PostMapping(path= "/api/BR_AV_MV_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_AV_MV_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		
 		if(inDS.IN_DATA==null) {

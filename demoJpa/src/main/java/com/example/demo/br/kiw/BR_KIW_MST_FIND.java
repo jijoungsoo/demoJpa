@@ -3,18 +3,21 @@ package com.example.demo.br.kiw;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.kiw.DA_KIW_STOCK_MST_MAPPER;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -26,12 +29,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-
 @Tag(name = "STCK", description = "주식")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_KIW_MST_FIND {
 
 	@JsonRootName("IN_DS")
@@ -127,7 +128,7 @@ public class BR_KIW_MST_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"STCK"},value = "주식 KIW 마스터 조회.", notes = "")
-	@PostMapping(path= "/api/BR_KIW_MST_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_KIW_MST_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");

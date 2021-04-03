@@ -2,12 +2,8 @@ package com.example.demo.br.stck;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.stck.DA_STCK_SELL;
 import com.example.demo.db.domain.stck.QStBuy;
@@ -19,17 +15,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-
 
 @Slf4j
-@RestController
+@OpService
+@Service
 @Tag(name = "STCK", description = "주식")
 public class BR_STCK_SELL_FIND {
 
@@ -138,7 +139,7 @@ public class BR_STCK_SELL_FIND {
 	DA_STCK_SELL daStckS;
 	
 	@Operation(summary = "판주식 조회.", description = "")
-	@PostMapping(path= "/api/BR_STCK_SELL_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_STCK_SELL_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");

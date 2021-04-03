@@ -1,21 +1,20 @@
-package com.example.demo.bs.av.mig_av;
+package com.example.demo.br.av.mig_av;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
-import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -29,11 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
-public class BS_MIG_AV_MV_FIND_BY_ACTOR_IDX {
+@OpService
+@Service
+public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX")
+	@ApiModel(value="IN_DS-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -46,68 +46,63 @@ public class BS_MIG_AV_MV_FIND_BY_ACTOR_IDX {
 
 		
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX", description = "입력 데이터")
+		@Schema(name="IN_DATA-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX")
+	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX")
 	@Data
 	static class IN_DATA_ROW {
-		@JsonProperty("ACTOR_IDX")
-		@Schema(name = "ACTOR_IDX", example = "1", description = "ACTOR_IDX")
-		String ACTOR_IDX = "";
+		@JsonProperty("DVD_IDX")
+		@Schema(name = "DVD_IDX", example = "1", description = "DVD_IDX")
+		String DVD_IDX = "";
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX")
+	@ApiModel(value="OUT_DS-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BS_MIG_AV_MV_FIND_BY_ACTOR_IDX")
+	@ApiModel(value="OUT_DATA_ROW-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX")
 	@Data
 	static class OUT_DATA_ROW {
-		@JsonProperty("MAIN_ACTOR_IDX")
-		@Schema(name = "MAIN_ACTOR_IDX", example = "1", description = "메인 배우IDX")
-		Long MAIN_ACTOR_IDX = null;
-
 		@JsonProperty("DVD_IDX")
 		@Schema(name = "DVD_IDX", example = "1", description = "DVD_IDX")
 		Long DVD_IDX = null;
 
+		@JsonProperty("IMG_A")
+		@Schema(name = "IMG_A", example = "adf.jpg", description = "갤러리")
+		String IMG_A = null;
 
-		@JsonProperty("MV_NM")
-		@Schema(name = "MV_NM", example = "AV111", description = "품번")
-		String MV_NM = null;
+		@JsonProperty("IMG_AS")
+		@Schema(name = "IMG_AS", example = "adf.jpg", description = "갤러리")
+		String IMG_AS = null;
 
+		@JsonProperty("IMG_LA")
+		@Schema(name = "IMG_LA", example = "adf.jpg", description = "갤러리")
+		String IMG_LA = null;
 
-		@JsonProperty("BEST_YN")
-		@Schema(name = "BEST_YN", example = "Y", description = "베스트 작품")
-		String BEST_YN = null;
-		
-		@JsonProperty("TTL_KR")
-		@Schema(name = "TTL_KR", example = "야호", description = "작품 타이틀 설명")
-		String TTL_KR = null;
+		@JsonProperty("IMG_LAS")
+		@Schema(name = "IMG_LAS", example = "adf.jpg", description = "갤러리")
+		String IMG_LAS = null;
 
-		@JsonProperty("OPEN_DT")
-		@Schema(name = "OPEN_DT", example = "야호", description = "20201231")
-		String OPEN_DT = null;		
+		@JsonProperty("CRT_DTM")
+		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
+		String CRT_DTM = null;
 	}
 	
 	@Autowired
 	DA_MIG_AV_MV daMigAvMv;
-
-	@Autowired
-	SA_MIG_AV_MV_DTL_GET saMigAvMvDtlGet;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"AV"}, value = "AV배우 MV 조회한다.", notes = "페이징 처리")
-	@PostMapping(path= "/api/BS_MIG_AV_MV_FIND_BY_ACTOR_IDX", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"AV"}, value = "DVD 이미지 하나를 조회한다.", notes = "페이징 처리")
+	//@PostMapping(path= "/api/BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
@@ -117,28 +112,25 @@ public class BS_MIG_AV_MV_FIND_BY_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  DVD_IDX 		= PjtUtil.str(rs.DVD_IDX);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)){
-			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
+		if(PjtUtil.isEmpty(DVD_IDX)){
+			throw new BizRuntimeException("DVD_IDX 전달되지 않았습니다.");
 		}
-		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
-		List<MigAvMv> al= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
-
+		Long L_DVD_IDX  = Long.parseLong(DVD_IDX);
+		Optional<MigAvMv>  c = daMigAvMv.findById(L_DVD_IDX);
 		OUT_DS outDs = new OUT_DS();
-		for(int i=0;i<al.size();i++){
-			MigAvMv m = al.get(i);
-			MigAvMv c =saMigAvMvDtlGet.run(m.getDvdIdx());
-
+		if (c.isPresent()) { //있다.
+            MigAvMv m = c.get();
 			OUT_DATA_ROW row = new OUT_DATA_ROW();
-			row.MAIN_ACTOR_IDX = c.getMnActrIdx();
-			row.BEST_YN = c.getBestYn();
-			row.TTL_KR = c.getTtlKr();
-			row.MV_NM = c.getMvNm();
-			row.DVD_IDX = c.getDvdIdx();
-			row.OPEN_DT = c.getOpenDt();
+			row.DVD_IDX = m.getDvdIdx();
+			row.IMG_A  = m.getImgA();
+			row.IMG_AS  = m.getImgAs();
+			row.IMG_LA  = m.getImgLA();
+			row.IMG_LAS  = m.getImgLAs();
+			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 			outDs.OUT_DATA.add(row);
-		}
-		return outDs;
+        } 			
+		return outDs;          
 	}
 }

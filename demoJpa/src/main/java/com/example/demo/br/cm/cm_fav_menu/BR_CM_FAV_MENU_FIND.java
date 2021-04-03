@@ -3,11 +3,7 @@ package com.example.demo.br.cm.cm_fav_menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_FAV_MENU;
 import com.example.demo.db.domain.cm.QCmFavMenu;
 import com.example.demo.db.domain.cm.QCmMenu;
@@ -18,6 +14,10 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "CM_MENU", description = "메뉴")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CM_FAV_MENU_FIND {
 
 	@JsonRootName("IN_DS")
@@ -124,7 +125,7 @@ public class BR_CM_FAV_MENU_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_MENU"},value = "즐겨찾기 메뉴 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_FAV_MENU_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_FAV_MENU_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		List<com.querydsl.core.Tuple>   al =daFavM.findFavMenu();
 		OUT_DS outDs = new OUT_DS();

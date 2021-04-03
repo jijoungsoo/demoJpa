@@ -3,10 +3,11 @@ package com.example.demo;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.sql.JPASQLQuery;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Configuration
 public class QuerydslConfiguration {

@@ -27,10 +27,6 @@ public class QStckMarcap extends EntityPathBase<StckMarcap> {
 
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
-    public final NumberPath<Double> frgnCnt = createNumber("frgnCnt", Double.class);
-
-    public final NumberPath<Double> frgnRt = createNumber("frgnRt", Double.class);
-
     public final NumberPath<Integer> highAmt = createNumber("highAmt", Integer.class);
 
     public final NumberPath<Integer> lowAmt = createNumber("lowAmt", Integer.class);
@@ -49,7 +45,7 @@ public class QStckMarcap extends EntityPathBase<StckMarcap> {
 
     public final NumberPath<Long> totalMrktAmt = createNumber("totalMrktAmt", Long.class);
 
-    public final NumberPath<Double> totalMrktAmtrt = createNumber("totalMrktAmtrt", Double.class);
+    public final NumberPath<Double> totalMrktAmtRt = createNumber("totalMrktAmtRt", Double.class);
 
     public final NumberPath<Long> tradeAmt = createNumber("tradeAmt", Long.class);
 

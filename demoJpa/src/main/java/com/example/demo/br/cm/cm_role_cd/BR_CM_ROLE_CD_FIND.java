@@ -3,6 +3,7 @@ package com.example.demo.br.cm.cm_role_cd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_ROLE_CD;
 import com.example.demo.db.domain.cm.CmRoleCd;
 import com.example.demo.exception.BizException;
@@ -11,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "CM_ROLE_CD", description = "역할코드")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CM_ROLE_CD_FIND {
 
 	@JsonRootName("IN_DS")
@@ -112,7 +113,7 @@ public class BR_CM_ROLE_CD_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_ROLE_CD"},value = "역할코드를 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_ROLE_CD_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_ROLE_CD_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS  run(@RequestBody IN_DS inDS) throws BizException {
 		String USE_YN=null;
 

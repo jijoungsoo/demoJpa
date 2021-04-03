@@ -1,11 +1,8 @@
 package com.example.demo.br.cm.cm_user;
 
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_USER;
 import com.example.demo.exception.BizException;
@@ -13,6 +10,11 @@ import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -24,11 +26,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 @Tag(name = "CM_USER", description = "사용자정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CHANGE_USER_PWD {
 
 	@JsonRootName("IN_DS")
@@ -81,7 +82,7 @@ public class BR_CHANGE_USER_PWD {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_USER"},value = "사용자 패스워드 변경.", notes = "")
-	@PostMapping(path= "/api/BR_CHANGE_USER_PWD", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CHANGE_USER_PWD", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);

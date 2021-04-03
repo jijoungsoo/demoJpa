@@ -76,21 +76,11 @@ public class StckMarcap {
 	
 	/*MarcapRatio 시가총액비중(%) */
 	@Column(nullable = true,  name="total_mrkt_amt_rt")
-	Double totalMrktAmtrt;
+	Double totalMrktAmtRt;
 	
 	/*Stocks 상장주식수 */
 	@Column(nullable = true,  name="stock_cnt")
 	Double stockCnt;
-	
-	
-	/*ForeignShares 외국인 보유주식수  */
-	@Column(nullable = true, length = 8 , name="frgn_cnt")
-	Double frgnCnt;
-	
-		
-	/*ForeignRatio 외국인 지분율(%)  */
-	@Column(nullable = true, length = 8 , name="frgn_rt")
-	Double frgnRt;
 	
 	@Column(nullable = true, name="rnk")
 	Integer rnk;

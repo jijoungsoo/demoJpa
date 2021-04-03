@@ -2,6 +2,7 @@ package com.example.demo.br.cm.cm_role_cd;
 
 import java.util.ArrayList;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_USER_ROLE_CD;
 import com.example.demo.exception.BizException;
@@ -11,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "CM_ROLE_CD", description = "역할코드")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_CM_USER_ROLE_CD_SAVE {
 
 	@JsonRootName("IN_DS")
@@ -95,7 +96,7 @@ public class BR_CM_USER_ROLE_CD_SAVE {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_ROLE_CD"},value = "역할-사용자맵핑을 저장한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_USER_ROLE_CD_SAVE", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_USER_ROLE_CD_SAVE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");

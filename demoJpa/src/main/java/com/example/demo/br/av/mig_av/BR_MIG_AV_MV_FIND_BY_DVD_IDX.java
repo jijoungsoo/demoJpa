@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.exception.BizException;
@@ -14,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 	
 	@JsonRootName("IN_DS")
@@ -254,7 +255,7 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"AV"}, value = "AV작품을 조회한다.", notes = "페이징 처리")
-	@PostMapping(path= "/api/BR_MIG_AV_MV_FIND_BY_DVD_IDX", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_MIG_AV_MV_FIND_BY_DVD_IDX", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");

@@ -2,11 +2,8 @@ package com.example.demo.br.stck;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.stck.DA_STCK_MARCAP;
 import com.example.demo.db.domain.marcap.StckMarcap;
@@ -16,17 +13,21 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-
 
 @Slf4j
-@RestController
+@OpService
+@Service
 @Tag(name = "STCK", description = "주식")
 public class BR_STCK_MARCAP_FIND {
 
@@ -127,12 +128,7 @@ public class BR_STCK_MARCAP_FIND {
 		@JsonProperty("STOCK_CNT")
 		@Schema(name = "STOCK_CNT", example = "admin@gogo.com", description = "이메일")
 		String STOCK_CNT = null;
-		@JsonProperty("FRGN_CNT")
-		@Schema(name = "FRGN_CNT", example = "admin@gogo.com", description = "이메일")
-		String FRGN_CNT = null;
-		@JsonProperty("FRGN_RT")
-		@Schema(name = "FRGN_RT", example = "admin@gogo.com", description = "이메일")
-		String FRGN_RT = null;
+
 		@JsonProperty("RNK")
 		@Schema(name = "RNK", example = "admin@gogo.com", description = "이메일")
 		String RNK = null;
@@ -148,7 +144,7 @@ public class BR_STCK_MARCAP_FIND {
 	DA_STCK_MARCAP daStckM;
 
 	@Operation(summary = "marcap 주식정보 조회.", description = "")
-	@PostMapping(path= "/api/BR_STCK_MARCAP_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_STCK_MARCAP_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
@@ -199,10 +195,8 @@ public class BR_STCK_MARCAP_FIND {
 			row.HIGH_AMT= c.getHighAmt().toString();
 			row.LOW_AMT= c.getLowAmt().toString();
 			row.TOTAL_MRKT_AMT= c.getTotalMrktAmt().toString();
-			row.TOTAL_MRKT_AMT_RT= c.getTotalMrktAmtrt().toString();
+			row.TOTAL_MRKT_AMT_RT= c.getTotalMrktAmtRt().toString();
 			row.STOCK_CNT= c.getStockCnt().toString();
-			row.FRGN_CNT= c.getFrgnCnt().toString();
-			row.FRGN_RT= c.getFrgnRt().toString();
 			row.RNK= c.getRnk().toString();
 			
 			row.CRT_DTM= PjtUtil.getYyyyMMddHHMMSS(c.getCrtDtm());

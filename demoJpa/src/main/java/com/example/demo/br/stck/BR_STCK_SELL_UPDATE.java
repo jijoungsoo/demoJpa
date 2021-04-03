@@ -1,10 +1,8 @@
 package com.example.demo.br.stck;
 
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.stck.DA_STCK_SELL;
 import com.example.demo.exception.BizException;
@@ -12,6 +10,9 @@ import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@RestController
+@OpService
+@Service
 @Tag(name = "STCK", description = "주식")
 public class BR_STCK_SELL_UPDATE {
 
@@ -97,8 +99,8 @@ public class BR_STCK_SELL_UPDATE {
 	DA_STCK_SELL daStckS;
 		
 	@Operation(summary = "판주식 수정.", description = "")
-	@PostMapping(path= "/api/BR_STCK_SELL_UPDATE", consumes = "application/json", produces = "application/json")
-	public OUT_DS updateStckSell(IN_DS inDS) throws BizException {
+	//@PostMapping(path= "/api/BR_STCK_SELL_UPDATE", consumes = "application/json", produces = "application/json")
+	public OUT_DS run(IN_DS inDS) throws BizException {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}

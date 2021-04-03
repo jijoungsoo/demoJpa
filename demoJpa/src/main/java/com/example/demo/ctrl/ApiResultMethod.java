@@ -1,4 +1,5 @@
 package com.example.demo.ctrl;
+import java.lang.reflect.Method;
 
 
 
@@ -7,6 +8,7 @@ package com.example.demo.ctrl;
 public class ApiResultMethod {
 	public String className =null;
 	public String methodName =null;
+	public Method method =null;
 	//public LinkedHashMap<String ,Class<?>> parameters= new  LinkedHashMap<String ,Class<?>>();   /*순서가 보장되야해서 이렇게 한다.*/  
 	//public Class<?> returnType =null;
 	/*

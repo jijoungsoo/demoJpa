@@ -1,6 +1,8 @@
 package com.example.demo.db.domain.marcap;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Id;
 
 import lombok.Data;
@@ -11,11 +13,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class StckMarcapId implements Serializable {
-	@EqualsAndHashCode.Include
+
 	@Id
+	@Column(nullable = false, length = 9 ,name="stock_cd")
 	String stockCd;
 	
-	@EqualsAndHashCode.Include
+	/*date 날자 */
 	@Id
-	String stockDt;	
+	@Column(nullable = false, length = 8 , name="stock_dt")
+	String stockDt;
 }

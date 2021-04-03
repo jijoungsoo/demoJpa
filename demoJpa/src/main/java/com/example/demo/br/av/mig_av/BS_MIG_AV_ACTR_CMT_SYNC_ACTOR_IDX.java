@@ -1,19 +1,18 @@
-package com.example.demo.bs.mig.mig_av;
+package com.example.demo.br.av.mig_av;
 
 import java.util.ArrayList;
 
-import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
+import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
-import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_DTL_GET;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_CMT_SYNC;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -27,11 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
-public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
+@OpService
+@Service
+public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_BY_ACTOR_IDX")
+	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -42,39 +42,42 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 		@Schema(name = "brRs", example = "OUT_DATA", description = "출력 데이터명")
 		String brRs;
 
+		
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BS_MIG_AV_ACTR_IMG_FIND_BY_ID", description = "입력 데이터")
+		@Schema(name="IN_DATA-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_ACTR_BY_ACTOR_IDX")
+	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("ACTOR_IDX")
 		@Schema(name = "ACTOR_IDX", example = "1", description = "ACTOR_IDX")
 		String ACTOR_IDX = "";
+
+		@JsonProperty("SYNC_YN")
+		@Schema(name = "SYNC_YN", example = "Y, N", description = "전체싱크여부")
+		String SYNC_YN = "";
+		
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_BY_ACTOR_IDX")
+	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_BY_ACTOR_IDX", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
 	@Autowired
-	DA_MIG_AV_ACTR daMigAvActr;
-
-    @Autowired
-	SA_MIG_AV_ACTR_DTL_GET br;
+	SA_MIG_AV_ACTR_CMT_SYNC saMigAvActrCmtSync;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"AV"}, value = "AV배우 하나를 재 싱크한다.", notes = "")
-	@PostMapping(path= "/api/BS_MIG_AV_ACTR_BY_ACTOR_IDX", consumes = "application/json", produces = "application/json")
+	@ApiOperation(tags={"AV"}, value = "AV배우 코멘트를 싱크한다.")
+	//@PostMapping(path= "/api/BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
@@ -85,13 +88,19 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
 		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  SYNC_YN 		= PjtUtil.str(rs.SYNC_YN);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)) {
-			throw new BizRuntimeException("["+ACTOR_IDX+"]가 비어있습니다.");
+		if(PjtUtil.isEmpty(ACTOR_IDX)){
+			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
-		Long L_ACTOR_IDX = Long.parseLong(ACTOR_IDX);
-		br.run(L_ACTOR_IDX,true);//상태가 N이면 업데이트
+		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
+		try {
+			saMigAvActrCmtSync.run(L_ACTOR_IDX,SYNC_YN);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		OUT_DS outDs = new OUT_DS();
-		return outDs;		
+		return outDs;
 	}
 }

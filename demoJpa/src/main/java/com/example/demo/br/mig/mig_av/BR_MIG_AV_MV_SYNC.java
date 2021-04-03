@@ -1,4 +1,4 @@
-package com.example.demo.bs.mig.mig_av;
+package com.example.demo.br.mig.mig_av;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_GEN;
@@ -30,10 +31,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -49,7 +49,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_MIG_AV_MV_SYNC {
 	
 	@JsonRootName("IN_DS")
@@ -91,8 +92,8 @@ public class BR_MIG_AV_MV_SYNC {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"AV"}, value = "AVDBS 배우 마이그", notes = "AVDBS 배우 마이그")
-	@GetMapping(path= "/api/BR_MIG_AV_MV_SYNC")
-	public OUT_DS run() throws BizException {
+	//@GetMapping(path= "/api/BR_MIG_AV_MV_SYNC")
+	public OUT_DS run(IN_DS inDs) throws BizException {
 
         List<MigAvMv> al = daMigAvMv.findMigAvMvN();
 		for(var i=0;i<al.size();i++){

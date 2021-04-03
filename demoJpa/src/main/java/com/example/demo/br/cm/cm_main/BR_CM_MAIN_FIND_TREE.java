@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.cm.DA_CM_MAIN;
 import com.example.demo.db.domain.cm.CmMenu;
 import com.example.demo.exception.BizException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,7 +25,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@OpService
+@Service
 @Tag(name = "CM_MAIN", description = "메인로딩")
 public class BR_CM_MAIN_FIND_TREE {
 	
@@ -99,7 +100,7 @@ public class BR_CM_MAIN_FIND_TREE {
 			@Content(mediaType = "application/json", schema = @Schema(
 					implementation = OUT_DS.class)) }) 
 	})
-	@PostMapping(path= "/api/BR_CM_MAIN_FIND_TREE", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_CM_MAIN_FIND_TREE", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDs) throws BizException {
 		OUT_DS  outDs =  new OUT_DS();
 		ArrayList<OUT_DATA_ROW>  OUT_DATA =  new ArrayList<OUT_DATA_ROW>();

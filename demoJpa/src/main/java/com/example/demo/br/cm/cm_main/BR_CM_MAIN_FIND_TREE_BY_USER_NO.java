@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.LSESSION_ROW;
 import com.example.demo.db.da.cm.DA_CM_MENU_ROLE_CD_MAPPER;
 import com.example.demo.exception.BizRuntimeException;
@@ -13,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,14 +28,15 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@OpService
+@Service
 @Tag(name = "CM_MAIN", description = "메인로딩")
 public class BR_CM_MAIN_FIND_TREE_BY_USER_NO {
 	
 	@JsonRootName("IN_DS")
 	@Schema(name = "IN_DS-BR_CM_MAIN_FIND_TREE_BY_USER_NO")
 	@Data
-	static class IN_DS {
+	 static class IN_DS {
 		@JsonProperty("brRq")
 		@Schema(name = "brRq", example = "", description = "입력 데이터명")
 		String brRq;
@@ -50,7 +52,7 @@ public class BR_CM_MAIN_FIND_TREE_BY_USER_NO {
 	@JsonRootName("OUT_DS")
 	@Schema(name="OUT_DS-BR_CM_MAIN_FIND_TREE_BY_USER_NO")
 	@Data
-	static class OUT_DS {
+	 static class OUT_DS {
 		@JsonProperty("OUT_DATA")
 		@Schema(name="OUT_DATA-BR_CM_MAIN_FIND_TREE_BY_USER_NO", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
@@ -102,8 +104,8 @@ public class BR_CM_MAIN_FIND_TREE_BY_USER_NO {
 		@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"CM_MAIN"},value = "사용자NO(역할별)메인 메뉴를 조회한다.", notes = "")
-	@PostMapping(path= "/api/BR_CM_MAIN_FIND_TREE_BY_USER_NO", consumes = "application/json", produces = "application/json")
-	public OUT_DS run(@RequestBody IN_DS inDS) throws Exception {
+	//@PostMapping(path= "/api/BR_CM_MAIN_FIND_TREE_BY_USER_NO", consumes = "application/json", produces = "application/json")
+	public @ResponseBody OUT_DS run(@RequestBody IN_DS inDS) throws Exception {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}

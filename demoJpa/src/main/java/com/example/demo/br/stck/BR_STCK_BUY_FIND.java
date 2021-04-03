@@ -2,12 +2,8 @@ package com.example.demo.br.stck;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.stck.DA_STCK_BUY;
 import com.example.demo.db.domain.kiw.QKiwStockMst;
@@ -18,9 +14,15 @@ import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,11 +32,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-
 @Tag(name = "STCK", description = "주식")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_STCK_BUY_FIND {
 
 	@JsonRootName("IN_DS")
@@ -145,7 +146,7 @@ public class BR_STCK_BUY_FIND {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"STCK"},value = "산주식 조회", notes = "")
-	@PostMapping(path= "/api/BR_STCK_BUY_FIND", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BR_STCK_BUY_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.PAGE_DATA==null) {
 			throw new BizRuntimeException("[PAGE_DATA]입력파라미터가 전달되지 않았습니다.");
@@ -166,13 +167,13 @@ public class BR_STCK_BUY_FIND {
 			row.STOCK_CD= c.get(QStBuy.stBuy.stockCd);
 			row.STOCK_NM= c.get(QStBuy.stBuy.stockNm);
 			row.BUY_AMT= c.get(QStBuy.stBuy.amt).toString();
-			row.CURR_AMT= c.get(QKiwStockMst.kiwStockMst.clsAmt).toString();
+			row.CURR_AMT= c.get(Expressions.numberPath(Integer.class,"cls_amt")).toString();
 			row.DIFF_AMT= 
 					String.valueOf(
-					c.get(QKiwStockMst.kiwStockMst.clsAmt)-c.get(QStBuy.stBuy.amt)
+					c.get(Expressions.numberPath(Integer.class,"cls_amt"))-c.get(QStBuy.stBuy.amt)
 					);
 			row.BNFT_RT= 
-					String.format("%.2f", ((double)(c.get(QKiwStockMst.kiwStockMst.clsAmt)-c.get(QStBuy.stBuy.amt))
+					String.format("%.2f", ((double)(c.get(Expressions.numberPath(Integer.class,"cls_amt"))-c.get(QStBuy.stBuy.amt))
 					/c.get(QStBuy.stBuy.amt)*100)
 					);
 			row.CNT= c.get(QStBuy.stBuy.cnt).toString();
@@ -183,14 +184,13 @@ public class BR_STCK_BUY_FIND {
 					);
 			row.TOT_BAL_CURR_AMT= 
 					String.valueOf(
-					c.get(QStBuy.stBuy.balCnt)*c.get(QKiwStockMst.kiwStockMst.clsAmt)
+					c.get(QStBuy.stBuy.balCnt)*c.get(Expressions.numberPath(Integer.class,"cls_amt"))
 					);
 			row.TOT_DIFF_BAL_AMT=
 					String.valueOf(
-					(c.get(QStBuy.stBuy.balCnt)*c.get(QKiwStockMst.kiwStockMst.clsAmt))
+					(c.get(QStBuy.stBuy.balCnt)*c.get(Expressions.numberPath(Integer.class,"cls_amt")))
 					-(c.get(QStBuy.stBuy.balCnt)*c.get(QStBuy.stBuy.amt))
 					);
-			
 			row.FEE= c.get(QStBuy.stBuy.fee).toString();
 			row.RMK= c.get(QStBuy.stBuy.rmk);
 			row.TOT_AMT= c.get(QStBuy.stBuy.totAmt).toString();

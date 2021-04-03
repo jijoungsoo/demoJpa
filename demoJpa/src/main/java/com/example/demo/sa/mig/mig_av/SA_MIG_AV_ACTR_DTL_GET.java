@@ -9,9 +9,12 @@ import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_CMT;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_IMG;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
+import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_ACTR_MAIN;
 import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvActrImg;
 import com.example.demo.db.domain.mig_av.MigAvMv;
+import com.example.demo.db.domain.mig_av.MigAvMvActrMain;
+import com.example.demo.db.domain.mig_av.MigAvMvActrMainIdx;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 
@@ -28,9 +31,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SA_MIG_AV_ACTR_DTL_GET {
@@ -47,12 +50,21 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 
     @Autowired
 	DA_MIG_AV_MV daMigAvMv;
+
+    @Autowired
+	DA_MIG_AV_MV_ACTR_MAIN daMigAvMvActrMain;
+
+    @Autowired
+    SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
     
     public MigAvActr run(Long L_ACTOR_IDX,Boolean sync) throws BizException  {
         Optional<MigAvActr> c = daMigAvActr.findById(L_ACTOR_IDX);
         if (c.isPresent()) { //있다.
             MigAvActr m = c.get();
             List<MigAvMv> al =daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
+            if(al.size()==0){
+                sync=true;
+            }
             if(al.size()>0 && PjtUtil.isEmpty(al.get(0).getImgLA())){
                 sync=true;
             }
@@ -92,7 +104,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         return m;
     }
 
-	public HashMap<String, Object> getActor(Long ACTOR_IDX)  {
+	public HashMap<String, Object> getActor(Long L_ACTOR_IDX) throws BizException  {
         HashMap<String, Object> result = new HashMap<String, Object>();
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setConnectTimeout(10000); // 타임아웃 설정 5초
@@ -101,7 +113,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
+        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
 
         headers.add("Cookie", "adult_chk=1; user_nickname=dd; member_idx= 11;");
@@ -145,8 +157,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         for(Element img : other_photo_list) {
         arr_img.add(img.attr("src"));            
         }
-        System.out.println("ACTOR_IDX");
-        System.out.println(ACTOR_IDX);
+        System.out.println("L_ACTOR_IDX");
+        System.out.println(L_ACTOR_IDX);
         result.put("OTHER_PHOTO", arr_img);
 
 
@@ -196,89 +208,33 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 }
                 
             }
+            updtMv( L_ACTOR_IDX, dvd_info);
             for(int i=2 ;i<=page_count;i++){
                 try {
-                    Thread.sleep(3000);
+                    if(page_count>4){
+                        Thread.sleep(3000);
+                    } else {
+                        Thread.sleep(1000);
+                    }
+                    
                 } catch(Exception e){
                     e.printStackTrace();
                 }
-                ArrayList<HashMap<String,String>> dvd_tmp =this.getPageDvd(ACTOR_IDX , i);
-                dvd_info.addAll(dvd_tmp);
+                getPageDvd(L_ACTOR_IDX , i);
             }
-            result.put("DVD_INFO", dvd_info);
-
-            //mention
-            ArrayList<HashMap<String,Object>> mention = new ArrayList<HashMap<String,Object>>();
-            Elements  mention_cnt = doc.getElementById("commlist").select(".page_navi.shw-640-over").select("strong");
-            System.out.println("aaaaa");
-
-            if(!PjtUtil.isEmpty(mention_cnt.text())){
-                System.out.println(mention_cnt.text().split("/")[1]);
-                String page_cnt = mention_cnt.text().split("/")[1];
-                int i_page_cnt = Integer.parseInt(page_cnt.trim());
-                System.out.println("i_page_cnt=>"+i_page_cnt);
-                for(int i=1;i<=i_page_cnt;i++){
-
-                    
-                    HttpHeaders headers2 = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    String url2 = "https://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
-                    
-                    UriComponentsBuilder uriBuilder2 = UriComponentsBuilder.fromHttpUrl(url2);
-                    headers2.add("x-pjax", "true");
-                    headers2.add("x-requested-with", "XMLHttpRequest");
-                    headers2.add("Cookie",  "adult_chk=1; user_nickname=dd; member_idx= 11;");
-        
-                    HttpEntity<?> entity2 = new HttpEntity<>(headers2);
-                    ResponseEntity<String> resultMap2 = restTemplate.exchange(uriBuilder2.build().toString(), HttpMethod.GET,entity2, String.class);
-                    String tmp2 = resultMap2.getBody();
-                    Document doc2 = Jsoup.parseBodyFragment(tmp2);
-                    Elements  mention_row = doc2.getElementsByClass("mention").select(".row");
-                    for(Element m : mention_row) {
-                        HashMap<String,Object> map = new HashMap<String,Object>();
-                        String cmt_idx = m.attr("data-idx");
-                        String cmt = m.select(".comment").text();
-                        String writer = m.select(".writer").text();
-                        String lk_cnt = m.select(".like").select(".cnt").text();
-                        String dslk_cnt = m.select(".dislike").select(".cnt").text();
-                        
-                        
-            
-                        map.put("CMT_IDX", cmt_idx);
-                        map.put("CMT", cmt);
-                        map.put("WRITER", writer);
-                        map.put("LK_CNT", lk_cnt);
-                        map.put("DSLK_CNT", dslk_cnt);
-            
-                        mention.add(map);
-                        
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        
-            result.put("ACTOR_CMT", mention);
-       
-
-            
-
         }
         
         return result;
     }
 
-    private ArrayList<HashMap<String,String>> getPageDvd(Long aCTOR_IDX , int i){
+    private void getPageDvd(Long L_ACTOR_IDX , int i) throws BizException{
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setConnectTimeout(10000); // 타임아웃 설정 5초
         factory.setReadTimeout(10000);// 타임아웃 설정 5초
         RestTemplate restTemplate = new RestTemplate(factory);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+aCTOR_IDX+"&_page="+i;
+        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
         //headers2.add("x-pjax", "true");
         //headers2.add("x-requested-with", "XMLHttpRequest");
@@ -308,100 +264,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 dvd_info.add(m);
             }
         }
-        return dvd_info;
+        updtMv( L_ACTOR_IDX, dvd_info);
     }
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    private void updtActor(Long L_ACTR_IDX) throws BizException{
-        HashMap<String, Object> tmp = this.getActor(L_ACTR_IDX);
-        String  NM_EN    = tmp.get("INNER_NAME_EN").toString();
-        String  NM_CN    = tmp.get("INNER_NAME_CN").toString();
-        String  PRF_IMG  = tmp.get("PRF_IMG").toString();
-        String  BRTH     = tmp.get("BIRTH").toString();   //1993-08-16
-        String  HEIGHT   = tmp.get("HEIGHT").toString();  //159
-        String  SIZE     = tmp.get("SIZE").toString();  //B83 / W57 / H88
-        String  BRA_SIZE = tmp.get("BRA_SIZE").toString();  //F
-        String  ACTOR_ONM = tmp.get("ACTOR_ONM").toString();  //다른이름
-        String  ACTOR_DSCR_TITLE = tmp.get("ACTOR_DSCR_TITLE").toString();  //배우설명 포인트
-        String  ACTOR_DSCR_DSCR = tmp.get("ACTOR_DSCR_DSCR").toString();  //배우설명
-
-
-
-        daMigAvActr.updtMigAvActr(L_ACTR_IDX, 
-        NM_EN, 
-        NM_CN, 
-        PRF_IMG, 
-        BRTH, 
-        HEIGHT, 
-        SIZE, 
-        BRA_SIZE,
-        ACTOR_ONM,
-        ACTOR_DSCR_TITLE,
-        ACTOR_DSCR_DSCR
-        );
-        ArrayList<String> arr_img = (ArrayList<String>) tmp.get("OTHER_PHOTO");
-        if(arr_img!=null){
-            for(var j=0;j<arr_img.size();j++){
-                String img_s = arr_img.get(j);
-                List<MigAvActrImg> al =daMigAvActrImg.findByImgS(img_s);
-                if (al.size()==0) {
-                    String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
-				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-				    String IMG_L =PjtUtil.fileDwnld(IMG);
-				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
-                    daMigAvActrImg.crtMigAvActrImg(L_ACTR_IDX
-                    , IMG
-                    , IMG_S
-                    , IMG_L
-                    , IMG_LS    
-                    );
-                }  else {
-                    Long L_IMG_SEQ = al.get(0).getImgSeq();
-                    String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
-				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-				    String IMG_L =PjtUtil.fileDwnld(IMG);
-				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
-                    daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
-                    , IMG
-                    , IMG_S
-                    , IMG_L
-                    , IMG_LS    
-                    );
-                }
-            }
-        }
-        ArrayList<HashMap<String,String>> arr_cmt = (ArrayList<HashMap<String,String>>) tmp.get("ACTOR_CMT");
-        if(arr_cmt!=null){
-            for(var j=0;j<arr_cmt.size();j++){
-                HashMap<String,String> m = arr_cmt.get(j);
-                String CMT_IDX  =   m.get("CMT_IDX");
-                String CMT      =   m.get("CMT");
-                String WRITER   =   m.get("WRITER");
-                String LK_CNT   =   m.get("LK_CNT");
-                String DSLK_CNT =   m.get("DSLK_CNT");
-
-                Long L_CMT_IDX = Long.parseLong(CMT_IDX);
-                Long L_LK_CNT = 0L;
-                if(!PjtUtil.isEmpty(LK_CNT)){
-                    L_LK_CNT = Long.parseLong(LK_CNT);
-                }
-                Long L_DSLK_CNT =0L;
-                if(!PjtUtil.isEmpty(DSLK_CNT)){
-                     L_DSLK_CNT = Long.parseLong(DSLK_CNT);
-                }
-
-                daMigAvActrCmt.crtMigAvActrCmt(
-                                L_CMT_IDX
-                                , L_ACTR_IDX
-                                ,  CMT
-                                ,  WRITER
-                                ,  L_LK_CNT
-                                ,  L_DSLK_CNT
-                                ) ;
-            }
-        }
-        
-        ArrayList<HashMap<String,String>> arr_dvd = (ArrayList<HashMap<String,String>>) tmp.get("DVD_INFO");
+    private void updtMv(Long L_ACTR_IDX, ArrayList<HashMap<String,String>> arr_dvd) throws BizException{
         if(arr_dvd!=null){
             for(var j=0;j<arr_dvd.size();j++){
                 HashMap<String,String> m = arr_dvd.get(j);
@@ -416,6 +282,16 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 }
                 Long L_DVD_IDX = Long.parseLong(dvd_idx);
                 Optional<MigAvMv> tmp2 =daMigAvMv.findById(L_DVD_IDX);
+
+
+                MigAvMvActrMainIdx m2 =new MigAvMvActrMainIdx();
+                m2.setActrIdx(L_ACTR_IDX);
+                m2.setDvdIdx(L_DVD_IDX);
+                Optional<MigAvMvActrMain> main_actr =daMigAvMvActrMain.findById(m2);
+                if (!main_actr.isPresent()) {
+                    daMigAvMvActrMain.crtMigAvMvActrMain(L_DVD_IDX, L_ACTR_IDX);
+                }
+
                 if (tmp2.isPresent()) {
                     if(SAMPLE_YN.equals("N")) {
                         // ns 파일이 있을수 있고
@@ -548,6 +424,70 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 }
             }
         }
+    }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    private void updtActor(Long L_ACTR_IDX) throws BizException{
+        HashMap<String, Object> tmp = this.getActor(L_ACTR_IDX);
+        String  NM_EN    = tmp.get("INNER_NAME_EN").toString();
+        String  NM_CN    = tmp.get("INNER_NAME_CN").toString();
+        String  PRF_IMG  = tmp.get("PRF_IMG").toString();
+        String  BRTH     = tmp.get("BIRTH").toString();   //1993-08-16
+        String  HEIGHT   = tmp.get("HEIGHT").toString();  //159
+        String  SIZE     = tmp.get("SIZE").toString();  //B83 / W57 / H88
+        String  BRA_SIZE = tmp.get("BRA_SIZE").toString();  //F
+        String  ACTOR_ONM = tmp.get("ACTOR_ONM").toString();  //다른이름
+        String  ACTOR_DSCR_TITLE = tmp.get("ACTOR_DSCR_TITLE").toString();  //배우설명 포인트
+        String  ACTOR_DSCR_DSCR = tmp.get("ACTOR_DSCR_DSCR").toString();  //배우설명
+
+
+
+        daMigAvActr.updtMigAvActr(L_ACTR_IDX, 
+        NM_EN, 
+        NM_CN, 
+        PRF_IMG, 
+        BRTH, 
+        HEIGHT, 
+        SIZE, 
+        BRA_SIZE,
+        ACTOR_ONM,
+        ACTOR_DSCR_TITLE,
+        ACTOR_DSCR_DSCR
+        );
+        ArrayList<String> arr_img = (ArrayList<String>) tmp.get("OTHER_PHOTO");
+        if(arr_img!=null){
+            for(var j=0;j<arr_img.size();j++){
+                String img_s = arr_img.get(j);
+                List<MigAvActrImg> al =daMigAvActrImg.findByImgS(img_s);
+                if (al.size()==0) {
+                    String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
+				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
+				    String IMG_L =PjtUtil.fileDwnld(IMG);
+				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
+                    daMigAvActrImg.crtMigAvActrImg(L_ACTR_IDX
+                    , IMG
+                    , IMG_S
+                    , IMG_L
+                    , IMG_LS    
+                    );
+                }  else {
+                    Long L_IMG_SEQ = al.get(0).getImgSeq();
+                    String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
+				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
+				    String IMG_L =PjtUtil.fileDwnld(IMG);
+				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
+                    daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
+                    , IMG
+                    , IMG_S
+                    , IMG_L
+                    , IMG_LS    
+                    );
+                }
+            }
+        }
+        //ArrayList<HashMap<String,String>> arr_cmt = (ArrayList<HashMap<String,String>>) tmp.get("ACTOR_CMT");
+        
+        
+        
         ArrayList<String> arr_best_dvd = (ArrayList<String>) tmp.get("BEST_DVD");
         if(arr_best_dvd!=null){
             for(var j=0;j<arr_best_dvd.size();j++){
@@ -556,6 +496,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 daMigAvMv.setBestYn(L_DVD_IDX, L_ACTR_IDX);
             }
         }
+
+        saMigAvActorCmtSync.run(L_ACTR_IDX, "N");
+
     }
 
 

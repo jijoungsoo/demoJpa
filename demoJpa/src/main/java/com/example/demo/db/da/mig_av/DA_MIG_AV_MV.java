@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.db.domain.mig_av.QMigAvMv;
+import com.example.demo.db.domain.mig_av.QMigAvMvActrMain;
 import com.example.demo.db.repository.mig_av.MigAvMvRepository;
 import com.example.demo.exception.BizException;
 import com.querydsl.core.QueryResults;
@@ -59,7 +60,9 @@ public class DA_MIG_AV_MV {
 	public List<MigAvMv> findMigAvMvByActorIdx(Long ACTOR_IDX) {
 		List<MigAvMv> al = qf
 		.selectFrom(QMigAvMv.migAvMv)
-		.where(QMigAvMv.migAvMv.mnActrIdx.eq(ACTOR_IDX))
+		.innerJoin(QMigAvMvActrMain.migAvMvActrMain)
+		.on(QMigAvMv.migAvMv.dvdIdx.eq(QMigAvMvActrMain.migAvMvActrMain.dvdIdx))
+		.where(QMigAvMvActrMain.migAvMvActrMain.actrIdx.eq(ACTOR_IDX))
 		.orderBy(QMigAvMv.migAvMv.dvdIdx.desc())
 		.fetch();
 		 return al;

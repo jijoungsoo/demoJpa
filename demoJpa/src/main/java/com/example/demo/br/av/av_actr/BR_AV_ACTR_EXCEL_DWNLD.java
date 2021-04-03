@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.av.DA_AV_ACTR;
 import com.example.demo.db.domain.av.QAvActr;
@@ -17,9 +18,8 @@ import com.querydsl.core.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BR_AV_ACTR_EXCEL_DWNLD {
 
 	@JsonRootName("IN_DS")
@@ -108,9 +109,9 @@ public class BR_AV_ACTR_EXCEL_DWNLD {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
-	@ApiOperation(tags={"AV"}, value = "AV배우를 엑셀다운로드한다.", notes = "페이징 처리")
-	@PostMapping(path= "/api/BR_AV_ACTR_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object>  run(@RequestBody IN_DS inDS) throws BizException {
+	@ApiOperation(tags={"AV"}, value = "AV배우를 엑셀다운로드한다.")
+	//@PostMapping(path= "/api/BR_AV_ACTR_EXCEL_DWNLD", consumes = "application/json", produces = "application/json")
+	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		Page<Tuple>  pg = daAvActr.findAvActr(null);
 		List<Tuple> al=pg.toList();
 		
@@ -145,6 +146,6 @@ public class BR_AV_ACTR_EXCEL_DWNLD {
 			row.ORD=c.get(QAvActr.avActr.ord).toString();
 			outDs.OUT_DATA.add(row);
 		}
-		return ResponseEntity.ok(outDs);
+		return outDs;
 	}
 }

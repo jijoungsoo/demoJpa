@@ -59,6 +59,9 @@ dependencies {
 	implementation("com.querydsl:querydsl-core:4.4.0")
     implementation("com.querydsl:querydsl-jpa:4.4.0")
     annotationProcessor("com.querydsl:querydsl-apt:4.4.0") // querydsl JPAAnnotationProcessor 사용 지정
+	// https://mvnrepository.com/artifact/com.querydsl/querydsl-sql-spring
+	implementation("com.querydsl:querydsl-sql-spring:4.4.0");  //https://adunhansa.tistory.com/225
+
     
     
     //복잡한 쿼리문은 mybatis를 쓰자.
@@ -97,6 +100,20 @@ dependencies {
     
 	//java9이상 컴파일시 기존에 java8 이전에 포함되었던 이것이 없어서 문제가 된다고 한다.
 	compile "javax.xml.bind:jaxb-api"
+
+
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-compress
+	implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
+
+	// https://mvnrepository.com/artifact/javax.jdo/jdo-api
+	////javax.jdo.annotations.PrimaryKey can not find symbol  이거 오류 잡으려고 넣음
+	implementation group: 'javax.jdo', name: 'jdo-api', version: '3.1'
+
+
+
 }
 /* 유투브보고 querydsl 설정했다.
 https://www.youtube.com/watch?v=hIw4EuhF9o8

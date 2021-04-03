@@ -7,8 +7,6 @@ import java.util.Optional;
 
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_CMT;
-import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_IMG;
-import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvActrCmt;
 import com.example.demo.exception.BizException;
@@ -78,10 +76,16 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         ArrayList<HashMap<String,String>> mention = new ArrayList<HashMap<String,String>>();
         Elements  mention_cnt = doc.getElementById("commlist").select(".page_navi.shw-640-over").select("strong");
         System.out.println("aaaaa");
+
+        if(PjtUtil.isEmpty(mention_cnt.text())){
+            return null;
+        }
+        System.out.println(mention_cnt.text());
         System.out.println(mention_cnt.text().split("/")[1]);
         String page_cnt = mention_cnt.text().split("/")[1];
         int i_page_cnt = Integer.parseInt(page_cnt.trim());
         System.out.println("i_page_cnt=>"+i_page_cnt);
+
         for(int i=1;i<=i_page_cnt;i++){
             
             HttpHeaders headers2 = new HttpHeaders();
@@ -107,29 +111,39 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
                 String lk_cnt = m.select(".like").select(".cnt").text();
                 String dslk_cnt = m.select(".dislike").select(".cnt").text();
 
-                Long l_cmt_idx = Long.parseLong(cmt_idx);
-                if(MAX_CMT_IDX>=l_cmt_idx){
-                    endPage=true;
-                    break;
-
+                try{
+                    Long l_cmt_idx = Long.parseLong(cmt_idx);
+                    if(MAX_CMT_IDX>=l_cmt_idx){
+                        endPage=true;
+                        break;
+    
+                    }
+                    
+                    
+                    map.put("ACTOR_IDX", String.valueOf(ACTOR_IDX));
+                    map.put("CMT_IDX", cmt_idx);
+                    map.put("CMT", cmt);
+                    map.put("WRITER", writer);
+                    map.put("LK_CNT", lk_cnt);
+                    map.put("DSLK_CNT", dslk_cnt);
+        
+                    mention.add(map);    
+                } catch(Exception e){
+                    e.printStackTrace();
                 }
                 
-                
-                map.put("ACTOR_IDX", String.valueOf(ACTOR_IDX));
-                map.put("CMT_IDX", cmt_idx);
-                map.put("CMT", cmt);
-                map.put("WRITER", writer);
-                map.put("LK_CNT", lk_cnt);
-                map.put("DSLK_CNT", dslk_cnt);
-    
-                mention.add(map);
                 
             }
             if(endPage==true)  {
                 break;
             }
             try {
-                Thread.sleep(3000);
+                if(i_page_cnt>4){
+                    Thread.sleep(3000);
+                } else {
+                    Thread.sleep(1000);
+                }
+                
             } catch(Exception e){
                 e.printStackTrace();
             }
@@ -142,35 +156,42 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
    
         if(arr_cmt!=null){
             for(var j=0;j<arr_cmt.size();j++){
-                HashMap<String,String> m = arr_cmt.get(j);
-                String ACTOR_IDX  =   m.get("ACTOR_IDX");
-                String CMT_IDX  =   m.get("CMT_IDX");
-                String CMT      =   m.get("CMT");
-                String WRITER   =   m.get("WRITER");
-                String LK_CNT   =   m.get("LK_CNT");
-                String DSLK_CNT =   m.get("DSLK_CNT");
 
-                Long L_ACTR_IDX = Long.parseLong(ACTOR_IDX);
-                Long L_CMT_IDX = Long.parseLong(CMT_IDX);
-                
-                Long L_LK_CNT =0L;
-                if(!PjtUtil.isEmpty(LK_CNT)){
-                    //비추천 누적인경우 좋아여 데이터가 없다..
-                    L_LK_CNT = Long.parseLong(LK_CNT);
+                try {
+                    HashMap<String,String> m = arr_cmt.get(j);
+                    String ACTOR_IDX  =   m.get("ACTOR_IDX");
+                    String CMT_IDX  =   m.get("CMT_IDX");
+                    String CMT      =   m.get("CMT");
+                    String WRITER   =   m.get("WRITER");
+                    String LK_CNT   =   m.get("LK_CNT");
+                    String DSLK_CNT =   m.get("DSLK_CNT");
+    
+    
+                    Long L_ACTR_IDX = Long.parseLong(ACTOR_IDX);
+                    Long L_CMT_IDX = Long.parseLong(CMT_IDX);
+                    
+                    Long L_LK_CNT =0L;
+                    if(!PjtUtil.isEmpty(LK_CNT)){
+                        //비추천 누적인경우 좋아여 데이터가 없다..
+                        L_LK_CNT = Long.parseLong(LK_CNT);
+                    }
+                    
+    
+                    
+                    Long L_DSLK_CNT = Long.parseLong(DSLK_CNT);
+    
+                    daMigAvActrCmt.crtMigAvActrCmt(
+                                    L_CMT_IDX
+                                    , L_ACTR_IDX
+                                    ,  CMT
+                                    ,  WRITER
+                                    ,  L_LK_CNT
+                                    ,  L_DSLK_CNT
+                                    ) ;
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
                 
-
-                
-                Long L_DSLK_CNT = Long.parseLong(DSLK_CNT);
-
-                daMigAvActrCmt.crtMigAvActrCmt(
-                                L_CMT_IDX
-                                , L_ACTR_IDX
-                                ,  CMT
-                                ,  WRITER
-                                ,  L_LK_CNT
-                                ,  L_DSLK_CNT
-                                ) ;
             }
         }
        

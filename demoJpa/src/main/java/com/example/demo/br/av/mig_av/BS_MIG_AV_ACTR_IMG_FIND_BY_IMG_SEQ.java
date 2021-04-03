@@ -1,12 +1,10 @@
-package com.example.demo.bs.av.mig_av;
+package com.example.demo.br.av.mig_av;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Optional;
 
+import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_IMG;
-import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvActrImg;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
@@ -15,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "AV", description = "AV정보")
 @Slf4j
-@RestController
+@OpService
+@Service
 public class BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ {
 	
 	@JsonRootName("IN_DS")
@@ -104,7 +102,7 @@ public class BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
 	@ApiOperation(tags={"AV"}, value = "AV배우 이미지 하나를 조회한다.", notes = "페이징 처리")
-	@PostMapping(path= "/api/BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ", consumes = "application/json", produces = "application/json")
+	//@PostMapping(path= "/api/BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");

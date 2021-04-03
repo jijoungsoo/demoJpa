@@ -12,6 +12,11 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class MigAvMvActrIdx implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6965729429346090732L;
+
 	@Id
 	@Column(nullable = false,unique=true ,name="dvd_idx")
 	long dvdIdx;
