@@ -9,8 +9,8 @@ RUN pwd
 #jenkins 스크립트에 넣자.
 #도커는 실행환경만이다.
 
-#ARG JAR_FILE=demoWeb/build/libs/*.war
-COPY build/libs/*.war app.war
+#ARG JAR_FILE=demoWeb/build/libs/*.jar
+COPY build/libs/*.jar app.jar
 EXPOSE 8091
 # 외부에 노출할 포트 지정
-ENTRYPOINT ["java","-jar","/app.war"]
+ENTRYPOINT ["java","-jar","/app.jar"]
