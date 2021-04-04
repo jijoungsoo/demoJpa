@@ -151,4 +151,4 @@ spring.jpa.properties.hibernate:
 #    shutdown.enabled: true
 
 env:
-  serverfilepath: /home/jijs/avdbs.com
+  server-file-path: /home/jijs/avdbs.com
