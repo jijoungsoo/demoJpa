@@ -23,18 +23,18 @@ public class Replaction_Test2 {
 		 * 
 		 * */
 		if(false) {			
-			List<Set<MethodMetadata>>  allMethodMetadatas = API.methodMetaScan("classpath*:com/example/demo/cm/br/**/*.class",OpService.class);
-				System.out.println("allMethodMetadatas.siz=>"+allMethodMetadatas.size());
-				for(int i=0;i<allMethodMetadatas.size();i++) {
-					Set<MethodMetadata> tmp  = allMethodMetadatas.get(i);
-					tmp.forEach(
-							(key) -> {
-								System.out.println("key: " + key.getDeclaringClassName());
-								System.out.println("key: " + key.getMethodName());
-								System.out.println("key: " + key.getReturnTypeName());
+			///List<Set<MethodMetadata>>  allMethodMetadatas = API.methodMetaScan("classpath*:com/example/demo/cm/br/**/*.class",OpService.class);
+//				System.out.println("allMethodMetadatas.siz=>"+allMethodMetadatas.size());
+				//for(int i=0;i<allMethodMetadatas.size();i++) {
+				//	Set<MethodMetadata> tmp  = allMethodMetadatas.get(i);
+				//	tmp.forEach(
+				//			(key) -> {
+				//				System.out.println("key: " + key.getDeclaringClassName());
+				//				System.out.println("key: " + key.getMethodName());
+				//				System.out.println("key: " + key.getReturnTypeName());
 							}
-					);
-				}
+				//	);
+			//	}
 		}
 		if(false) {
 			 List<ClassMetadata>  classeMetas = API.classMetaScan("classpath*:com/example/demo/cm/br/**/*.class",OpService.class);
@@ -47,14 +47,15 @@ public class Replaction_Test2 {
 		}
 		
 		if(true) {			
-			HashMap<String, ApiResultMethod>  allMethodMetadatas = API.opServiceMethodMetaScan("classpath*:com/example/demo/cm/br/**/*.class");
-			System.out.println("allMethodMetadatas.siz=>"+allMethodMetadatas.size());
-			allMethodMetadatas.forEach(
-					(key,value) -> {
-						System.out.println("key: " + key);
-						System.out.println("key: " + value);
-					}
-			);
+			
+			//HashMap<String, ApiResultMethod>  allMethodMetadatas = API.opServiceMethodMetaScan("classpath*:com/example/demo/cm/br/**/*.class");
+			//System.out.println("allMethodMetadatas.siz=>"+allMethodMetadatas.size());
+			//allMethodMetadatas.forEach(
+			//		(key,value) -> {
+		//				System.out.println("key: " + key);
+	//					System.out.println("key: " + value);
+//					}
+//			);
 		}
 	}
 }

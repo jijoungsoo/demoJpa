@@ -300,8 +300,9 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 				Long L_IMG_SEQ = m.getImgSeq();
 				String IMG   =m.getImg();
 				String IMG_S =m.getImgS();
-				String IMG_L =PjtUtil.fileDwnld(IMG);
-				String IMG_LS =PjtUtil.fileDwnld(IMG_S);
+				PjtUtil p = new PjtUtil();
+				String IMG_L = p.fileDwnld(IMG);
+				String IMG_LS =p.fileDwnld(IMG_S);
 				daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
 				, IMG
 				, IMG_S

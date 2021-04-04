@@ -53,7 +53,8 @@ public class SA_MIG_AV_MK_SYNC {
 
         Long L_MK_ID = Long.parseLong(MK_ID);
 
-        String IMG_L = PjtUtil.fileDwnld(IMG);
+        PjtUtil p = new PjtUtil();
+        String IMG_L = p.fileDwnld(IMG);
 
         daMigAvMk.crtMigAvMk(L_MK_ID, NM, IMG, IMG_L, TTL);
     }

@@ -86,7 +86,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         if(m.getImgL()==null){
             //다운로드 이미지 local명시적으로 고고
             if(m.getImg()!=null){
-                String IMG_L = PjtUtil.fileDwnld(m.getImg());
+                PjtUtil p =new PjtUtil();
+                String IMG_L = p.fileDwnld(m.getImg());
                 daMigAvActr.updtMigAvActrImgL(L_ACTOR_IDX, IMG_L);
                 m.setImgL(IMG_L);
             }
@@ -96,7 +97,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         if(m.getImgLs()==null){
             //다운로드 이미지 local명시적으로 고고
             if(m.getImgS()!=null){
-                String IMG_LS = PjtUtil.fileDwnld(m.getImgS());
+                PjtUtil p =new PjtUtil();
+                String IMG_LS = p.fileDwnld(m.getImgS());
                 daMigAvActr.updtMigAvActrImgLS(L_ACTOR_IDX, IMG_LS);
                 m.setImgLs(IMG_LS);
             }
@@ -302,11 +304,11 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N = IMG_S.replace("as.jpg", "ns.jpg");  //as가 있다면 무조건 ns는 있다는 전제.
                         String IMG_NS = IMG_N.replace("s.jpg", ".jpg");
 
-
-                        String IMG_LA = PjtUtil.fileDwnld(IMG_A);
-                        String IMG_LAS = PjtUtil.fileDwnld(IMG_AS);
-                        String IMG_LN = PjtUtil.fileDwnld(IMG_N);
-                        String IMG_LNS = PjtUtil.fileDwnld(IMG_NS);
+                        PjtUtil p =new PjtUtil();
+                        String IMG_LA = p.fileDwnld(IMG_A);
+                        String IMG_LAS = p.fileDwnld(IMG_AS);
+                        String IMG_LN = p.fileDwnld(IMG_N);
+                        String IMG_LNS = p.fileDwnld(IMG_NS);
 
                         daMigAvMv.updtMigAvMvImg(L_DVD_IDX
                             , MV_NM
@@ -328,8 +330,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N =  IMG_S;
                         String IMG_NS = IMG_S;
 
-
-                        String IMG_LA = PjtUtil.fileDwnld(IMG_S);
+                        PjtUtil p = new PjtUtil();
+                        String IMG_LA = p.fileDwnld(IMG_S);
                         String IMG_LAS = IMG_LA;
                         String IMG_LN =  IMG_LA;
                         String IMG_LNS = IMG_LA;
@@ -370,11 +372,11 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N = IMG_S.replace("as.jpg", "ns.jpg");  //as가 있다면 무조건 ns는 있다는 전제.
                         String IMG_NS = IMG_N.replace("s.jpg", ".jpg");
     
-    
-                        String IMG_LA = PjtUtil.fileDwnld(IMG_A);
-                        String IMG_LAS = PjtUtil.fileDwnld(IMG_AS);
-                        String IMG_LN = PjtUtil.fileDwnld(IMG_N);
-                        String IMG_LNS = PjtUtil.fileDwnld(IMG_NS);
+                        PjtUtil p = new PjtUtil();
+                        String IMG_LA = p.fileDwnld(IMG_A);
+                        String IMG_LAS = p.fileDwnld(IMG_AS);
+                        String IMG_LN = p.fileDwnld(IMG_N);
+                        String IMG_LNS = p.fileDwnld(IMG_NS);
 
                         daMigAvMv.crtMigAvMv(L_DVD_IDX, L_ACTR_IDX
                         , MV_NM
@@ -397,8 +399,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N =  IMG_S;
                         String IMG_NS = IMG_S;
     
-    
-                        String IMG_LA = PjtUtil.fileDwnld(IMG_S);
+                        PjtUtil p = new PjtUtil();
+                        String IMG_LA = p.fileDwnld(IMG_S);
                         String IMG_LAS = IMG_LA;
                         String IMG_LN =  IMG_LA;
                         String IMG_LNS = IMG_LA;
@@ -461,8 +463,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 if (al.size()==0) {
                     String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
 				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-				    String IMG_L =PjtUtil.fileDwnld(IMG);
-				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
+                    PjtUtil p = new PjtUtil();
+				    String IMG_L =p.fileDwnld(IMG);
+				    String IMG_LS =p.fileDwnld(IMG_S);
                     daMigAvActrImg.crtMigAvActrImg(L_ACTR_IDX
                     , IMG
                     , IMG_S
@@ -473,8 +476,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                     Long L_IMG_SEQ = al.get(0).getImgSeq();
                     String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
 				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-				    String IMG_L =PjtUtil.fileDwnld(IMG);
-				    String IMG_LS =PjtUtil.fileDwnld(IMG_S);
+                    PjtUtil p = new PjtUtil();
+				    String IMG_L =p.fileDwnld(IMG);
+				    String IMG_LS =p.fileDwnld(IMG_S);
                     daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
                     , IMG
                     , IMG_S

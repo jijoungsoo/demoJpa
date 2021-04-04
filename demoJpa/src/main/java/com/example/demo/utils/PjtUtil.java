@@ -128,7 +128,7 @@ public class PjtUtil {
 		return responseBody.toString();
 	}
 
-	public static String fileDwnld(String url){
+	public  String fileDwnld(String url){
 		if(PjtUtil.isEmpty(url)){
 			return null;
 		}
@@ -150,6 +150,8 @@ public class PjtUtil {
 			//System.out.println("path=>"+path);  ////actor/a02/2426_n.jpg
 			//String qu = request.getURI().getQuery();
 			//System.out.println("qu=>"+qu);
+
+
 
 
 			String filePath = "d:/avdbs.com"+path;
