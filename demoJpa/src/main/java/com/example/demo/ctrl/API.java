@@ -57,6 +57,8 @@ public class API {
 		
 		try {
 			/*IN OUT 변수 감증 및 BR 존재하는지 검증, 아웃풋에 인풋까지 호출하는 정보까지 모두 담고있다.*/
+			System.out.println(br);
+			System.out.println(jsonInString);
 			validOpService(br,jsonInString,resMap /*아웃 참조로 써보자.*/);   
 			/*빌드 패턴이고   하나의 명령이 하나의 클래스면   java replaction으로   값을 보내기 좋은데 
 		 	*하나의 클래스에 여러개의 br이라고 생각하니까. 복잡하다.
