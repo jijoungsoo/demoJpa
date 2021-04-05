@@ -33,7 +33,7 @@ spring:
       maximum-pool-size: 4
       driver-class-name: org.postgresql.Driver       
       #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명
-      jdbc-url: jdbc:postgresql://192.168.0.13:5432/stockweb  #postgres   db명
+      jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy      
       #jdbc-url: jdbc:log4jdbc:postgresql://localhost:5432/stockweb  #postgres   db명      
       username: postgres
