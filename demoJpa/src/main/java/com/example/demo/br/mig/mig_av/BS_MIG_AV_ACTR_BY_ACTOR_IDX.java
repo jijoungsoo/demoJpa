@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_BY_ACTOR_IDX")
@@ -85,9 +87,9 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)) {
+		if(pjtU.isEmpty(ACTOR_IDX)) {
 			throw new BizRuntimeException("["+ACTOR_IDX+"]가 비어있습니다.");
 		}
 		Long L_ACTOR_IDX = Long.parseLong(ACTOR_IDX);

@@ -40,6 +40,9 @@ import lombok.Data;
 public class SA_MIG_STCK_SYNC {
     @Autowired
     DA_STCK_MARCAP daStckMarcap;
+
+    @Autowired
+    PjtUtil pjtU;
     
     
 	@JsonRootName("IN_DS")
@@ -150,7 +153,7 @@ public class SA_MIG_STCK_SYNC {
                             ,"2021-01-04"       [17]Date[날짜]///STOCK_DT
                             */
                             Integer CLS_AMT = 0;
-                            if(PjtUtil.isEmpty(arr_tmp[4].trim().replaceAll("\"", ""))){
+                            if(pjtU.isEmpty(arr_tmp[4].trim().replaceAll("\"", ""))){
 
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[4].trim().replaceAll("\"", ""));
@@ -158,7 +161,7 @@ public class SA_MIG_STCK_SYNC {
                             }
 
                             Integer CHANGES_AMT=0;  //전일대비
-                            if(PjtUtil.isEmpty(arr_tmp[6].trim())){
+                            if(pjtU.isEmpty(arr_tmp[6].trim())){
 
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[6].trim());
@@ -166,37 +169,37 @@ public class SA_MIG_STCK_SYNC {
                             }
                             Double CHANGES_RT=Double.parseDouble(arr_tmp[7].trim());  //전일비
                             Long TRADE_QTY=0L;  //거래량
-                            if(PjtUtil.isEmpty(arr_tmp[11].trim())){
+                            if(pjtU.isEmpty(arr_tmp[11].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[11].trim());
                                 TRADE_QTY  = tmp_int.longValue(); //종가
                             }
                             Long TRADE_AMT=0L;  //거래대금
-                            if(PjtUtil.isEmpty(arr_tmp[12].trim())){
+                            if(pjtU.isEmpty(arr_tmp[12].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[12].trim());
                                 TRADE_AMT  = tmp_int.longValue(); //종가
                             }
                             Integer START_AMT=0;  //시가
-                            if(PjtUtil.isEmpty(arr_tmp[8].trim())){
+                            if(pjtU.isEmpty(arr_tmp[8].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[8].trim());
                                 START_AMT  = tmp_int.intValue(); //종가
                             }
                             Integer HIGH_AMT=0;   //고가
-                            if(PjtUtil.isEmpty(arr_tmp[9].trim())){
+                            if(pjtU.isEmpty(arr_tmp[9].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[9].trim());
                                 HIGH_AMT  = tmp_int.intValue(); //종가
                             }
                             Integer LOW_AMT=0;  //저가
-                            if(PjtUtil.isEmpty(arr_tmp[10].trim())){
+                            if(pjtU.isEmpty(arr_tmp[10].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[10].trim());
                                 LOW_AMT  = tmp_int.intValue(); //종가
                             }
                             Long TOTAL_MRKT_AMT=0L;  //시가총액(백만원)
-                            if(PjtUtil.isEmpty(arr_tmp[13].trim())){
+                            if(pjtU.isEmpty(arr_tmp[13].trim())){
                             } else {
                                 Double tmp_int = Double.parseDouble(arr_tmp[13].trim());
                                 TOTAL_MRKT_AMT  = tmp_int.longValue(); //종가

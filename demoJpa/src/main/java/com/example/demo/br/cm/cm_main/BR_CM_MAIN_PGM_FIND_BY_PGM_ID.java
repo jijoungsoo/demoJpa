@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MAIN_PGM_FIND_BY_PGM_ID {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MAIN_PGM_FIND_BY_PGM_ID")
 	@Data
@@ -109,7 +112,7 @@ public class BR_CM_MAIN_PGM_FIND_BY_PGM_ID {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  PGM_ID 		= PjtUtil.str(rs.PGM_ID);
+		String  PGM_ID 		= pjtU.str(rs.PGM_ID);
 		
 		List<CmPgm> al= daMain.findPgmByPgmId(PGM_ID);//파라미터 사용안함
 		ArrayList<OUT_DATA_ROW>  OUT_DATA =  new ArrayList<OUT_DATA_ROW>();
@@ -121,8 +124,8 @@ public class BR_CM_MAIN_PGM_FIND_BY_PGM_ID {
 			row.PGM_LINK=cm.getPgmLink();
 			row.PGM_NM=cm.getPgmNm();
 			row.RMK=cm.getRmk();
-			row.CRT_DTM=PjtUtil.getYyyyMMddHHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyyMMddHHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyyMMddHHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyyMMddHHMMSS(cm.getUpdtDtm());
 			OUT_DATA.add(row);
 		}
 		OUT_DS outDs = new OUT_DS();

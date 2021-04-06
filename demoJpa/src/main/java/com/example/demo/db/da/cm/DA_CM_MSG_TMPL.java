@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DA_CM_MSG_TMPL {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -32,10 +35,10 @@ public class DA_CM_MSG_TMPL {
 		.selectFrom(QCmMsgTmpl.cmMsgTmpl)
 		.orderBy(QCmMsgTmpl.cmMsgTmpl.tmplSeq.asc());
 
-		if(!PjtUtil.isEmpty(MSG_TMPL_KIND_CD)){
+		if(!pjtU.isEmpty(MSG_TMPL_KIND_CD)){
 			c= c.where(QCmMsgTmpl.cmMsgTmpl.msgTmplKindCd.eq(MSG_TMPL_KIND_CD));
 		}
-		if(!PjtUtil.isEmpty(MSG_TMPL_STATUS_CD)){
+		if(!pjtU.isEmpty(MSG_TMPL_STATUS_CD)){
 			c= c.where(QCmMsgTmpl.cmMsgTmpl.msgTmplStatusCd.eq(MSG_TMPL_STATUS_CD));
 		}
 		

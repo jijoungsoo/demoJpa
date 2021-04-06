@@ -34,6 +34,9 @@ import lombok.Data;
 @Service
 public class BR_AV_ACTR_EXCEL_SAVE {
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_ACTR_EXCEL_SAVE")
 	@Data
@@ -87,7 +90,7 @@ public class BR_AV_ACTR_EXCEL_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -103,31 +106,31 @@ public class BR_AV_ACTR_EXCEL_SAVE {
 		for( int i=0;i<al.size();i++) {
 			CmExcelUpld  rs =al.get(i);
 			if(rs.getGbn().equals("D")) {  //상세 
-				String  ACTR_NM_KR 	= PjtUtil.str(rs.getCol00());
-				String  ACTR_NM_JP 	= PjtUtil.str(rs.getCol01());
-				String  ACTR_NM_ENG = PjtUtil.str(rs.getCol02());
-				String  BIRTH_DT 	= PjtUtil.str(rs.getCol03());
-				String  SEX 		= PjtUtil.str(rs.getCol04());
-				String  RNK 		= PjtUtil.str(rs.getCol05());		
-				String  ORD 		= PjtUtil.str(rs.getCol06());
-				String  RMK 		= PjtUtil.str(rs.getCol07());
-				String  MSC_YN	 	= PjtUtil.str(rs.getCol08());
+				String  ACTR_NM_KR 	= pjtU.str(rs.getCol00());
+				String  ACTR_NM_JP 	= pjtU.str(rs.getCol01());
+				String  ACTR_NM_ENG = pjtU.str(rs.getCol02());
+				String  BIRTH_DT 	= pjtU.str(rs.getCol03());
+				String  SEX 		= pjtU.str(rs.getCol04());
+				String  RNK 		= pjtU.str(rs.getCol05());		
+				String  ORD 		= pjtU.str(rs.getCol06());
+				String  RMK 		= pjtU.str(rs.getCol07());
+				String  MSC_YN	 	= pjtU.str(rs.getCol08());
 
-				if(PjtUtil.isEmpty(ACTR_NM_KR)) {
+				if(pjtU.isEmpty(ACTR_NM_KR)) {
 					throw new BizRuntimeException("배우명(한글)이 입력되지 않았습니다.");
 					/*
 					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 							.body("배우명(한글)이 입력되지 않았습니다.");
 							*/
 				}
-				if(PjtUtil.isEmpty(SEX)) {
+				if(pjtU.isEmpty(SEX)) {
 					throw new BizRuntimeException("성별이 입력되지 않았습니다.");
 					/*
 					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 							.body("성별이 입력되지 않았습니다.");
 							*/
 				}
-				if(PjtUtil.isEmpty(MSC_YN)) {
+				if(pjtU.isEmpty(MSC_YN)) {
 					throw new BizRuntimeException("모자이크 여부가 입력되지 않았습니다.");
 					
 					/*

@@ -143,6 +143,9 @@ public class BR_STCK_MARCAP_FIND {
 	@Autowired
 	DA_STCK_MARCAP daStckM;
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@Operation(summary = "marcap 주식정보 조회.", description = "")
 	//@PostMapping(path= "/api/BR_STCK_MARCAP_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(IN_DS inDS) throws BizException {
@@ -155,11 +158,11 @@ public class BR_STCK_MARCAP_FIND {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  STOCK_DT_ST 		= PjtUtil.str(rs.STOCK_DT_ST);
-		String  STOCK_DT_ED 		= PjtUtil.str(rs.STOCK_DT_ED);
-		String  STOCK_CD 			= PjtUtil.str(rs.STOCK_CD);
+		String  STOCK_DT_ST 		= pjtU.str(rs.STOCK_DT_ST);
+		String  STOCK_DT_ED 		= pjtU.str(rs.STOCK_DT_ED);
+		String  STOCK_CD 			= pjtU.str(rs.STOCK_CD);
 		
-		if(PjtUtil.isEmpty(STOCK_DT_ST)) {
+		if(pjtU.isEmpty(STOCK_DT_ST)) {
 			throw new BizRuntimeException("시작일자가 입력되지 않았습니다.");
 		}
 		if(STOCK_DT_ST.length()!=8) {
@@ -199,8 +202,8 @@ public class BR_STCK_MARCAP_FIND {
 			row.STOCK_CNT= c.getStockCnt().toString();
 			row.RNK= c.getRnk().toString();
 			
-			row.CRT_DTM= PjtUtil.getYyyyMMddHHMMSS(c.getCrtDtm());
-			row.UPDT_DTM= PjtUtil.getYyyyMMddHHMMSS(c.getUpdtDtm());
+			row.CRT_DTM= pjtU.getYyyyMMddHHMMSS(c.getCrtDtm());
+			row.UPDT_DTM= pjtU.getYyyyMMddHHMMSS(c.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		

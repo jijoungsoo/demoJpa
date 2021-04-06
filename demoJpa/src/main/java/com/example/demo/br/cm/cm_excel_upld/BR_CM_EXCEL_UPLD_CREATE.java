@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_EXCEL_UPLD_CREATE {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_EXCEL_UPLD_CREATE")
@@ -164,7 +166,7 @@ public class BR_CM_EXCEL_UPLD_CREATE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
@@ -173,35 +175,35 @@ public class BR_CM_EXCEL_UPLD_CREATE {
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  EXCEL_UPLD_ID 	= PjtUtil.strTrim(rs.EXCEL_UPLD_ID);
-			String  EXCEL_SEQ 		= PjtUtil.strTrim(rs.EXCEL_SEQ);
-			String  GBN 			= PjtUtil.strTrim(rs.GBN);
-			String  COL00 			= PjtUtil.strTrim(rs.COL00);
-			String  COL01 			= PjtUtil.strTrim(rs.COL01);
-			String  COL02 			= PjtUtil.strTrim(rs.COL02);
-			String  COL03 			= PjtUtil.strTrim(rs.COL03);		
-			String  COL04 			= PjtUtil.strTrim(rs.COL04);
-			String  COL05 			= PjtUtil.strTrim(rs.COL05);
-			String  COL06 			= PjtUtil.strTrim(rs.COL06);
-			String  COL07 			= PjtUtil.strTrim(rs.COL07);
-			String  COL08 			= PjtUtil.strTrim(rs.COL08);
-			String  COL09 			= PjtUtil.strTrim(rs.COL09);
-			String  COL10 			= PjtUtil.strTrim(rs.COL10);
-			String  COL11 			= PjtUtil.strTrim(rs.COL11);
-			String  COL12 			= PjtUtil.strTrim(rs.COL12);
-			String  COL13 			= PjtUtil.strTrim(rs.COL13);
-			String  COL14 			= PjtUtil.strTrim(rs.COL14);
-			String  COL15 			= PjtUtil.strTrim(rs.COL15);
-			String  COL16 			= PjtUtil.strTrim(rs.COL16);
-			String  COL17 			= PjtUtil.strTrim(rs.COL17);
-			String  COL18 			= PjtUtil.strTrim(rs.COL18);
-			String  COL19 			= PjtUtil.strTrim(rs.COL19);
-			String  COL20 			= PjtUtil.strTrim(rs.COL20);
+			String  EXCEL_UPLD_ID 	= pjtU.strTrim(rs.EXCEL_UPLD_ID);
+			String  EXCEL_SEQ 		= pjtU.strTrim(rs.EXCEL_SEQ);
+			String  GBN 			= pjtU.strTrim(rs.GBN);
+			String  COL00 			= pjtU.strTrim(rs.COL00);
+			String  COL01 			= pjtU.strTrim(rs.COL01);
+			String  COL02 			= pjtU.strTrim(rs.COL02);
+			String  COL03 			= pjtU.strTrim(rs.COL03);		
+			String  COL04 			= pjtU.strTrim(rs.COL04);
+			String  COL05 			= pjtU.strTrim(rs.COL05);
+			String  COL06 			= pjtU.strTrim(rs.COL06);
+			String  COL07 			= pjtU.strTrim(rs.COL07);
+			String  COL08 			= pjtU.strTrim(rs.COL08);
+			String  COL09 			= pjtU.strTrim(rs.COL09);
+			String  COL10 			= pjtU.strTrim(rs.COL10);
+			String  COL11 			= pjtU.strTrim(rs.COL11);
+			String  COL12 			= pjtU.strTrim(rs.COL12);
+			String  COL13 			= pjtU.strTrim(rs.COL13);
+			String  COL14 			= pjtU.strTrim(rs.COL14);
+			String  COL15 			= pjtU.strTrim(rs.COL15);
+			String  COL16 			= pjtU.strTrim(rs.COL16);
+			String  COL17 			= pjtU.strTrim(rs.COL17);
+			String  COL18 			= pjtU.strTrim(rs.COL18);
+			String  COL19 			= pjtU.strTrim(rs.COL19);
+			String  COL20 			= pjtU.strTrim(rs.COL20);
 			
-			if(PjtUtil.isEmpty(EXCEL_UPLD_ID)) {
+			if(pjtU.isEmpty(EXCEL_UPLD_ID)) {
 				throw new BizRuntimeException("엑셀업로드ID가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(EXCEL_SEQ)) {
+			if(pjtU.isEmpty(EXCEL_SEQ)) {
 				throw new BizRuntimeException("엑셀 시퀀스가 입력되지 않았습니다.");
 			}
 			Integer I_EXCEL_SEQ = Integer.parseInt(EXCEL_SEQ);

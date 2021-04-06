@@ -1,7 +1,6 @@
 package com.example.demo.db.da.stck;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 import com.example.demo.db.domain.marcap.QStckMarcap;
@@ -21,6 +20,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DA_STCK_MARCAP {
+
+	@Autowired
+    PjtUtil pjtU;
+	
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -34,7 +37,7 @@ public class DA_STCK_MARCAP {
 			,Pageable p) {
 		JPAQuery<StckMarcap> c= qf.selectFrom(QStckMarcap.stckMarcap)
 	                			  .where(QStckMarcap.stckMarcap.stockDt.between(STOCK_DT_ST, STOCK_DT_ED));
-		if(!PjtUtil.isEmpty(STOCK_CD)) {
+		if(!pjtU.isEmpty(STOCK_CD)) {
 			c.where(QStckMarcap.stckMarcap.stockCd.eq(STOCK_CD));
 		}
 		c= c.offset(p.getOffset()); // offset과

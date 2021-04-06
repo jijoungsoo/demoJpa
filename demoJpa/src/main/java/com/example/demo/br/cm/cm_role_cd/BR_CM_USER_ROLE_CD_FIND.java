@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_USER_ROLE_CD_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_USER_ROLE_CD_FIND")
@@ -137,7 +139,7 @@ public class BR_CM_USER_ROLE_CD_FIND {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ROLE_CD 		= PjtUtil.str(rs.ROLE_CD);
+		String  ROLE_CD 		= pjtU.str(rs.ROLE_CD);
 		List<Tuple>  al2 = daUserRoleCd.findCmUserRoleCd(ROLE_CD);
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al2.size();i++) {
@@ -150,8 +152,8 @@ public class BR_CM_USER_ROLE_CD_FIND {
 			row.USE_YN= cm.get(QCmUserRoleCd.cmUserRoleCd.useYn);
 			row.ORD= cm.get(QCmUserRoleCd.cmUserRoleCd.ord);
 			row.RMK= cm.get(QCmUserRoleCd.cmUserRoleCd.rmk);
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmUserRoleCd.cmUserRoleCd.crtDtm));
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmUserRoleCd.cmUserRoleCd.updtDtm));
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmUserRoleCd.cmUserRoleCd.crtDtm));
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmUserRoleCd.cmUserRoleCd.updtDtm));
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

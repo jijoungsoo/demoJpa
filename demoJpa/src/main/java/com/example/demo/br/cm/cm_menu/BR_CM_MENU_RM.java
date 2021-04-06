@@ -30,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MENU_RM {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MENU_RM")
 	@Data
@@ -75,8 +78,8 @@ public class BR_CM_MENU_RM {
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  MENU_NO 		= PjtUtil.str(rs.MENU_NO);
-			if(PjtUtil.isEmpty(MENU_NO)) {
+			String  MENU_NO 		= pjtU.str(rs.MENU_NO);
+			if(pjtU.isEmpty(MENU_NO)) {
 				throw new BizRuntimeException("["+MENU_NO+"]메뉴번호가 입력되지 않았습니다.");
 			}
 			long L_MENU_NO = Long.parseLong(MENU_NO);

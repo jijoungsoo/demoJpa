@@ -29,10 +29,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 @Service
 public class DA_MIG_AV_ACTR {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;

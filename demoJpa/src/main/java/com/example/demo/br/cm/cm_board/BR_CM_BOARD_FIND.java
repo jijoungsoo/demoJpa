@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_BOARD_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_BOARD_FIND")
 	@Data
@@ -133,10 +136,10 @@ public class BR_CM_BOARD_FIND {
 		if(inDS.IN_DATA!=null) {
 			if(inDS.IN_DATA.size()>0){
 				IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-				GRP_SEQ 		= PjtUtil.str(rs.GRP_SEQ);
+				GRP_SEQ 		= pjtU.str(rs.GRP_SEQ);
 			}
 		}
-		if(!PjtUtil.isEmpty(GRP_SEQ)){
+		if(!pjtU.isEmpty(GRP_SEQ)){
 			L_GRP_SEQ  = Long.parseLong(GRP_SEQ);
 		}
 		
@@ -152,8 +155,8 @@ public class BR_CM_BOARD_FIND {
 			row.BRD_RPLY_ORD= String.valueOf(cm.getBrdRplyOrd());
 			row.TTL_TEXT= cm.getTtlText();
 			row.DEL_YN= cm.getDelYn();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

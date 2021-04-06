@@ -30,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_CD_RM {
+	@Autowired
+    PjtUtil pjtU;
+	
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_CD_RM")
@@ -84,19 +87,19 @@ public class BR_CM_CD_RM {
 		}
 		
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  GRP_CD 		= PjtUtil.str(rs.GRP_CD);
-			String  CD 		= PjtUtil.str(rs.CD);
-			if(PjtUtil.isEmpty(GRP_CD)) {
+			String  GRP_CD 		= pjtU.str(rs.GRP_CD);
+			String  CD 		= pjtU.str(rs.CD);
+			if(pjtU.isEmpty(GRP_CD)) {
 				throw new BizRuntimeException("공통그룹코드가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(CD)) {
+			if(pjtU.isEmpty(CD)) {
 				throw new BizRuntimeException("공통코드가 입력되지 않았습니다.");
 			}
 			

@@ -33,6 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Tag(name = "CM_USER", description = "사용자정보")
 public class BR_CM_USER_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_USER_SAVE")
@@ -119,35 +121,35 @@ public class BR_CM_USER_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  USER_NO 		= PjtUtil.str(rs.USER_NO);
-			String  USER_NM 		= PjtUtil.str(rs.USER_NM);
-			String  USER_ID		 	= PjtUtil.str(rs.USER_ID);
-			String  USER_PWD 		= PjtUtil.str(rs.USER_PWD);
-			String  EMAIL 			= PjtUtil.str(rs.EMAIL);
-			String  USE_YN 			= PjtUtil.str(rs.USE_YN);
-			String  RMK 			= PjtUtil.str(rs.RMK);
+			String  USER_NO 		= pjtU.str(rs.USER_NO);
+			String  USER_NM 		= pjtU.str(rs.USER_NM);
+			String  USER_ID		 	= pjtU.str(rs.USER_ID);
+			String  USER_PWD 		= pjtU.str(rs.USER_PWD);
+			String  EMAIL 			= pjtU.str(rs.EMAIL);
+			String  USE_YN 			= pjtU.str(rs.USE_YN);
+			String  RMK 			= pjtU.str(rs.RMK);
 			
 			if(USER_NO.equals("")) {
-				if(PjtUtil.isEmpty(USER_NM)) {
+				if(pjtU.isEmpty(USER_NM)) {
 					throw new BizRuntimeException("사용자명이 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(USER_ID)) {
+				if(pjtU.isEmpty(USER_ID)) {
 					throw new BizRuntimeException("사용자ID가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(USER_PWD)) {
+				if(pjtU.isEmpty(USER_PWD)) {
 					throw new BizRuntimeException("패스워드가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(EMAIL)) {
+				if(pjtU.isEmpty(EMAIL)) {
 					throw new BizRuntimeException("이메일주소가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(USE_YN)) {
+				if(pjtU.isEmpty(USE_YN)) {
 					throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 				}
 				
@@ -175,20 +177,20 @@ public class BR_CM_USER_SAVE {
 						,L_LSESSION_USER_NO
 						);
 			} else {
-				if(PjtUtil.isEmpty(USER_NO)) {
+				if(pjtU.isEmpty(USER_NO)) {
 					throw new BizRuntimeException("사용자번호가 입력되지 않았습니다.");
 				}			
-				if(PjtUtil.isEmpty(USER_NM)) {
+				if(pjtU.isEmpty(USER_NM)) {
 					throw new BizRuntimeException("사용자명이 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(USER_ID)) {
+				if(pjtU.isEmpty(USER_ID)) {
 					throw new BizRuntimeException("사용자ID가 입력되지 않았습니다.");
 				}
 
-				if(PjtUtil.isEmpty(EMAIL)) {
+				if(pjtU.isEmpty(EMAIL)) {
 					throw new BizRuntimeException("이메일주소가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(USE_YN)) {
+				if(pjtU.isEmpty(USE_YN)) {
 					throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 				}
 								

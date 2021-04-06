@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_EXCEL_UPLD_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_EXCEL_UPLD_FIND")
 	@Data
@@ -174,7 +177,7 @@ public class BR_CM_EXCEL_UPLD_FIND {
 		}
 		
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
@@ -218,7 +221,7 @@ public class BR_CM_EXCEL_UPLD_FIND {
 			row.COL19= cm.getCol19();
 			row.COL20= cm.getCol20();
 			row.CRT_USR_NO= String.valueOf(cm.getCrtUsrNo());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

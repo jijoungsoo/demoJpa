@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_CD_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_CD_FIND")
 	@Data
@@ -137,8 +140,8 @@ public class BR_CM_CD_FIND {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  GRP_CD 		= PjtUtil.str(rs.GRP_CD);
-		String  USE_YN 		= PjtUtil.str(rs.USE_YN);
+		String  GRP_CD 		= pjtU.str(rs.GRP_CD);
+		String  USE_YN 		= pjtU.str(rs.USE_YN);
 		
 		List<CmCd>  al =daCmCd.findCmCd(GRP_CD,USE_YN);
 		OUT_DS outDs = new OUT_DS();
@@ -151,8 +154,8 @@ public class BR_CM_CD_FIND {
 			row.USE_YN= cm.getUseYn();
 			row.ORD= String.valueOf(cm.getOrd());
 			row.RMK= cm.getRmk();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 

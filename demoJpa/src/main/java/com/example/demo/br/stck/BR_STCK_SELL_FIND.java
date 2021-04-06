@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "STCK", description = "주식")
 public class BR_STCK_SELL_FIND {
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@Schema(name="IN_DS-BR_AV_ACTR_FIND")
 	@Data
@@ -188,8 +191,8 @@ public class BR_STCK_SELL_FIND {
 			row.SELL_DATE= c.get(QStSell.stSell.sellDate);
 			row.CRT_USR_NO= c.get(QStSell.stSell.crtUsrNo).toString();
 			row.UPDT_USR_NO= c.get(QStSell.stSell.updtUsrNo).toString();
-			row.CRT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QStSell.stSell.crtDtm));
-			row.UPDT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QStSell.stSell.updtDtm));
+			row.CRT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(c.get(QStSell.stSell.crtDtm));
+			row.UPDT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(c.get(QStSell.stSell.updtDtm));
 			outDs.OUT_DATA.add(row);
 		}
 	

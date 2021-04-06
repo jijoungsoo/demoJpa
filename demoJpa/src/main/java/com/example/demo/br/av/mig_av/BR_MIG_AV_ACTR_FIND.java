@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_MIG_AV_ACTR_FIND {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_MIG_AV_ACTR_FIND")
@@ -213,7 +216,7 @@ public class BR_MIG_AV_ACTR_FIND {
 			row.DSCR_TTL = c.get(QMigAvActr.migAvActr.dscrTtl);
 			row.DSCR = c.get(QMigAvActr.migAvActr.dscr);
 			row.SYNC = c.get(QMigAvActr.migAvActr.sync);
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS( c.get(QMigAvActr.migAvActr.crtDtm));
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS( c.get(QMigAvActr.migAvActr.crtDtm));
 			row.DVD_CNT = c.get(Expressions.numberPath(Long.class,"dvd_cnt"));
 			row.BEST_DVD_CNT = c.get(Expressions.numberPath(Long.class,"best_dvd_cnt"));
 			row.ACTOR_CMT_CNT = c.get(Expressions.numberPath(Long.class,"actor_cmt_cnt"));

@@ -39,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "CM_USER", description = "사용자정보")
 public class BR_CM_LOGIN_SNS {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_LOGIN_SNS")
 	@Data
@@ -176,25 +179,25 @@ public class BR_CM_LOGIN_SNS {
 		
 		
 		DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  USER_NO 		= PjtUtil.str(rs.USER_NO);
-		String  USER_NM 		= PjtUtil.str(rs.USER_NM);
-		String  USER_ID		 	= PjtUtil.str(rs.USER_ID);
-		String  EMAIL 			= PjtUtil.str(rs.EMAIL);
-		String  USE_YN 			= PjtUtil.str(rs.USE_YN);
-		String  RMK 			= PjtUtil.str(rs.RMK);
-		String  SNS_GUBUN		= PjtUtil.str(rs.SNS_GUBUN);
-		String  SNS_ID			= PjtUtil.str(rs.SNS_ID);
-		String  BRTHDAY			= PjtUtil.str(rs.BRTHDAY);
-		String  GNDR			= PjtUtil.str(rs.GNDR);
-		String  PRF_IMG			= PjtUtil.str(rs.PRF_IMG);
-		String  THMB_IMG     	= PjtUtil.str(rs.THMB_IMG);
+		String  USER_NO 		= pjtU.str(rs.USER_NO);
+		String  USER_NM 		= pjtU.str(rs.USER_NM);
+		String  USER_ID		 	= pjtU.str(rs.USER_ID);
+		String  EMAIL 			= pjtU.str(rs.EMAIL);
+		String  USE_YN 			= pjtU.str(rs.USE_YN);
+		String  RMK 			= pjtU.str(rs.RMK);
+		String  SNS_GUBUN		= pjtU.str(rs.SNS_GUBUN);
+		String  SNS_ID			= pjtU.str(rs.SNS_ID);
+		String  BRTHDAY			= pjtU.str(rs.BRTHDAY);
+		String  GNDR			= pjtU.str(rs.GNDR);
+		String  PRF_IMG			= pjtU.str(rs.PRF_IMG);
+		String  THMB_IMG     	= pjtU.str(rs.THMB_IMG);
 
 
-		if(PjtUtil.isEmpty(SNS_GUBUN)) {
+		if(pjtU.isEmpty(SNS_GUBUN)) {
 			throw new BizRuntimeException("SNS구분이 입력되지 않았습니다.");
 		}
 
-		if(PjtUtil.isEmpty(SNS_ID)) {
+		if(pjtU.isEmpty(SNS_ID)) {
 			throw new BizRuntimeException("SNS id가 입력되지 않았습니다.");
 		}
 
@@ -206,14 +209,14 @@ public class BR_CM_LOGIN_SNS {
 		}
 
 		if(al.size()==0){
-			if(PjtUtil.isEmpty(USER_NM)) {
+			if(pjtU.isEmpty(USER_NM)) {
 				throw new BizRuntimeException("사용자명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(USER_ID)) {
+			if(pjtU.isEmpty(USER_ID)) {
 				throw new BizRuntimeException("사용자ID가 입력되지 않았습니다.");
 			}
 
-			if(PjtUtil.isEmpty(EMAIL)) {
+			if(pjtU.isEmpty(EMAIL)) {
 				throw new BizRuntimeException("이메일주소가 입력되지 않았습니다.");
 			}
 			
@@ -242,15 +245,15 @@ public class BR_CM_LOGIN_SNS {
 			CmUser c = al.get(0);
 			long L_USER_NO = c.getUserNo();
 			USE_YN = c.getUseYn();
-			if(PjtUtil.isEmpty(USER_ID)) {
+			if(pjtU.isEmpty(USER_ID)) {
 				throw new BizRuntimeException("사용자ID가 입력되지 않았습니다.");
 			}
 
-			if(PjtUtil.isEmpty(USER_NM)) {
+			if(pjtU.isEmpty(USER_NM)) {
 				throw new BizRuntimeException("사용자명이 입력되지 않았습니다.");
 			}
 	
-			if(PjtUtil.isEmpty(EMAIL)) {
+			if(pjtU.isEmpty(EMAIL)) {
 				throw new BizRuntimeException("이메일주소가 입력되지 않았습니다.");
 			}
 			

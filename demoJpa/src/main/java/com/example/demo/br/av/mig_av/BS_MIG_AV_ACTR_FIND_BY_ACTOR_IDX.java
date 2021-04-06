@@ -62,6 +62,9 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		@Schema(name = "ACTOR_IDX", example = "1", description = "ACTOR_IDX")
 		String ACTOR_IDX = "";
 	}
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("OUT_DS")
 	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX")
@@ -252,9 +255,9 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)){
+		if(pjtU.isEmpty(ACTOR_IDX)){
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
@@ -282,7 +285,7 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		row.DSCR_TTL = c.getDscrTtl();
 		row.DSCR = c.getDscr();
 		row.SYNC = c.getSync();
-		row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 		outDs.OUT_DATA.add(row);
 
 		/*Img */
@@ -293,16 +296,15 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 			MigAvActrImg m = cImg.get(i);
 			rowImg.ACTOR_IDX =m.getActrIdx();
 
-			if(PjtUtil.isEmpty(m.getImgL()) ||
-				PjtUtil.isEmpty(m.getImgLs())
+			if(pjtU.isEmpty(m.getImgL()) ||
+				pjtU.isEmpty(m.getImgLs())
 			
 			){
 				Long L_IMG_SEQ = m.getImgSeq();
 				String IMG   =m.getImg();
 				String IMG_S =m.getImgS();
-				PjtUtil p = new PjtUtil();
-				String IMG_L = p.fileDwnld(IMG);
-				String IMG_LS =p.fileDwnld(IMG_S);
+				String IMG_L = pjtU.fileDwnld(IMG);
+				String IMG_LS =pjtU.fileDwnld(IMG_S);
 				daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
 				, IMG
 				, IMG_S
@@ -311,7 +313,7 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 				);
 			} 
 			rowImg.IMG_SEQ  =m.getImgSeq();
-			rowImg.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
+			rowImg.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 			outDs.OUT_DATA_IMG.add(rowImg);
 		}
 

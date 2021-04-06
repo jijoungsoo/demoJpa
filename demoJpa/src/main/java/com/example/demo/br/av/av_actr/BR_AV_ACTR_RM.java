@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -33,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_AV_ACTR_RM {
+	@Autowired
+	PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_ACTR_RM")
@@ -84,14 +85,14 @@ public class BR_AV_ACTR_RM {
 		}
 		
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  ACTR_SEQ 		= PjtUtil.str(rs.ACTR_SEQ);
-			if(PjtUtil.isEmpty(ACTR_SEQ)) {
+			String  ACTR_SEQ 		= pjtU.str(rs.ACTR_SEQ);
+			if(pjtU.isEmpty(ACTR_SEQ)) {
 				throw new BizRuntimeException("["+ACTR_SEQ+"] 배우 일련번호가 입력되지 않았습니다.");
 			}
 			long L_ACTR_SEQ = Long.parseLong(ACTR_SEQ);

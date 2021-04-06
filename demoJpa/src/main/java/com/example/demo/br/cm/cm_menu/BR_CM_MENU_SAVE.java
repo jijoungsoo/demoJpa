@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MENU_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MENU_SAVE")
 	@Data
@@ -116,7 +119,7 @@ public class BR_CM_MENU_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -124,24 +127,24 @@ public class BR_CM_MENU_SAVE {
 		System.out.println(inDS);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  MENU_CD 		= PjtUtil.str(rs.MENU_CD);
-			String  MENU_NM 		= PjtUtil.str(rs.MENU_NM);
-			String  PRNT_MENU_CD 	= PjtUtil.str(rs.PRNT_MENU_CD);
-			String  ORD 			= PjtUtil.str(rs.ORD);
-			String  PGM_ID 			= PjtUtil.str(rs.PGM_ID);
-			String  MENU_LVL 		= PjtUtil.str(rs.MENU_LVL);
-			String  MENU_KIND 		= PjtUtil.str(rs.MENU_KIND);
-			String  MENU_PATH 		= PjtUtil.str(rs.MENU_PATH);
-			String  RMK 			= PjtUtil.str(rs.RMK);
+			String  MENU_CD 		= pjtU.str(rs.MENU_CD);
+			String  MENU_NM 		= pjtU.str(rs.MENU_NM);
+			String  PRNT_MENU_CD 	= pjtU.str(rs.PRNT_MENU_CD);
+			String  ORD 			= pjtU.str(rs.ORD);
+			String  PGM_ID 			= pjtU.str(rs.PGM_ID);
+			String  MENU_LVL 		= pjtU.str(rs.MENU_LVL);
+			String  MENU_KIND 		= pjtU.str(rs.MENU_KIND);
+			String  MENU_PATH 		= pjtU.str(rs.MENU_PATH);
+			String  RMK 			= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(MENU_CD)) {
+			if(pjtU.isEmpty(MENU_CD)) {
 				throw new BizRuntimeException("메뉴코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(MENU_NM)) {
+			if(pjtU.isEmpty(MENU_NM)) {
 				throw new BizRuntimeException("메뉴명이 입력되지 않았습니다.");
 			}
 
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
 			
@@ -164,29 +167,29 @@ public class BR_CM_MENU_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  MENU_NO 		= PjtUtil.str(rs.MENU_NO);
-			String  MENU_CD 		= PjtUtil.str(rs.MENU_CD);
-			String  MENU_NM 		= PjtUtil.str(rs.MENU_NM);
-			String  PRNT_MENU_CD 	= PjtUtil.str(rs.PRNT_MENU_CD);
-			String  ORD 			= PjtUtil.str(rs.ORD);
-			String  PGM_ID 			= PjtUtil.str(rs.PGM_ID);
-			String  MENU_LVL 		= PjtUtil.str(rs.MENU_LVL);
-			String  MENU_KIND 		= PjtUtil.str(rs.MENU_KIND);
-			String  MENU_PATH 		= PjtUtil.str(rs.MENU_PATH);
-			String  RMK 			= PjtUtil.str(rs.RMK);
+			String  MENU_NO 		= pjtU.str(rs.MENU_NO);
+			String  MENU_CD 		= pjtU.str(rs.MENU_CD);
+			String  MENU_NM 		= pjtU.str(rs.MENU_NM);
+			String  PRNT_MENU_CD 	= pjtU.str(rs.PRNT_MENU_CD);
+			String  ORD 			= pjtU.str(rs.ORD);
+			String  PGM_ID 			= pjtU.str(rs.PGM_ID);
+			String  MENU_LVL 		= pjtU.str(rs.MENU_LVL);
+			String  MENU_KIND 		= pjtU.str(rs.MENU_KIND);
+			String  MENU_PATH 		= pjtU.str(rs.MENU_PATH);
+			String  RMK 			= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(MENU_NO)) {
+			if(pjtU.isEmpty(MENU_NO)) {
 				throw new BizRuntimeException("메뉴번호가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(MENU_CD)) {
+			if(pjtU.isEmpty(MENU_CD)) {
 				throw new BizRuntimeException("메뉴코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(MENU_NM)) {
+			if(pjtU.isEmpty(MENU_NM)) {
 				throw new BizRuntimeException("메뉴명이 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
 			long L_MENU_NO = Long.parseLong(MENU_NO);

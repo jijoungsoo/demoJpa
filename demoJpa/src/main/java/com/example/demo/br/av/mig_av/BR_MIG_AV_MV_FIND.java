@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_MIG_AV_MV_FIND {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_MIG_AV_MV_FIND")
@@ -187,7 +190,7 @@ public class BR_MIG_AV_MV_FIND {
 			row.RUN_TIME = c.getRnTm();
 			row.STORY_KR = c.getStryKr();
 			row.GEN_LIST = c.getGenLst();
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		PAGE_DATA_ROW page_data = new PAGE_DATA_ROW(pg);

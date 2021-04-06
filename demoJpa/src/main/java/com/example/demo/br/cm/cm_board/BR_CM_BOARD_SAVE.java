@@ -37,6 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_BOARD_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_BOARD_SAVE")
 	@Data
@@ -107,30 +110,30 @@ public class BR_CM_BOARD_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs 	=inDS.IN_DATA.get(i);			
-			String  TTL 		= PjtUtil.str(rs.TTL);
-			String  CNTNT 		= PjtUtil.str(rs.CNTNT);
-			String  GRP_SEQ 	= PjtUtil.str(rs.GRP_SEQ);
-			String  BRD_SEQ 	= PjtUtil.str(rs.BRD_SEQ);
-			String  PRNT_BRD_SEQ= PjtUtil.str(rs.PRNT_BRD_SEQ);
+			String  TTL 		= pjtU.str(rs.TTL);
+			String  CNTNT 		= pjtU.str(rs.CNTNT);
+			String  GRP_SEQ 	= pjtU.str(rs.GRP_SEQ);
+			String  BRD_SEQ 	= pjtU.str(rs.BRD_SEQ);
+			String  PRNT_BRD_SEQ= pjtU.str(rs.PRNT_BRD_SEQ);
 			Document doc = Jsoup.parse(TTL);
 			String  TTL_TEXT 		= doc.text();
 			doc = Jsoup.parse(CNTNT);
 			String  CNTNT_TEXT 		= doc.text();
 
-			if(PjtUtil.isEmpty(TTL)) {
+			if(pjtU.isEmpty(TTL)) {
 				throw new BizRuntimeException("제목이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(CNTNT)) {
+			if(pjtU.isEmpty(CNTNT)) {
 				throw new BizRuntimeException("내용이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(GRP_SEQ)) {
+			if(pjtU.isEmpty(GRP_SEQ)) {
 				throw new BizRuntimeException("게시물관리번호가 입력되지 않았습니다.");
 			}
 
@@ -140,11 +143,11 @@ public class BR_CM_BOARD_SAVE {
 				throw new BizException("["+GRP_SEQ+"] 게시판관리가 존재하지 않습니다.[수정X]");
 			}
 
-			if(PjtUtil.isEmpty(BRD_SEQ)==true){
+			if(pjtU.isEmpty(BRD_SEQ)==true){
 				Long L_BRD_SEQ =daCmSeq.increate("CM_BRD_BRD_SEQ");				
 
 				Long L_PRNT_BRD_SEQ = 0L;//부모댓글이 있을때 부모 SEQ 없으면 0
-				if(PjtUtil.isEmpty(PRNT_BRD_SEQ)==false){
+				if(pjtU.isEmpty(PRNT_BRD_SEQ)==false){
 					L_PRNT_BRD_SEQ = Long.parseLong(PRNT_BRD_SEQ);  
 				}
 							

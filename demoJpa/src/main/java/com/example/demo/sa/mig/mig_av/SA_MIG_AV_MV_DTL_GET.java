@@ -35,6 +35,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class SA_MIG_AV_MV_DTL_GET {    
+
+    @Autowired
+    PjtUtil pjtU;
+
+
     @Autowired
 	DA_MIG_AV_MV daMigAvMv;
 

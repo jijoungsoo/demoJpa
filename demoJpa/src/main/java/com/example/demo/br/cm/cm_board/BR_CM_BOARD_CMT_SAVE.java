@@ -37,6 +37,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_BOARD_CMT_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_BOARD_CMT_SAVE")
 	@Data
@@ -106,24 +109,24 @@ public class BR_CM_BOARD_CMT_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs 	=inDS.IN_DATA.get(i);			
-			String  CNTNT 		= PjtUtil.str(rs.CNTNT);
-			String  CMT_SEQ 	= PjtUtil.str(rs.CMT_SEQ);
-			String  BRD_SEQ 	= PjtUtil.str(rs.BRD_SEQ);
-			String  PRNT_CMT_SEQ= PjtUtil.str(rs.PRNT_CMT_SEQ);
+			String  CNTNT 		= pjtU.str(rs.CNTNT);
+			String  CMT_SEQ 	= pjtU.str(rs.CMT_SEQ);
+			String  BRD_SEQ 	= pjtU.str(rs.BRD_SEQ);
+			String  PRNT_CMT_SEQ= pjtU.str(rs.PRNT_CMT_SEQ);
 			Document doc = Jsoup.parse(CNTNT);
 			String  CNTNT_TEXT 		= doc.text();
 
-			if(PjtUtil.isEmpty(CNTNT)) {
+			if(pjtU.isEmpty(CNTNT)) {
 				throw new BizRuntimeException("내용이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(BRD_SEQ)) {
+			if(pjtU.isEmpty(BRD_SEQ)) {
 				throw new BizRuntimeException("게시물번호가 입력되지 않았습니다.");
 			}
 
@@ -133,11 +136,11 @@ public class BR_CM_BOARD_CMT_SAVE {
 				throw new BizException("["+BRD_SEQ+"] 게시물이 존재하지 않습니다.[수정X]");
 			}
 
-			if(PjtUtil.isEmpty(CMT_SEQ)==true){
+			if(pjtU.isEmpty(CMT_SEQ)==true){
 				Long L_CMT_SEQ =daCmSeq.increate("CM_BRD_CMT_CMT_SEQ");				
 
 				Long L_PRNT_CMT_SEQ = 0L;//부모댓글이 있을때 부모 SEQ 없으면 0
-				if(PjtUtil.isEmpty(PRNT_CMT_SEQ)==false){
+				if(pjtU.isEmpty(PRNT_CMT_SEQ)==false){
 					L_PRNT_CMT_SEQ = Long.parseLong(PRNT_CMT_SEQ);  
 				}
 							

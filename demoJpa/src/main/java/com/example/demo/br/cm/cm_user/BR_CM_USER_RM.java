@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_USER_RM {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_USER_RM")
@@ -80,14 +82,14 @@ public class BR_CM_USER_RM {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
-		if(PjtUtil.isEmpty(inDS.LSESSION.getUSER_NO())) {
+		if(pjtU.isEmpty(inDS.LSESSION.getUSER_NO())) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  USER_NO 		= PjtUtil.str(rs.USER_NO);
-			if(PjtUtil.isEmpty(USER_NO)) {
+			String  USER_NO 		= pjtU.str(rs.USER_NO);
+			if(pjtU.isEmpty(USER_NO)) {
 				throw new BizRuntimeException("사용자가 선택되지 않았습니다.");
 			}
 			long L_USER_NO = Long.parseLong(USER_NO);

@@ -30,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MENU_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MENU_FIND")
 	@Data
@@ -135,18 +138,18 @@ public class BR_CM_MENU_FIND {
 		for(int i=0;i<al.size();i++) {
 			Map cm=al.get(i);
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.MENU_NO= PjtUtil.str(cm.get("menu_no"));
-			row.MENU_CD= PjtUtil.str(cm.get("menu_cd"));
-			row.MENU_NM= PjtUtil.str(cm.get("menu_nm"));
-			row.PRNT_MENU_CD= PjtUtil.str(cm.get("prnt_menu_cd"));
-			row.ORD= PjtUtil.str(cm.get("ord"));
-			row.PGM_ID= PjtUtil.str(cm.get("pgm_id"));
-			row.MENU_KIND= PjtUtil.str(cm.get("menu_kind"));
-			row.RMK= PjtUtil.str(cm.get("rmk"));
-			row.MENU_LVL= PjtUtil.str(cm.get("menu_lvl"));
-			row.MENU_PATH= PjtUtil.str(cm.get("menu_path"));
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("crt_dtm"));
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("updt_dtm"));
+			row.MENU_NO= pjtU.str(cm.get("menu_no"));
+			row.MENU_CD= pjtU.str(cm.get("menu_cd"));
+			row.MENU_NM= pjtU.str(cm.get("menu_nm"));
+			row.PRNT_MENU_CD= pjtU.str(cm.get("prnt_menu_cd"));
+			row.ORD= pjtU.str(cm.get("ord"));
+			row.PGM_ID= pjtU.str(cm.get("pgm_id"));
+			row.MENU_KIND= pjtU.str(cm.get("menu_kind"));
+			row.RMK= pjtU.str(cm.get("rmk"));
+			row.MENU_LVL= pjtU.str(cm.get("menu_lvl"));
+			row.MENU_PATH= pjtU.str(cm.get("menu_path"));
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("crt_dtm"));
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS((java.util.Date)cm.get("updt_dtm"));
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

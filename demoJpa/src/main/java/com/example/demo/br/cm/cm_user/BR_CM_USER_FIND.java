@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_USER_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_PGM_FIND")
@@ -132,7 +134,7 @@ public class BR_CM_USER_FIND {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
@@ -151,9 +153,9 @@ public class BR_CM_USER_FIND {
 			row.RMK=cm.getRmk();			
 			row.SNS_GUBUN=cm.getSnsGubun();		
 			row.SNS_ID=cm.getSnsId();		
-			row.LST_ACC_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getLstAccDtm());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.LST_ACC_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getLstAccDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

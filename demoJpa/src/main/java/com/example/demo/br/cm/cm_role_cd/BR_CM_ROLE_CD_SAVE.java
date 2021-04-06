@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_ROLE_CD_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_ROLE_CD_SAVE")
@@ -101,29 +103,29 @@ public class BR_CM_ROLE_CD_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  ROLE_CD 	= PjtUtil.str(rs.ROLE_CD);
-			String  ROLE_NM 	= PjtUtil.str(rs.ROLE_NM);
-			String  USE_YN 		= PjtUtil.str(rs.USE_YN);
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  RMK 		= PjtUtil.str(rs.RMK);
+			String  ROLE_CD 	= pjtU.str(rs.ROLE_CD);
+			String  ROLE_NM 	= pjtU.str(rs.ROLE_NM);
+			String  USE_YN 		= pjtU.str(rs.USE_YN);
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  RMK 		= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(ROLE_CD)) {
+			if(pjtU.isEmpty(ROLE_CD)) {
 				throw new BizRuntimeException("역할코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ROLE_NM)) {
+			if(pjtU.isEmpty(ROLE_NM)) {
 				throw new BizRuntimeException("역할명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(USE_YN)) {
+			if(pjtU.isEmpty(USE_YN)) {
 				throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
 			
@@ -140,22 +142,22 @@ public class BR_CM_ROLE_CD_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  ROLE_CD 	= PjtUtil.str(rs.ROLE_CD);
-			String  ROLE_NM 	= PjtUtil.str(rs.ROLE_NM);
-			String  USE_YN 		= PjtUtil.str(rs.USE_YN);
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  RMK 		= PjtUtil.str(rs.RMK);
+			String  ROLE_CD 	= pjtU.str(rs.ROLE_CD);
+			String  ROLE_NM 	= pjtU.str(rs.ROLE_NM);
+			String  USE_YN 		= pjtU.str(rs.USE_YN);
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  RMK 		= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(ROLE_CD)) {
+			if(pjtU.isEmpty(ROLE_CD)) {
 				throw new BizRuntimeException("역할코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ROLE_NM)) {
+			if(pjtU.isEmpty(ROLE_NM)) {
 				throw new BizRuntimeException("역할명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(USE_YN)) {
+			if(pjtU.isEmpty(USE_YN)) {
 				throw new BizRuntimeException("사용여부가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬이 입력되지 않았습니다.");
 			}
 			

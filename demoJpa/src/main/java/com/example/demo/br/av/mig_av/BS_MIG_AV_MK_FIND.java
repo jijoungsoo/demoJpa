@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -36,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BS_MIG_AV_MK_FIND {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BS_MIG_AV_MK_FIND")
@@ -159,7 +161,7 @@ public class BS_MIG_AV_MK_FIND {
 			row.IMG_L = c.getImgL();
 			row.IMG = c.getImg();
 			row.TTL = c.getTtl();
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		

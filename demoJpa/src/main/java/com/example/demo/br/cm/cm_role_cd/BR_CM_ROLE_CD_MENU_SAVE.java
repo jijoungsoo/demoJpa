@@ -35,6 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_ROLE_CD_MENU_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_ROLE_CD_MENU_SAVE")
@@ -113,7 +115,7 @@ public class BR_CM_ROLE_CD_MENU_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 
@@ -131,7 +133,7 @@ public class BR_CM_ROLE_CD_MENU_SAVE {
 		if(rs.ROLE_CD==null){
 			throw new BizRuntimeException("IN_ROLE_CD-ROLE_CD는 null이면 안되요.");
 		}
-		if(PjtUtil.isEmpty(rs.ROLE_CD)==true){
+		if(pjtU.isEmpty(rs.ROLE_CD)==true){
 			throw new BizRuntimeException("IN_ROLE_CD-ROLE_CD는 빈 값이면 안되요.");
 		}
 		String ROLE_CD = rs.ROLE_CD;
@@ -150,22 +152,22 @@ public class BR_CM_ROLE_CD_MENU_SAVE {
 		*/
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs2 =inDS.IN_DATA.get(i);
-			String  MENU_NO 	= PjtUtil.str(rs2.MENU_NO);
-			String  ROLE_YN 	= PjtUtil.str(rs2.ROLE_YN);
+			String  MENU_NO 	= pjtU.str(rs2.MENU_NO);
+			String  ROLE_YN 	= pjtU.str(rs2.ROLE_YN);
 			if(rs2.ROLE_CD==null){
 				throw new BizRuntimeException("IN_DATA-ROLE_CD는 null이면 안되요.");
 			}
-			if(PjtUtil.isEmpty(rs2.ROLE_CD)==true){
+			if(pjtU.isEmpty(rs2.ROLE_CD)==true){
 				throw new BizRuntimeException("IN_DATA-ROLE_CD는 빈 값이면 안되요.");
 			}
-			if(!PjtUtil.str(rs2.ROLE_CD).equals(ROLE_CD)){
+			if(!pjtU.str(rs2.ROLE_CD).equals(ROLE_CD)){
 				throw new BizRuntimeException("IN_DATA-ROLE_CD는 IN_ROLE_CD-ROLE_CD와 같아야한다.");
 			}
 			
-			if(PjtUtil.isEmpty(MENU_NO)) {
+			if(pjtU.isEmpty(MENU_NO)) {
 				throw new BizRuntimeException("메뉴번호가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ROLE_YN)) {
+			if(pjtU.isEmpty(ROLE_YN)) {
 				throw new BizRuntimeException("역할 여부가 입력되지 않았습니다.");
 			}
 	

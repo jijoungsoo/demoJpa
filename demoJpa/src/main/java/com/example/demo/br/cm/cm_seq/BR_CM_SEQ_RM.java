@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_SEQ_RM {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_SEQ_SAVE")
@@ -81,15 +83,15 @@ public class BR_CM_SEQ_RM {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
 		
 		for (int i = 0; i < inDS.IN_DATA.size(); i++) {
 			IN_DATA_ROW rs = inDS.IN_DATA.get(i);
-			String SEQ_NM = PjtUtil.str(rs.SEQ_NM);
-			if (PjtUtil.isEmpty(SEQ_NM)) {
+			String SEQ_NM = pjtU.str(rs.SEQ_NM);
+			if (pjtU.isEmpty(SEQ_NM)) {
 				throw new BizRuntimeException("시퀀스명이 선택되지 않았습니다.");
 			}
 			daCmSeq.rmCmSeq(SEQ_NM);

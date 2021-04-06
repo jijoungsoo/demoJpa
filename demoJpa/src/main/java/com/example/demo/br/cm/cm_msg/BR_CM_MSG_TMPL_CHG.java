@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_MSG_TMPL_CHG {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_MSG_TMPL_CHG")
@@ -92,7 +94,7 @@ public class BR_CM_MSG_TMPL_CHG {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -103,7 +105,7 @@ public class BR_CM_MSG_TMPL_CHG {
 		if(inDS.IN_DATA.size()==0) {
 			throw new BizRuntimeException("IN_DATA가 넘어오지 않았습니다2.");
 		}
-		if(PjtUtil.isEmpty(inDS.IN_DATA.get(0).TMPL_SEQ)){
+		if(pjtU.isEmpty(inDS.IN_DATA.get(0).TMPL_SEQ)){
 			throw new BizRuntimeException("TMPL_SEQ가  넘어오지 않았습니다2.");
 		}
 		String TMPL_SEQ  =  inDS.IN_DATA.get(0).TMPL_SEQ;

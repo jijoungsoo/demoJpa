@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_OAUTH_LOG_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_OAUTH_LOG_FIND")
@@ -129,7 +131,7 @@ public class BR_CM_OAUTH_LOG_FIND {
 			row.EML=cm.getEml();			
 			row.BRTH_DAY=cm.getBrthday();		
 			row.GNDR=cm.getGndr();		
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

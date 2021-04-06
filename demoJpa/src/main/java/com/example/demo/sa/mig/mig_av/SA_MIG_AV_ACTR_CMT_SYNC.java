@@ -33,6 +33,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class SA_MIG_AV_ACTR_CMT_SYNC {
 
     @Autowired
+    PjtUtil pjtU;
+
+    @Autowired
 	DA_MIG_AV_ACTR daMigAvActr;
 
     
@@ -77,7 +80,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         Elements  mention_cnt = doc.getElementById("commlist").select(".page_navi.shw-640-over").select("strong");
         System.out.println("aaaaa");
 
-        if(PjtUtil.isEmpty(mention_cnt.text())){
+        if(pjtU.isEmpty(mention_cnt.text())){
             return null;
         }
         System.out.println(mention_cnt.text());
@@ -171,7 +174,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
                     Long L_CMT_IDX = Long.parseLong(CMT_IDX);
                     
                     Long L_LK_CNT =0L;
-                    if(!PjtUtil.isEmpty(LK_CNT)){
+                    if(!pjtU.isEmpty(LK_CNT)){
                         //비추천 누적인경우 좋아여 데이터가 없다..
                         L_LK_CNT = Long.parseLong(LK_CNT);
                     }

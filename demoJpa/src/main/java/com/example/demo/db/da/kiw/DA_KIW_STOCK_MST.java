@@ -1,19 +1,18 @@
 package com.example.demo.db.da.kiw;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.db.repository.stck.StckMarcapRepository;
 import com.example.demo.db.domain.kiw.KiwStockMst;
 import com.example.demo.db.domain.kiw.QKiwStockMst;
+import com.example.demo.db.repository.stck.StckMarcapRepository;
 import com.example.demo.utils.PjtUtil;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 
 @Service
@@ -21,6 +20,9 @@ public class DA_KIW_STOCK_MST {
 	
 	@Autowired
 	JPAQueryFactory qf;
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	
 	@Autowired
@@ -32,11 +34,11 @@ public class DA_KIW_STOCK_MST {
 			,Pageable p) {
 		
 			JPAQuery<KiwStockMst> c= qf.selectFrom(QKiwStockMst.kiwStockMst);
-			if(!PjtUtil.isEmpty(STOCK_CD)) {
+			if(!pjtU.isEmpty(STOCK_CD)) {
 				c.where(QKiwStockMst.kiwStockMst.stockCd.contains(STOCK_CD));
 			}
 			
-			if(!PjtUtil.isEmpty(STOCK_NM)) {
+			if(!pjtU.isEmpty(STOCK_NM)) {
 				c.where(QKiwStockMst.kiwStockMst.stockNm.contains(STOCK_NM));
 			}
 			c= c.orderBy(QKiwStockMst.kiwStockMst.OpenDt.desc());

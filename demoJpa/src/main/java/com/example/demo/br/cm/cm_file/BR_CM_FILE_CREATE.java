@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -32,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_FILE_CREATE {
+
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_FILE_CREATE")
@@ -113,7 +115,7 @@ public class BR_CM_FILE_CREATE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
@@ -121,15 +123,15 @@ public class BR_CM_FILE_CREATE {
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  FILE_ID		 	= PjtUtil.strTrim(rs.FILE_ID);
-			String  FILE_GROUP 		= PjtUtil.strTrim(rs.FILE_GROUP);
-			String  ORG_FILE_NM 	= PjtUtil.strTrim(rs.ORG_FILE_NM);
-			String  SVR_DIR_PATH 	= PjtUtil.strTrim(rs.SVR_DIR_PATH);
-			String  SVR_FILE_NM 	= PjtUtil.strTrim(rs.SVR_FILE_NM);
-			String  FILE_STATUS_CD 	= PjtUtil.strTrim(rs.FILE_STATUS_CD);
-			String  FILE_SIZE 	    = PjtUtil.strTrim(rs.FILE_SIZE);
-			String  CONTENT_TYPE 	= PjtUtil.strTrim(rs.CONTENT_TYPE);
-			String  EXT 			= PjtUtil.strTrim(rs.EXT);
+			String  FILE_ID		 	= pjtU.strTrim(rs.FILE_ID);
+			String  FILE_GROUP 		= pjtU.strTrim(rs.FILE_GROUP);
+			String  ORG_FILE_NM 	= pjtU.strTrim(rs.ORG_FILE_NM);
+			String  SVR_DIR_PATH 	= pjtU.strTrim(rs.SVR_DIR_PATH);
+			String  SVR_FILE_NM 	= pjtU.strTrim(rs.SVR_FILE_NM);
+			String  FILE_STATUS_CD 	= pjtU.strTrim(rs.FILE_STATUS_CD);
+			String  FILE_SIZE 	    = pjtU.strTrim(rs.FILE_SIZE);
+			String  CONTENT_TYPE 	= pjtU.strTrim(rs.CONTENT_TYPE);
+			String  EXT 			= pjtU.strTrim(rs.EXT);
 			
 			Long L_FILE_SIZE  = Long.parseLong(FILE_SIZE);
 			

@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ")
@@ -112,9 +115,9 @@ public class BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  IMG_SEQ 		= PjtUtil.str(rs.IMG_SEQ);
+		String  IMG_SEQ 		= pjtU.str(rs.IMG_SEQ);
 
-		if(PjtUtil.isEmpty(IMG_SEQ)){
+		if(pjtU.isEmpty(IMG_SEQ)){
 			throw new BizRuntimeException("IMG_SEQ 전달되지 않았습니다.");
 		}
 		Long L_IMG_SEQ  = Long.parseLong(IMG_SEQ);
@@ -128,7 +131,7 @@ public class BS_MIG_AV_ACTR_IMG_FIND_BY_IMG_SEQ {
 			row.IMG_S  = m.getImgS();
 			row.IMG_L  = m.getImgL();
 			row.IMG_LS  = m.getImgLs();
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 			outDs.OUT_DATA.add(row);
         } 			
 		return outDs;          

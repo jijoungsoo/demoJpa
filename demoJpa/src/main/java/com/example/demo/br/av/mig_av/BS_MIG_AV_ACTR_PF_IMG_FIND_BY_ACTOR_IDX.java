@@ -30,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BS_MIG_AV_ACTR_PF_IMG_FIND_BY_ACTOR_IDX {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_PF_IMG_FIND_BY_ACTOR_IDX")
@@ -150,9 +153,9 @@ public class BS_MIG_AV_ACTR_PF_IMG_FIND_BY_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)){
+		if(pjtU.isEmpty(ACTOR_IDX)){
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
@@ -180,7 +183,7 @@ public class BS_MIG_AV_ACTR_PF_IMG_FIND_BY_ACTOR_IDX {
 		row.DSCR_TTL = c.getDscrTtl();
 		row.DSCR = c.getDscr();
 		row.SYNC = c.getSync();
-		row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 		outDs.OUT_DATA.add(row);
 		return outDs;
 	}

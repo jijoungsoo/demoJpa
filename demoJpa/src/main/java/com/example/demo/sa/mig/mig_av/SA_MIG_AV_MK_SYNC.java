@@ -31,6 +31,9 @@ public class SA_MIG_AV_MK_SYNC {
     @Autowired
 	DA_MIG_AV_MK daMigAvMk;
 
+    @Autowired
+    PjtUtil pjtU;
+
     public void run() throws BizException {
         ArrayList<HashMap<String, Object>>  al = getMk();
         for(int i=0;i<al.size();i++){
@@ -53,8 +56,7 @@ public class SA_MIG_AV_MK_SYNC {
 
         Long L_MK_ID = Long.parseLong(MK_ID);
 
-        PjtUtil p = new PjtUtil();
-        String IMG_L = p.fileDwnld(IMG);
+        String IMG_L =pjtU.fileDwnld(IMG);
 
         daMigAvMk.crtMigAvMk(L_MK_ID, NM, IMG, IMG_L, TTL);
     }

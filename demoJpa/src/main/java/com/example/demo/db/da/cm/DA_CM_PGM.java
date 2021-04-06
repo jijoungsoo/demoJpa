@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DA_CM_PGM {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -30,7 +33,7 @@ public class DA_CM_PGM {
 		JPAQuery<CmPgm> c = qf
 		.selectFrom(QCmPgm.cmPgm)
 		.orderBy(QCmPgm.cmPgm.pgmId.asc());
-		if(!PjtUtil.isEmpty(CATEGORY)){
+		if(!pjtU.isEmpty(CATEGORY)){
 			c=c.where(QCmPgm.cmPgm.category.eq(CATEGORY));
 		}
 		List<CmPgm> al =  c.fetch();

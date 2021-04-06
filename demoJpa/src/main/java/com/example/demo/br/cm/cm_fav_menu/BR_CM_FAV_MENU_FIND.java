@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_FAV_MENU_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_FAV_MENU_FIND")
 	@Data
@@ -141,8 +144,8 @@ public class BR_CM_FAV_MENU_FIND {
 			 out_data_row.PGM_NM= row.get(QCmPgm.cmPgm.pgmNm);
 			 out_data_row.PGM_LINK= row.get(QCmPgm.cmPgm.pgmLink);
 			 out_data_row.DIR_LINK= row.get(QCmPgm.cmPgm.dirLink);
-			 out_data_row.CRT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.crtDtm));
-			 out_data_row.UPDT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.updtDtm));
+			 out_data_row.CRT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.crtDtm));
+			 out_data_row.UPDT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(row.get(QCmFavMenu.cmFavMenu.updtDtm));
 			 outDs.OUT_DATA.add(out_data_row);
 		 }
 		return outDs;

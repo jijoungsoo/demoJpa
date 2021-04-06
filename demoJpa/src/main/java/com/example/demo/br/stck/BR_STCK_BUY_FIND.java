@@ -6,7 +6,6 @@ import java.util.List;
 import com.example.demo.anotation.OpService;
 import com.example.demo.ctrl.PAGE_DATA_ROW;
 import com.example.demo.db.da.stck.DA_STCK_BUY;
-import com.example.demo.db.domain.kiw.QKiwStockMst;
 import com.example.demo.db.domain.stck.QStBuy;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
@@ -142,6 +141,9 @@ public class BR_STCK_BUY_FIND {
 	@Autowired
 	DA_STCK_BUY daStckB;
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
@@ -197,8 +199,8 @@ public class BR_STCK_BUY_FIND {
 			row.BUY_DATE= c.get(QStBuy.stBuy.buyDate);
 			row.CRT_USR_NO= c.get(QStBuy.stBuy.crtUsrNo).toString();
 			row.UPDT_USR_NO= c.get(QStBuy.stBuy.updtUsrNo).toString();
-			row.CRT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QStBuy.stBuy.crtDtm));
-			row.UPDT_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QStBuy.stBuy.updtDtm));
+			row.CRT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(c.get(QStBuy.stBuy.crtDtm));
+			row.UPDT_DTM= pjtU.getYyyy_MM_dd_HHMMSS(c.get(QStBuy.stBuy.updtDtm));
 			outDs.OUT_DATA.add(row);
 		}
 		

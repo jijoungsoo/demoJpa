@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -32,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_AV_ACTR_SAVE {
+	@Autowired
+	PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_ACTR_SAVE")
@@ -121,31 +122,31 @@ public class BR_AV_ACTR_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  ACTR_NM_KR 	= PjtUtil.str(rs.ACTR_NM_KR);
-			String  ACTR_NM_JP 	= PjtUtil.str(rs.ACTR_NM_JP);
-			String  ACTR_NM_ENG = PjtUtil.str(rs.ACTR_NM_ENG);
-			String  BIRTH_DT 	= PjtUtil.str(rs.BIRTH_DT);
-			String  SEX 		= PjtUtil.str(rs.SEX);
-			String  RNK 		= PjtUtil.str(rs.RNK);
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  RMK 		= PjtUtil.str(rs.RMK);
-			String  MSC_YN 		= PjtUtil.str(rs.MSC_YN);
+			String  ACTR_NM_KR 	= pjtU.str(rs.ACTR_NM_KR);
+			String  ACTR_NM_JP 	= pjtU.str(rs.ACTR_NM_JP);
+			String  ACTR_NM_ENG = pjtU.str(rs.ACTR_NM_ENG);
+			String  BIRTH_DT 	= pjtU.str(rs.BIRTH_DT);
+			String  SEX 		= pjtU.str(rs.SEX);
+			String  RNK 		= pjtU.str(rs.RNK);
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  RMK 		= pjtU.str(rs.RMK);
+			String  MSC_YN 		= pjtU.str(rs.MSC_YN);
 			
 			
-			if(PjtUtil.isEmpty(ACTR_NM_KR)) {
+			if(pjtU.isEmpty(ACTR_NM_KR)) {
 				throw new BizRuntimeException("배우명(한굴)이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(SEX)) {
+			if(pjtU.isEmpty(SEX)) {
 				throw new BizRuntimeException("성별이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(MSC_YN)) {
+			if(pjtU.isEmpty(MSC_YN)) {
 				throw new BizRuntimeException("모자이크 여부가 입력되지 않았습니다.");
 			}			
 			
@@ -169,27 +170,27 @@ public class BR_AV_ACTR_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  ACTR_SEQ 	= PjtUtil.str(rs.ACTR_SEQ);
-			String  ACTR_NM_KR 	= PjtUtil.str(rs.ACTR_NM_KR);
-			String  ACTR_NM_JP 	= PjtUtil.str(rs.ACTR_NM_JP);
-			String  ACTR_NM_ENG = PjtUtil.str(rs.ACTR_NM_ENG);
-			String  BIRTH_DT 	= PjtUtil.str(rs.BIRTH_DT);
-			String  SEX 		= PjtUtil.str(rs.SEX);
-			String  RNK 		= PjtUtil.str(rs.RNK);		
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  RMK 		= PjtUtil.str(rs.RMK);
-			String  MSC_YN	 	= PjtUtil.str(rs.MSC_YN);
+			String  ACTR_SEQ 	= pjtU.str(rs.ACTR_SEQ);
+			String  ACTR_NM_KR 	= pjtU.str(rs.ACTR_NM_KR);
+			String  ACTR_NM_JP 	= pjtU.str(rs.ACTR_NM_JP);
+			String  ACTR_NM_ENG = pjtU.str(rs.ACTR_NM_ENG);
+			String  BIRTH_DT 	= pjtU.str(rs.BIRTH_DT);
+			String  SEX 		= pjtU.str(rs.SEX);
+			String  RNK 		= pjtU.str(rs.RNK);		
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  RMK 		= pjtU.str(rs.RMK);
+			String  MSC_YN	 	= pjtU.str(rs.MSC_YN);
 	
-			if(PjtUtil.isEmpty(ACTR_SEQ)) {
+			if(pjtU.isEmpty(ACTR_SEQ)) {
 				throw new BizRuntimeException("배우일련번호가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ACTR_NM_KR)) {
+			if(pjtU.isEmpty(ACTR_NM_KR)) {
 				throw new BizRuntimeException("배우명(한글)이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(SEX)) {
+			if(pjtU.isEmpty(SEX)) {
 				throw new BizRuntimeException("성별이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(MSC_YN)) {
+			if(pjtU.isEmpty(MSC_YN)) {
 				throw new BizRuntimeException("모자이크 여부가 입력되지 않았습니다.");
 			}
 			

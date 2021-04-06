@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MAIN_PGM_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MAIN_PGM_FIND")
 	@Data
@@ -98,8 +101,8 @@ public class BR_CM_MAIN_PGM_FIND {
 			row.PGM_LINK=cm.getPgmLink();
 			row.PGM_NM=cm.getPgmNm();
 			row.RMK=cm.getRmk();
-			row.CRT_DTM=PjtUtil.getYyyyMMddHHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyyMMddHHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyyMMddHHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyyMMddHHMMSS(cm.getUpdtDtm());
 			OUT_DATA.add(row);
 		}
 		OUT_DS outDs = new OUT_DS();

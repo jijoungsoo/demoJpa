@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_DOMAIN_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_DOMAIN_SAVE")
 	@Data
@@ -103,25 +106,25 @@ public class BR_CM_DOMAIN_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  DMN_CD 		= PjtUtil.str(rs.DMN_CD);
-			String  DMN_NM 		= PjtUtil.str(rs.DMN_NM);
-			String  DATA_TYPE 	= PjtUtil.str(rs.DATA_TYPE);
-			String  RMK 	    = PjtUtil.str(rs.RMK);
+			String  DMN_CD 		= pjtU.str(rs.DMN_CD);
+			String  DMN_NM 		= pjtU.str(rs.DMN_NM);
+			String  DATA_TYPE 	= pjtU.str(rs.DATA_TYPE);
+			String  RMK 	    = pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(DMN_CD)) {
+			if(pjtU.isEmpty(DMN_CD)) {
 				throw new BizRuntimeException("도메인코드 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DMN_NM)) {
+			if(pjtU.isEmpty(DMN_NM)) {
 				throw new BizRuntimeException("도메인명 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DATA_TYPE)) {
+			if(pjtU.isEmpty(DATA_TYPE)) {
 				throw new BizRuntimeException("데이터타입 입력되지 않았습니다.");
 			}
 			
@@ -139,23 +142,23 @@ public class BR_CM_DOMAIN_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  DMN_NO 		= PjtUtil.str(rs.DMN_NO);
-			String  DMN_CD 		= PjtUtil.str(rs.DMN_CD);
-			String  DMN_NM 		= PjtUtil.str(rs.DMN_NM);
-			String  DATA_TYPE 	= PjtUtil.str(rs.DATA_TYPE);
-			String  RMK 	= PjtUtil.str(rs.RMK);
+			String  DMN_NO 		= pjtU.str(rs.DMN_NO);
+			String  DMN_CD 		= pjtU.str(rs.DMN_CD);
+			String  DMN_NM 		= pjtU.str(rs.DMN_NM);
+			String  DATA_TYPE 	= pjtU.str(rs.DATA_TYPE);
+			String  RMK 	= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(DMN_NO)) {
+			if(pjtU.isEmpty(DMN_NO)) {
 				throw new BizRuntimeException("도메인번호가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(DMN_CD)) {
+			if(pjtU.isEmpty(DMN_CD)) {
 				throw new BizRuntimeException("도메인코드 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DMN_NM)) {
+			if(pjtU.isEmpty(DMN_NM)) {
 				throw new BizRuntimeException("도메인명 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DATA_TYPE)) {
+			if(pjtU.isEmpty(DATA_TYPE)) {
 				throw new BizRuntimeException("데이터타입 입력되지 않았습니다.");
 			}
 			long L_DMN_NO = Long.parseLong(DMN_NO);

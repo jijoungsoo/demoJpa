@@ -3,13 +3,10 @@ package com.example.demo.db.da.cm;
 import java.util.Date;
 import java.util.List;
 
-import com.example.demo.db.domain.cm.CmCd;
 import com.example.demo.db.domain.cm.CmOauthLog;
-import com.example.demo.db.domain.cm.QCmCd;
 import com.example.demo.db.domain.cm.QCmOauthLog;
 import com.example.demo.db.repository.cm.CmOauthLogRepository;
 import com.example.demo.utils.PjtUtil;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class DA_CM_OAUTH_LOG {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;

@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DA_CM_MENU {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -32,10 +35,10 @@ public class DA_CM_MENU {
 		JPAQuery<CmMenu> c = qf
 		.selectFrom(QCmMenu.cmMenu)
 		.orderBy(QCmMenu.cmMenu.ord.asc());
-		if(!PjtUtil.isEmpty(PRNT_MENU_CD)){
+		if(!pjtU.isEmpty(PRNT_MENU_CD)){
 			c=c.where(QCmMenu.cmMenu.prntMenuCd.eq(PRNT_MENU_CD));
 		}
-		if(!PjtUtil.isEmpty(MENU_KIND)){
+		if(!pjtU.isEmpty(MENU_KIND)){
 			c=c.where(QCmMenu.cmMenu.menuKind.eq(MENU_KIND));
 		}
 		List<CmMenu> al =  c.fetch();

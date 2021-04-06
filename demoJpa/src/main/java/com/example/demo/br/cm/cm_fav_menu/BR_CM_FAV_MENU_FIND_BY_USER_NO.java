@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -32,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_FAV_MENU_FIND_BY_USER_NO {
+
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_FAV_MENU_FIND_BY_USER_NO")
@@ -101,7 +103,7 @@ public class BR_CM_FAV_MENU_FIND_BY_USER_NO {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -110,14 +112,14 @@ public class BR_CM_FAV_MENU_FIND_BY_USER_NO {
 		OUT_DS outDs = new OUT_DS();
 		 for (Map row : tmp) {
 			 OUT_DATA_ROW  data_row = new OUT_DATA_ROW();
-			 data_row.FAV_NO =Long.parseLong(PjtUtil.str(row.get("fav_no")));
-			 data_row.MENU_NO=Long.parseLong(PjtUtil.str(row.get("menu_no")));
-			 data_row.USER_NO=Long.parseLong(PjtUtil.str(row.get("user_no")));
-			 data_row.USER_ID=PjtUtil.str(row.get("user_id"));
-			 data_row.MENU_NM=PjtUtil.str(row.get("menu_nm"));
-			 data_row.PGM_ID=PjtUtil.str(row.get("pgm_id"));
-			 data_row.PGM_LINK=PjtUtil.str(row.get("pgm_link"));
-			 data_row.DIR_LINK=PjtUtil.str(row.get("dir_link"));
+			 data_row.FAV_NO =Long.parseLong(pjtU.str(row.get("fav_no")));
+			 data_row.MENU_NO=Long.parseLong(pjtU.str(row.get("menu_no")));
+			 data_row.USER_NO=Long.parseLong(pjtU.str(row.get("user_no")));
+			 data_row.USER_ID=pjtU.str(row.get("user_id"));
+			 data_row.MENU_NM=pjtU.str(row.get("menu_nm"));
+			 data_row.PGM_ID=pjtU.str(row.get("pgm_id"));
+			 data_row.PGM_LINK=pjtU.str(row.get("pgm_link"));
+			 data_row.DIR_LINK=pjtU.str(row.get("dir_link"));
 			 outDs.OUT_DATA.add(data_row);
 		 }
 		return outDs;

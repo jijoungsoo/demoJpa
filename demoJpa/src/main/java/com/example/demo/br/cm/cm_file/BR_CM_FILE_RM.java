@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_FILE_RM {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_FILE_RM")
 	@Data
@@ -85,7 +88,7 @@ public class BR_CM_FILE_RM {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
@@ -93,8 +96,8 @@ public class BR_CM_FILE_RM {
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  FILE_ID		 	= PjtUtil.strTrim(rs.FILE_ID);
-			String  SVR_DIR_PATH	= PjtUtil.strTrim(rs.SVR_DIR_PATH);
+			String  FILE_ID		 	= pjtU.strTrim(rs.FILE_ID);
+			String  SVR_DIR_PATH	= pjtU.strTrim(rs.SVR_DIR_PATH);
 			
 			daCmFile.rmFile(
 					 FILE_ID,

@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -132,6 +131,9 @@ public class BR_AV_ACTR_FIND {
 	
 	@Autowired
 	DA_AV_ACTR daAvActr;
+
+	@Autowired
+	PjtUtil pjtU;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -176,8 +178,8 @@ public class BR_AV_ACTR_FIND {
 			row.ORD=c.get(QAvActr.avActr.ord).toString();
 			row.CRT_USR_NO=c.get(QAvActr.avActr.crtUsrNo).toString();
 			row.UPDT_USR_NO=c.get(QAvActr.avActr.updtUsrNo).toString();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QAvActr.avActr.crtDtm));
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(c.get(QAvActr.avActr.updtDtm));
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(c.get(QAvActr.avActr.crtDtm));
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(c.get(QAvActr.avActr.updtDtm));
 			outDs.OUT_DATA.add(row);
 		}
 		

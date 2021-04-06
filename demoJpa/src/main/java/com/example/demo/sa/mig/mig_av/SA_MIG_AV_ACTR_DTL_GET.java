@@ -41,6 +41,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     @Autowired
 	DA_MIG_AV_ACTR daMigAvActr;
 
+    @Autowired
+    PjtUtil pjtU;
+
     
     @Autowired
 	DA_MIG_AV_ACTR_CMT daMigAvActrCmt;
@@ -65,12 +68,12 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             if(al.size()==0){
                 sync=true;
             }
-            if(al.size()>0 && PjtUtil.isEmpty(al.get(0).getImgLA())){
+            if(al.size()>0 && pjtU.isEmpty(al.get(0).getImgLA())){
                 sync=true;
             }
 
             List<MigAvActrImg> al2 =daMigAvActrImg.findByIdActorIdx(L_ACTOR_IDX);
-            if(al2.size()>0 && PjtUtil.isEmpty(al2.get(0).getImgL())){
+            if(al2.size()>0 && pjtU.isEmpty(al2.get(0).getImgL())){
                 sync=true;
             }
 
@@ -86,8 +89,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         if(m.getImgL()==null){
             //다운로드 이미지 local명시적으로 고고
             if(m.getImg()!=null){
-                PjtUtil p =new PjtUtil();
-                String IMG_L = p.fileDwnld(m.getImg());
+                String IMG_L = pjtU.fileDwnld(m.getImg());
                 daMigAvActr.updtMigAvActrImgL(L_ACTOR_IDX, IMG_L);
                 m.setImgL(IMG_L);
             }
@@ -97,8 +99,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         if(m.getImgLs()==null){
             //다운로드 이미지 local명시적으로 고고
             if(m.getImgS()!=null){
-                PjtUtil p =new PjtUtil();
-                String IMG_LS = p.fileDwnld(m.getImgS());
+                String IMG_LS = pjtU.fileDwnld(m.getImgS());
                 daMigAvActr.updtMigAvActrImgLS(L_ACTOR_IDX, IMG_LS);
                 m.setImgLs(IMG_LS);
             }
@@ -171,7 +172,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             String dvd_idx=href.replaceAll("/menu/dvd.php\\?dvd_idx=","");
 
             System.out.println(dvd_idx);
-            if(!PjtUtil.isEmpty(dvd_idx.trim())) {
+            if(!pjtU.isEmpty(dvd_idx.trim())) {
                 best_dvd.add(dvd_idx.trim());
             }
         }
@@ -185,7 +186,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         tot_cnt=tot_cnt.replaceAll(",","");
         tot_cnt=tot_cnt.trim();
 
-        if(PjtUtil.isEmpty(tot_cnt)==false) {
+        if(pjtU.isEmpty(tot_cnt)==false) {
             int page_count = Integer.parseInt(tot_cnt)/page_size;
             if (Integer.parseInt(tot_cnt) % page_size > 0) {
                 page_count++;	// 나머지가 있다면 1을 더해줌
@@ -201,7 +202,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 
 
                 HashMap<String,String> m = new HashMap<String,String>();
-                if(PjtUtil.isEmpty(dvd_idx.trim())==false) {
+                if(pjtU.isEmpty(dvd_idx.trim())==false) {
                     m.put("DVD_IDX", dvd_idx.trim());
                     m.put("IMG_S", dvd_img_src.trim());
                     m.put("MV_NM", MV_NM.trim());
@@ -258,7 +259,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             String TTL_KR  = p.select(".dscr").select(".title").text().trim();
 
             HashMap<String,String> m = new HashMap<String,String>();
-            if(PjtUtil.isEmpty(dvd_idx.trim())==false) {
+            if(pjtU.isEmpty(dvd_idx.trim())==false) {
                 m.put("DVD_IDX", dvd_idx.trim());
                 m.put("IMG_S", dvd_img_src.trim());
                 m.put("MV_NM", MV_NM.trim());
@@ -304,11 +305,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N = IMG_S.replace("as.jpg", "ns.jpg");  //as가 있다면 무조건 ns는 있다는 전제.
                         String IMG_NS = IMG_N.replace("s.jpg", ".jpg");
 
-                        PjtUtil p =new PjtUtil();
-                        String IMG_LA = p.fileDwnld(IMG_A);
-                        String IMG_LAS = p.fileDwnld(IMG_AS);
-                        String IMG_LN = p.fileDwnld(IMG_N);
-                        String IMG_LNS = p.fileDwnld(IMG_NS);
+                        String IMG_LA = pjtU.fileDwnld(IMG_A);
+                        String IMG_LAS = pjtU.fileDwnld(IMG_AS);
+                        String IMG_LN = pjtU.fileDwnld(IMG_N);
+                        String IMG_LNS = pjtU.fileDwnld(IMG_NS);
 
                         daMigAvMv.updtMigAvMvImg(L_DVD_IDX
                             , MV_NM
@@ -330,8 +330,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N =  IMG_S;
                         String IMG_NS = IMG_S;
 
-                        PjtUtil p = new PjtUtil();
-                        String IMG_LA = p.fileDwnld(IMG_S);
+
+                        String IMG_LA = pjtU.fileDwnld(IMG_S);
                         String IMG_LAS = IMG_LA;
                         String IMG_LN =  IMG_LA;
                         String IMG_LNS = IMG_LA;
@@ -372,11 +372,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N = IMG_S.replace("as.jpg", "ns.jpg");  //as가 있다면 무조건 ns는 있다는 전제.
                         String IMG_NS = IMG_N.replace("s.jpg", ".jpg");
     
-                        PjtUtil p = new PjtUtil();
-                        String IMG_LA = p.fileDwnld(IMG_A);
-                        String IMG_LAS = p.fileDwnld(IMG_AS);
-                        String IMG_LN = p.fileDwnld(IMG_N);
-                        String IMG_LNS = p.fileDwnld(IMG_NS);
+                        String IMG_LA = pjtU.fileDwnld(IMG_A);
+                        String IMG_LAS = pjtU.fileDwnld(IMG_AS);
+                        String IMG_LN = pjtU.fileDwnld(IMG_N);
+                        String IMG_LNS = pjtU.fileDwnld(IMG_NS);
 
                         daMigAvMv.crtMigAvMv(L_DVD_IDX, L_ACTR_IDX
                         , MV_NM
@@ -399,8 +398,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                         String IMG_N =  IMG_S;
                         String IMG_NS = IMG_S;
     
-                        PjtUtil p = new PjtUtil();
-                        String IMG_LA = p.fileDwnld(IMG_S);
+                        String IMG_LA = pjtU.fileDwnld(IMG_S);
                         String IMG_LAS = IMG_LA;
                         String IMG_LN =  IMG_LA;
                         String IMG_LNS = IMG_LA;
@@ -463,9 +461,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 if (al.size()==0) {
                     String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
 				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-                    PjtUtil p = new PjtUtil();
-				    String IMG_L =p.fileDwnld(IMG);
-				    String IMG_LS =p.fileDwnld(IMG_S);
+
+				    String IMG_L =pjtU.fileDwnld(IMG);
+				    String IMG_LS =pjtU.fileDwnld(IMG_S);
                     daMigAvActrImg.crtMigAvActrImg(L_ACTR_IDX
                     , IMG
                     , IMG_S
@@ -476,9 +474,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                     Long L_IMG_SEQ = al.get(0).getImgSeq();
                     String IMG   =img_s.replaceAll("s.jpg", "r.jpg"); //https://i2.avdbs.com/actor/a06/6756_003_r.jpg
 				    String IMG_S =img_s;                            //https://i2.avdbs.com/actor/a06/6756_003_s.jpg
-                    PjtUtil p = new PjtUtil();
-				    String IMG_L =p.fileDwnld(IMG);
-				    String IMG_LS =p.fileDwnld(IMG_S);
+
+				    String IMG_L =pjtU.fileDwnld(IMG);
+				    String IMG_LS =pjtU.fileDwnld(IMG_S);
                     daMigAvActrImg.updtMigAvActrImg(L_IMG_SEQ
                     , IMG
                     , IMG_S

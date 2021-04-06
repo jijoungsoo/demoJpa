@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX")
@@ -112,9 +114,9 @@ public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  DVD_IDX 		= PjtUtil.str(rs.DVD_IDX);
+		String  DVD_IDX 		= pjtU.str(rs.DVD_IDX);
 
-		if(PjtUtil.isEmpty(DVD_IDX)){
+		if(pjtU.isEmpty(DVD_IDX)){
 			throw new BizRuntimeException("DVD_IDX 전달되지 않았습니다.");
 		}
 		Long L_DVD_IDX  = Long.parseLong(DVD_IDX);
@@ -128,7 +130,7 @@ public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
 			row.IMG_AS  = m.getImgAs();
 			row.IMG_LA  = m.getImgLA();
 			row.IMG_LAS  = m.getImgLAs();
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 			outDs.OUT_DATA.add(row);
         } 			
 		return outDs;          

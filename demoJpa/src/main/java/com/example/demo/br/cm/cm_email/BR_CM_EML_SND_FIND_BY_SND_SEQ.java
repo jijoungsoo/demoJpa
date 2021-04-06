@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_EML_SND_FIND_BY_SND_SEQ {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_EML_SND_FIND_BY_SND_SEQ")
 	@Data
@@ -201,7 +204,7 @@ public class BR_CM_EML_SND_FIND_BY_SND_SEQ {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -212,7 +215,7 @@ public class BR_CM_EML_SND_FIND_BY_SND_SEQ {
 		if(inDS.IN_DATA.size()==0) {
 			throw new BizRuntimeException("IN_DATA가 넘어오지 않았습니다2.");
 		}
-		if(PjtUtil.isEmpty(inDS.IN_DATA.get(0).SND_SEQ)){
+		if(pjtU.isEmpty(inDS.IN_DATA.get(0).SND_SEQ)){
 			throw new BizRuntimeException("SND_SEQ가  넘어오지 않았습니다.");
 		}
 		String SND_SEQ  =  inDS.IN_DATA.get(0).SND_SEQ;
@@ -231,13 +234,13 @@ public class BR_CM_EML_SND_FIND_BY_SND_SEQ {
 			row.SNDR_ADDR= cm.getSndrAddr();
 			row.SND_STATUS_CD= cm.getSndStatusCd();
 			row.SND_TYPE_CD= cm.getSndTypeCd();
-			row.SND_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getSndDtm());			
-			row.SND_CMPL_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getSndCmplDtm());			
+			row.SND_DTM= pjtU.getYyyy_MM_dd_HHMMSS(cm.getSndDtm());			
+			row.SND_CMPL_DTM= pjtU.getYyyy_MM_dd_HHMMSS(cm.getSndCmplDtm());			
 
 			row.UPDT_USR_NO= String.valueOf(cm.getUpdtUsrNo());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			row.CRT_USR_NO= String.valueOf(cm.getCrtUsrNo());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 

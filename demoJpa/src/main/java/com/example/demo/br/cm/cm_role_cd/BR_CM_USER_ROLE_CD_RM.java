@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_USER_ROLE_CD_RM {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_USER_ROLE_CD_RM")
@@ -84,20 +86,20 @@ public class BR_CM_USER_ROLE_CD_RM {
 		}
 		
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("세션 사용자NO가 넘어오지 않았습니다2.");
 		}
 
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  ROLE_CD 		= PjtUtil.str(rs.ROLE_CD);
-			String  USER_NO 		= PjtUtil.str(rs.USER_NO);
-			if(PjtUtil.isEmpty(ROLE_CD)) {
+			String  ROLE_CD 		= pjtU.str(rs.ROLE_CD);
+			String  USER_NO 		= pjtU.str(rs.USER_NO);
+			if(pjtU.isEmpty(ROLE_CD)) {
 				throw new BizRuntimeException("역할코드가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(USER_NO)) {
+			if(pjtU.isEmpty(USER_NO)) {
 				throw new BizRuntimeException("사용자번호가 입력되지 않았습니다.");
 			}
 

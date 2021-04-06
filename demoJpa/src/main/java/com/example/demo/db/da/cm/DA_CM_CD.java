@@ -4,21 +4,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.example.demo.db.domain.av.AvActr;
 import com.example.demo.db.domain.cm.CmCd;
 import com.example.demo.db.domain.cm.CmCdId;
+import com.example.demo.db.domain.cm.QCmCd;
 import com.example.demo.db.repository.cm.CmCdRepository;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
-import com.example.demo.db.domain.cm.QCmCd;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class DA_CM_CD {
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -30,7 +32,7 @@ public class DA_CM_CD {
 		JPAQuery<CmCd> q=qf
         .selectFrom(QCmCd.cmCd)
         .where(QCmCd.cmCd.grpCd.eq(GRP_CD));
-		if(!PjtUtil.isEmpty(USE_YN)) {
+		if(!pjtU.isEmpty(USE_YN)) {
 			q.where(QCmCd.cmCd.useYn.eq(USE_YN));
 		}
 		List<CmCd> al =  q.orderBy(QCmCd.cmCd.ord.asc())

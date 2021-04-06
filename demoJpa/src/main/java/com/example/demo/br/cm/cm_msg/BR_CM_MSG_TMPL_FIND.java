@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_MSG_TMPL_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MSG_TMPL_FIND")
@@ -134,8 +136,8 @@ public class BR_CM_MSG_TMPL_FIND {
 		if(inDS.IN_DATA!=null) {
 			if(inDS.IN_DATA.size()>0){
 				IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-				SND_KIND_CD 		= PjtUtil.str(rs.SND_KIND_CD);
-				MSG_TMPL_STATUS_CD 		= PjtUtil.str(rs.MSG_TMPL_STATUS_CD);
+				SND_KIND_CD 		= pjtU.str(rs.SND_KIND_CD);
+				MSG_TMPL_STATUS_CD 		= pjtU.str(rs.MSG_TMPL_STATUS_CD);
 			}
 		}
 		
@@ -153,8 +155,8 @@ public class BR_CM_MSG_TMPL_FIND {
 			row.RMK= cm.getRmk();
 			row.CRT_USR_NO= String.valueOf(cm.getCrtUsrNo());
 			row.UPDT_USR_NO= String.valueOf(cm.getUpdtUsrNo());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

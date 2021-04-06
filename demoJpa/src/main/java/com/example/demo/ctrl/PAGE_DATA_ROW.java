@@ -1,12 +1,13 @@
 package com.example.demo.ctrl;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import lombok.Data;
 @Data
 @ApiModel(value = "PAGE_DATA_ROW")
 public class PAGE_DATA_ROW {
+
 	public PAGE_DATA_ROW(){
 		
 	}

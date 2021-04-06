@@ -244,6 +244,9 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		@Schema(name = "OPEN_DT", example = "야호", description = "20201231")
 		String OPEN_DT = null;		
 	}
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	DA_MIG_AV_MV daMigAvMv;
@@ -265,9 +268,9 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  DVD_IDX 		= PjtUtil.str(rs.DVD_IDX);
+		String  DVD_IDX 		= pjtU.str(rs.DVD_IDX);
 
-		if(PjtUtil.isEmpty(DVD_IDX)) {
+		if(pjtU.isEmpty(DVD_IDX)) {
 			throw new BizRuntimeException("DVD_IDX가 넘어오지 않았습니다.");
 		}
 		Long L_DVD_IDX = Long.parseLong(DVD_IDX);	
@@ -304,7 +307,7 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		row.RUN_TIME = m.getRnTm();
 		row.STORY_KR = m.getStryKr();
 		row.GEN_LIST = m.getGenLst();
-		row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
+		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 		outDs.OUT_DATA.add(row);
 
 		Long L_ACTOR_IDX = m.getMnActrIdx();

@@ -2,12 +2,9 @@ package com.example.demo.ctrl;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
@@ -22,7 +19,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.ClassMetadata;
-import org.springframework.core.type.MethodMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController 
 public class API {
+
+	@Autowired
+	PjtUtil pjtU;
 
 	@Autowired
 	private ApplicationContext _appContext;
@@ -75,11 +74,11 @@ public class API {
 			System.out.println(resMap.rm.method.getReturnType());
 			 Method method = bean.getClass().getMethod(resMap.rm.method.getName(),resMap.rm.method.getParameterTypes());  /*인풋타입은 무조건 정해졌다. */
 
-			 Object tmp=PjtUtil.JsonStringToObject(jsonInString, resMap.rm.method.getParameterTypes()[0]);
+			 Object tmp=pjtU.JsonStringToObject(jsonInString, resMap.rm.method.getParameterTypes()[0]);
 			 
 			 ret = method.invoke(bean, tmp);
 
-			 String outString = PjtUtil.ObjectToJsonString(ret);/*리턴타입은 무조건 정해져있다.*/
+			 String outString = pjtU.ObjectToJsonString(ret);/*리턴타입은 무조건 정해져있다.*/
 			 System.out.println(outString);
 			 return outString;
 		} catch (BizException e) {
@@ -89,7 +88,7 @@ public class API {
 			resMap.errorMessage=e.getMessage();
 			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
 			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
+				out = pjtU.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -103,7 +102,7 @@ public class API {
 			resMap.success="false";
 			resMap.errorMessage="알수없는 시스템 오류입니다.(JsonProcessingException)";
 			try {
-				out = PjtUtil.ObjectToJsonString(resMap);
+				out = pjtU.ObjectToJsonString(resMap);
 			} catch (JsonProcessingException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -142,7 +141,7 @@ public class API {
 		resMap.rm.methodName = br;		
 		HashMap<String, Object> rs = null;
 		try {
-			rs=PjtUtil.JsonStringToObject(jsonInString, HashMap.class);
+			rs=pjtU.JsonStringToObject(jsonInString, HashMap.class);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

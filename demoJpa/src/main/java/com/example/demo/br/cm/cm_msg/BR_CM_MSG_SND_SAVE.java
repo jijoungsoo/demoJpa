@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_MSG_SND_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MSG_SND_SAVE")
 	@Data
@@ -139,7 +142,7 @@ public class BR_CM_MSG_SND_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -160,32 +163,32 @@ public class BR_CM_MSG_SND_SAVE {
 		}
 
 		IN_DATA_ROW  rs 		=inDS.IN_DATA.get(0);			
-		String  SND_KIND_CD 	= PjtUtil.str(rs.SND_KIND_CD);
+		String  SND_KIND_CD 	= pjtU.str(rs.SND_KIND_CD);
 		String  MSG_STATUS_CD	= "B"; //발송전 무조건  -- 배치에서 메일을 보낼때 A로 변경됨
-		String  SND_TYPE_CD 	= PjtUtil.str(rs.SND_TYPE_CD);
-		String  MSG				= PjtUtil.str(rs.MSG);
-		String  SNDR_NM			= PjtUtil.str(rs.SNDR_NM);
-		String  SNDR_TEL_NO		= PjtUtil.str(rs.SNDR_TEL_NO);
-		String  SND_DTM			= PjtUtil.str(rs.SND_DTM);
+		String  SND_TYPE_CD 	= pjtU.str(rs.SND_TYPE_CD);
+		String  MSG				= pjtU.str(rs.MSG);
+		String  SNDR_NM			= pjtU.str(rs.SNDR_NM);
+		String  SNDR_TEL_NO		= pjtU.str(rs.SNDR_TEL_NO);
+		String  SND_DTM			= pjtU.str(rs.SND_DTM);
 
 		Date D_SND_DTM  = null;
 			
-		if(PjtUtil.isEmpty(SND_KIND_CD)) {
+		if(pjtU.isEmpty(SND_KIND_CD)) {
 			throw new BizRuntimeException("발송구분이 입력되지 않았습니다.");
 		}
 
-		if(PjtUtil.isEmpty(SNDR_NM)) {
+		if(pjtU.isEmpty(SNDR_NM)) {
 			throw new BizRuntimeException("보내는 사람명이 입력되지 않았습니다.");
 		}
-		if(PjtUtil.isEmpty(SNDR_TEL_NO)) {
+		if(pjtU.isEmpty(SNDR_TEL_NO)) {
 			throw new BizRuntimeException("보내는 전화번호가 입력되지 않았습니다.");
 		}
 
-		if(PjtUtil.isEmpty(SNDR_TEL_NO)) {
+		if(pjtU.isEmpty(SNDR_TEL_NO)) {
 			throw new BizRuntimeException("보내는 전화번호가 입력되지 않았습니다.");
 		}
 
-		if(PjtUtil.isEmpty(MSG)) {
+		if(pjtU.isEmpty(MSG)) {
 			throw new BizRuntimeException("메시지가 입력되지 않았습니다.");
 		}
 		//날짜변환은 나중에 하자.
@@ -205,10 +208,10 @@ public class BR_CM_MSG_SND_SAVE {
 
 		for(int i=0;i<inDS.RCV_DATA.size();i++){
 			RCV_DATA_ROW  rcv_rs =inDS.RCV_DATA.get(i);
-			String  RCV_TEL_NO 	= PjtUtil.str(rcv_rs.RCV_TEL_NO);
-			String  RCV_NM 	= PjtUtil.str(rcv_rs.RCV_NM);
+			String  RCV_TEL_NO 	= pjtU.str(rcv_rs.RCV_TEL_NO);
+			String  RCV_NM 	= pjtU.str(rcv_rs.RCV_NM);
 
-			if(PjtUtil.isEmpty(RCV_TEL_NO)) {
+			if(pjtU.isEmpty(RCV_TEL_NO)) {
 				throw new BizRuntimeException("받는 주소가 입력되지 않았습니다.");
 			}
 

@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_FAV_MENU_CREATE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_FAV_MENU_CREATE")
 	@Data
@@ -86,15 +89,15 @@ public class BR_CM_FAV_MENU_CREATE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 				
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  MENU_NO 		= PjtUtil.str(rs.MENU_NO);
+		String  MENU_NO 		= pjtU.str(rs.MENU_NO);
 		
-		if(PjtUtil.isEmpty(MENU_NO)) {
+		if(pjtU.isEmpty(MENU_NO)) {
 			throw new BizRuntimeException("메뉴번호가 입력되지 않았습니다.");
 		}
 		long L_FAV_NO =daCmSeq.increate("CM_FAV_MENU_FAV_NO_SEQ");

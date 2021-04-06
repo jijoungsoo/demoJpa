@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_AV_MV_EXCEL_DWNLD {
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_MV_EXCEL_DWNLD")
 	@Data
@@ -129,8 +132,8 @@ public class BR_AV_MV_EXCEL_DWNLD {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  MSC_CD 		= PjtUtil.str(rs.MSC_CD);
-		String  VR_YN 		= PjtUtil.str(rs.VR_YN);
+		String  MSC_CD 		= pjtU.str(rs.MSC_CD);
+		String  VR_YN 		= pjtU.str(rs.VR_YN);
 
 		Page<AvMv>  pg = daAvMv.findAvMv(MSC_CD,VR_YN,null);
 		List<AvMv> al=pg.toList();

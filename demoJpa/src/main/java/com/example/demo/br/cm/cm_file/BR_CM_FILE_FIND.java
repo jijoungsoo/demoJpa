@@ -33,6 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_FILE_FIND {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_FILE_FIND")
 	@Data
@@ -127,7 +130,7 @@ public class BR_CM_FILE_FIND {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
@@ -145,7 +148,7 @@ public class BR_CM_FILE_FIND {
 			row.SVR_FILE_NM= cm.getSvrFileNm();
 			row.EXT= cm.getExt();
 			row.CRT_USR_NO= String.valueOf(cm.getCrtUsrNo());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.FILE_SIZE = cm.getFileSize();
 			row.CONTENT_TYPE = cm.getContentType();
 			row.FILE_STATUS_CD = cm.getFileStatusCd();

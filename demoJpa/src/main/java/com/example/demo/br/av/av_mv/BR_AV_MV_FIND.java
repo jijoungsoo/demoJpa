@@ -151,6 +151,9 @@ public class BR_AV_MV_FIND {
 	@Autowired
 	DA_AV_MV daAvMv;
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
@@ -166,8 +169,8 @@ public class BR_AV_MV_FIND {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  MSC_CD 		= PjtUtil.str(rs.MSC_CD);
-		String  VR_YN 		= PjtUtil.str(rs.VR_YN);
+		String  MSC_CD 		= pjtU.str(rs.MSC_CD);
+		String  VR_YN 		= pjtU.str(rs.VR_YN);
 
 
 
@@ -199,8 +202,8 @@ public class BR_AV_MV_FIND {
 						
 			row.CRT_USR_NO=String.valueOf(c.getCrtUsrNo());
 			row.UPDT_USR_NO=String.valueOf(c.getUpdtUsrNo());
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(c.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(c.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		

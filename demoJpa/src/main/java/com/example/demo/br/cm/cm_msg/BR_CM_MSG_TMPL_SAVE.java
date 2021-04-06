@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_MSG_TMPL_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_MSG_TMPL_SAVE")
@@ -106,32 +108,32 @@ public class BR_CM_MSG_TMPL_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs 		=inDS.IN_DATA.get(i);			
-			String  TMPL_SEQ 		= PjtUtil.str(rs.TMPL_SEQ);
-			String  SND_KIND_CD		= PjtUtil.str(rs.SND_KIND_CD);
-			String  TTL 			= PjtUtil.str(rs.TTL);
-			String  MSG				= PjtUtil.str(rs.MSG);
-			String  TMPL_PATH		= PjtUtil.str(rs.TMPL_PATH);
-			String  RMK				= PjtUtil.str(rs.RMK);
+			String  TMPL_SEQ 		= pjtU.str(rs.TMPL_SEQ);
+			String  SND_KIND_CD		= pjtU.str(rs.SND_KIND_CD);
+			String  TTL 			= pjtU.str(rs.TTL);
+			String  MSG				= pjtU.str(rs.MSG);
+			String  TMPL_PATH		= pjtU.str(rs.TMPL_PATH);
+			String  RMK				= pjtU.str(rs.RMK);
 			
-			if(PjtUtil.isEmpty(SND_KIND_CD)) {
+			if(pjtU.isEmpty(SND_KIND_CD)) {
 				throw new BizRuntimeException("발송구분이 입력되지 않았습니다.");
 			}
 
-			if(PjtUtil.isEmpty(TTL)) {
+			if(pjtU.isEmpty(TTL)) {
 				throw new BizRuntimeException("제목이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(MSG)) {
+			if(pjtU.isEmpty(MSG)) {
 				throw new BizRuntimeException("메시지가 입력되지 않았습니다.");
 			}
 
-			if(PjtUtil.isEmpty(TMPL_SEQ)==true){
+			if(pjtU.isEmpty(TMPL_SEQ)==true){
 				Long L_TMPL_SEQ =daCmSeq.increate("CM_MSG_TMPL_TMPL_SEQ");				
 						
 				daMsgTmpl.crtMsgTmpl(					

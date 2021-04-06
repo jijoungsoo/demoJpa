@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_PGM_FIND {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="OUT_DS-BR_CM_PGM_FIND")
@@ -115,7 +117,7 @@ public class BR_CM_PGM_FIND {
 		if(inDS.IN_DATA!=null) {
 			if(inDS.IN_DATA.size()>0) {
 				IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-				CATEGORY 		= PjtUtil.str(rs.CATEGORY);
+				CATEGORY 		= pjtU.str(rs.CATEGORY);
 			}
 		}
 		
@@ -132,8 +134,8 @@ public class BR_CM_PGM_FIND {
 			row.CATEGORY=cm.getCategory();
 			row.RMK=cm.getRmk();
 			row.ORD=cm.getOrd();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}		
 		return outDs;

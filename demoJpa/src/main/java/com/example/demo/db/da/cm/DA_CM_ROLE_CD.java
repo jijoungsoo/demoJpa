@@ -4,18 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.db.domain.cm.CmMenu;
-import com.example.demo.db.domain.cm.CmMenuRoleCd;
 import com.example.demo.db.domain.cm.CmRoleCd;
-import com.example.demo.db.domain.cm.QCmMenu;
 import com.example.demo.db.domain.cm.QCmRoleCd;
 import com.example.demo.db.repository.cm.CmRoleCdRepository;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -24,6 +17,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DA_CM_ROLE_CD {
+
+	@Autowired
+    PjtUtil pjtU;
+	
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -34,7 +31,7 @@ public class DA_CM_ROLE_CD {
 	public List<CmRoleCd> findCmRoleCd(String USE_YN) {
 
 		JPAQuery<CmRoleCd>  c = qf.selectFrom(QCmRoleCd.cmRoleCd);
-		if(USE_YN!=null && !PjtUtil.isEmpty(USE_YN)) {
+		if(USE_YN!=null && !pjtU.isEmpty(USE_YN)) {
 			c.where(QCmRoleCd.cmRoleCd.useYn.eq(USE_YN));
 		}
 	                

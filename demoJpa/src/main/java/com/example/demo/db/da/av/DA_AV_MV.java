@@ -4,6 +4,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.db.domain.av.AvMv;
+import com.example.demo.db.domain.av.QAvMv;
+import com.example.demo.db.repository.av.AvMvRepository;
+import com.example.demo.exception.BizException;
+import com.example.demo.utils.PjtUtil;
+import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,17 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.db.repository.av.AvMvRepository;
-import com.example.demo.db.domain.av.AvMv;
-import com.example.demo.db.domain.av.QAvMv;
-import com.example.demo.exception.BizException;
-import com.example.demo.utils.PjtUtil;
-import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
 @Service
 public class DA_AV_MV {
+	@Autowired
+    PjtUtil pjtU;
 	
 	@Autowired
 	JPAQueryFactory qf;
@@ -37,10 +39,10 @@ public class DA_AV_MV {
 				QAvMv.avMv.ord.asc(),
 				QAvMv.avMv.avSeq.asc()
 				);
-		if(!PjtUtil.isEmpty(MSC_CD)){
+		if(!pjtU.isEmpty(MSC_CD)){
 			c=c.where(QAvMv.avMv.mscCd.eq(MSC_CD));
 		}
-		if(!PjtUtil.isEmpty(VR_YN)){
+		if(!pjtU.isEmpty(VR_YN)){
 			c=c.where(QAvMv.avMv.vrYn.eq(VR_YN));
 		}
 		if(p!=null) {

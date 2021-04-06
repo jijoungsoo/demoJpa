@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_STCK_SELL_RM {
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_STCK_SELL_RM")
 	@Data
@@ -88,15 +91,15 @@ public class BR_STCK_SELL_RM {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW rs =inDS.IN_DATA.get(i);
-			String  SELL_SEQ 		= PjtUtil.str(rs.SELL_SEQ);
-			if(PjtUtil.isEmpty(SELL_SEQ)) {
+			String  SELL_SEQ 		= pjtU.str(rs.SELL_SEQ);
+			if(pjtU.isEmpty(SELL_SEQ)) {
 				throw new BizRuntimeException("["+SELL_SEQ+"]내가 판 주식 일련번호가 입력되지 않았습니다.");
 			}
 			long L_SELL_SEQ = Long.parseLong(SELL_SEQ);

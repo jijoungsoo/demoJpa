@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_BOARD_FIND_BY_BRD_SEQ {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_BOARD_FIND_BY_BRD_SEQ")
 	@Data
@@ -140,9 +143,9 @@ public class BR_CM_BOARD_FIND_BY_BRD_SEQ {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  BRD_SEQ 		= PjtUtil.str(rs.BRD_SEQ);
+		String  BRD_SEQ 		= pjtU.str(rs.BRD_SEQ);
 
-		if(PjtUtil.isEmpty(BRD_SEQ)) {
+		if(pjtU.isEmpty(BRD_SEQ)) {
 			throw new BizRuntimeException("BRD_SEQ가 넘어오지 않았습니다.");
 		}
 		Long L_BRD_SEQ = Long.parseLong(BRD_SEQ);		
@@ -160,8 +163,8 @@ public class BR_CM_BOARD_FIND_BY_BRD_SEQ {
 			row.TTL= cm.getTtl();
 			row.CNTNT= cm.getCntnt();
 			row.DEL_YN= cm.getDelYn();
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

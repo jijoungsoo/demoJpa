@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_PGM_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_PGM_SAVE")
@@ -110,36 +112,36 @@ public class BR_CM_PGM_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  PGM_ID 		= PjtUtil.str(rs.PGM_ID);
-			String  PGM_NM 		= PjtUtil.str(rs.PGM_NM);
-			String  RMK 		= PjtUtil.str(rs.RMK);
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  DIR_LINK 	= PjtUtil.str(rs.DIR_LINK);
-			String  PGM_LINK 	= PjtUtil.str(rs.PGM_LINK);			
-			String  CATEGORY 	= PjtUtil.str(rs.CATEGORY);
+			String  PGM_ID 		= pjtU.str(rs.PGM_ID);
+			String  PGM_NM 		= pjtU.str(rs.PGM_NM);
+			String  RMK 		= pjtU.str(rs.RMK);
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  DIR_LINK 	= pjtU.str(rs.DIR_LINK);
+			String  PGM_LINK 	= pjtU.str(rs.PGM_LINK);			
+			String  CATEGORY 	= pjtU.str(rs.CATEGORY);
 			
 			
-			if(PjtUtil.isEmpty(PGM_ID)) {
+			if(pjtU.isEmpty(PGM_ID)) {
 				throw new BizRuntimeException("프로그램ID가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(PGM_NM)) {
+			if(pjtU.isEmpty(PGM_NM)) {
 				throw new BizRuntimeException("프로그램명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DIR_LINK)) {
+			if(pjtU.isEmpty(DIR_LINK)) {
 				throw new BizRuntimeException("디렉토리링크가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(PGM_LINK)) {
+			if(pjtU.isEmpty(PGM_LINK)) {
 				throw new BizRuntimeException("프로그램링크가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				throw new BizRuntimeException("정렬을 입력되지 않았습니다.");
 			}
 			
@@ -159,32 +161,32 @@ public class BR_CM_PGM_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  PGM_NO 		= PjtUtil.str(rs.PGM_NO);
-			String  PGM_ID 		= PjtUtil.str(rs.PGM_ID);
-			String  PGM_NM 		= PjtUtil.str(rs.PGM_NM);
-			String  RMK 		= PjtUtil.str(rs.RMK);
-			String  ORD 		= PjtUtil.str(rs.ORD);
-			String  DIR_LINK 	= PjtUtil.str(rs.DIR_LINK);
-			String  PGM_LINK 	= PjtUtil.str(rs.PGM_LINK);			
-			String  CATEGORY 	= PjtUtil.str(rs.CATEGORY);
+			String  PGM_NO 		= pjtU.str(rs.PGM_NO);
+			String  PGM_ID 		= pjtU.str(rs.PGM_ID);
+			String  PGM_NM 		= pjtU.str(rs.PGM_NM);
+			String  RMK 		= pjtU.str(rs.RMK);
+			String  ORD 		= pjtU.str(rs.ORD);
+			String  DIR_LINK 	= pjtU.str(rs.DIR_LINK);
+			String  PGM_LINK 	= pjtU.str(rs.PGM_LINK);			
+			String  CATEGORY 	= pjtU.str(rs.CATEGORY);
 			
-			if(PjtUtil.isEmpty(PGM_NO)) {
+			if(pjtU.isEmpty(PGM_NO)) {
 				throw new BizRuntimeException("프로그램번호가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(PGM_ID)) {
+			if(pjtU.isEmpty(PGM_ID)) {
 				throw new BizRuntimeException("프로그램ID가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(PGM_NM)) {
+			if(pjtU.isEmpty(PGM_NM)) {
 				throw new BizRuntimeException("프로그램명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(DIR_LINK)) {
+			if(pjtU.isEmpty(DIR_LINK)) {
 				throw new BizRuntimeException("디렉토리링크가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(PGM_LINK)) {
+			if(pjtU.isEmpty(PGM_LINK)) {
 				throw new BizRuntimeException("프로그램링크가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(ORD)) {
+			if(pjtU.isEmpty(ORD)) {
 				ORD="0000";
 			}
 			long L_PGM_NO = Long.parseLong(PGM_NO);

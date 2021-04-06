@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_BOARD_CMT_RM {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_BOARD_CMT_RM")
 	@Data
@@ -80,14 +83,14 @@ public class BR_CM_BOARD_CMT_RM {
 		}
 		
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  CMT_SEQ 		= PjtUtil.str(rs.CMT_SEQ);
-			if(PjtUtil.isEmpty(CMT_SEQ)) {
+			String  CMT_SEQ 		= pjtU.str(rs.CMT_SEQ);
+			if(pjtU.isEmpty(CMT_SEQ)) {
 				throw new BizRuntimeException("CMT_SEQ가 입력되지 않았습니다.");
 			}
 			long L_CMT_SEQ = Long.parseLong(CMT_SEQ);

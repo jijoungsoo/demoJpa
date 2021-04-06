@@ -99,6 +99,9 @@ public class BS_MIG_AV_ACTR_CMT_FIND_BY_ACTOR_IDX {
 	
 	@Autowired
 	DA_MIG_AV_ACTR_CMT daMigAvActrCmt;
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -114,9 +117,9 @@ public class BS_MIG_AV_ACTR_CMT_FIND_BY_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
+		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)){
+		if(pjtU.isEmpty(ACTOR_IDX)){
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
@@ -133,7 +136,7 @@ public class BS_MIG_AV_ACTR_CMT_FIND_BY_ACTOR_IDX {
 			row.DSLK_CNT = c.getDslkCnt();
 			
 			row.WRITER = c.getWriter();
-			row.CRT_DTM = PjtUtil.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
+			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 	

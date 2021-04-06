@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_ROLE_CD_MENU_FIND_TREE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_ROLE_CD_MENU_FIND_TREE")
@@ -134,7 +136,7 @@ public class BR_CM_ROLE_CD_MENU_FIND_TREE {
 			throw new BizRuntimeException("IN_DATA 값이 넘어오지 않았습니다1.");
 		}
 
-		if(PjtUtil.isEmpty(inDS.IN_DATA.get(0).ROLE_CD)) {
+		if(pjtU.isEmpty(inDS.IN_DATA.get(0).ROLE_CD)) {
 			throw new BizRuntimeException("ROLE_CD 값이 넘어오지 않았습니다1.");
 		}
 		
@@ -147,17 +149,17 @@ public class BR_CM_ROLE_CD_MENU_FIND_TREE {
 			Map cm=al.get(i);
 			int MENU_LVL=0;
 			OUT_DATA_ROW  row = new OUT_DATA_ROW();
-			row.PGM_ID		= PjtUtil.str(cm.get("pgm_id"));
-			row.PRNT_MENU_CD= PjtUtil.str(cm.get("prnt_menu_cd"));
-			row.ROLE_CD     = PjtUtil.str(cm.get("role_cd"));
-			row.ROLE_YN     = PjtUtil.str(cm.get("role_yn"));
-			row.ORD			= PjtUtil.str(cm.get("ord"));
-			row.MENU_NO		= Long.parseLong(PjtUtil.str(cm.get("menu_no")));
-			row.MENU_CD		= PjtUtil.str(cm.get("menu_cd"));
-			row.MENU_NM		= PjtUtil.str(cm.get("menu_nm"));
-			row.MENU_PATH	= PjtUtil.str(cm.get("menu_path"));
+			row.PGM_ID		= pjtU.str(cm.get("pgm_id"));
+			row.PRNT_MENU_CD= pjtU.str(cm.get("prnt_menu_cd"));
+			row.ROLE_CD     = pjtU.str(cm.get("role_cd"));
+			row.ROLE_YN     = pjtU.str(cm.get("role_yn"));
+			row.ORD			= pjtU.str(cm.get("ord"));
+			row.MENU_NO		= Long.parseLong(pjtU.str(cm.get("menu_no")));
+			row.MENU_CD		= pjtU.str(cm.get("menu_cd"));
+			row.MENU_NM		= pjtU.str(cm.get("menu_nm"));
+			row.MENU_PATH	= pjtU.str(cm.get("menu_path"));
 			row.MENU_LVL= MENU_LVL;
-			row.MENU_KIND	= PjtUtil.str(cm.get("menu_kind"));
+			row.MENU_KIND	= pjtU.str(cm.get("menu_kind"));
 			HashMap<String,Object> tmp = new HashMap<String,Object>();
 			tmp.put("expanded", true);
 			row._attributes=tmp;
@@ -179,16 +181,16 @@ public class BR_CM_ROLE_CD_MENU_FIND_TREE {
 		for(int j=0;j<subAl.size();j++) {
 			Map subC=subAl.get(j);
 			OUT_DATA_ROW  child_row = new OUT_DATA_ROW();
-			child_row.PGM_ID		=PjtUtil.str(subC.get("pgm_id"));
-			child_row.PRNT_MENU_CD	=PjtUtil.str(subC.get("prnt_menu_cd"));
-			child_row.ROLE_CD	=PjtUtil.str(subC.get("role_cd"));
-			child_row.ROLE_YN     = PjtUtil.str(subC.get("role_yn"));
-			child_row.MENU_NO		=Long.parseLong(PjtUtil.str(subC.get("menu_no")));
-			child_row.MENU_CD		=PjtUtil.str(subC.get("menu_cd"));
-			child_row.MENU_NM		=PjtUtil.str(subC.get("menu_nm"));
-			child_row.MENU_PATH=MENU_PATH+">>"+PjtUtil.str(subC.get("menu_nm"));
+			child_row.PGM_ID		=pjtU.str(subC.get("pgm_id"));
+			child_row.PRNT_MENU_CD	=pjtU.str(subC.get("prnt_menu_cd"));
+			child_row.ROLE_CD	=pjtU.str(subC.get("role_cd"));
+			child_row.ROLE_YN     = pjtU.str(subC.get("role_yn"));
+			child_row.MENU_NO		=Long.parseLong(pjtU.str(subC.get("menu_no")));
+			child_row.MENU_CD		=pjtU.str(subC.get("menu_cd"));
+			child_row.MENU_NM		=pjtU.str(subC.get("menu_nm"));
+			child_row.MENU_PATH=MENU_PATH+">>"+pjtU.str(subC.get("menu_nm"));
 			child_row.MENU_LVL		=MENU_LVL;
-			child_row.MENU_KIND		=PjtUtil.str(subC.get("menu_kind"));
+			child_row.MENU_KIND		=pjtU.str(subC.get("menu_kind"));
 			HashMap<String,Object> tmp = new HashMap<String,Object>();
 			tmp.put("expanded", true);
 			child_row._attributes= tmp;

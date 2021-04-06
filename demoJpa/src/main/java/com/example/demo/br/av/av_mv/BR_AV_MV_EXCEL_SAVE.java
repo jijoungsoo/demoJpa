@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiModel;
@@ -83,6 +82,9 @@ public class BR_AV_MV_EXCEL_SAVE {
 		@Schema(name = "ROW_CNT", example = "1", description = "반영-수")
 		Long ROW_CNT = null;
 	}
+
+	@Autowired
+	PjtUtil pjtU;
 	
 	@Autowired
 	DA_AV_MV daAvMv;
@@ -103,7 +105,7 @@ public class BR_AV_MV_EXCEL_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -120,23 +122,23 @@ public class BR_AV_MV_EXCEL_SAVE {
 		for( int i=0;i<al.size();i++) {
 			CmExcelUpld  rs =al.get(i);
 			if(rs.getGbn().equals("D")) {  //상세 
-				String  AV_NM 	= PjtUtil.str(rs.getCol00());
-				String  TTL 	= PjtUtil.str(rs.getCol01());
-				String  CNTNT	= PjtUtil.str(rs.getCol02());
-				String  MSC_CD 	= PjtUtil.str(rs.getCol03());
-				String  VR_YN  	= PjtUtil.str(rs.getCol04());  
-				String  ORD 	= PjtUtil.str(rs.getCol05());
-				String  RMK 	= PjtUtil.str(rs.getCol06());		
-				String  CPTN_YN = PjtUtil.str(rs.getCol07());
-				String  MK_DT 	= PjtUtil.str(rs.getCol08());
+				String  AV_NM 	= pjtU.str(rs.getCol00());
+				String  TTL 	= pjtU.str(rs.getCol01());
+				String  CNTNT	= pjtU.str(rs.getCol02());
+				String  MSC_CD 	= pjtU.str(rs.getCol03());
+				String  VR_YN  	= pjtU.str(rs.getCol04());  
+				String  ORD 	= pjtU.str(rs.getCol05());
+				String  RMK 	= pjtU.str(rs.getCol06());		
+				String  CPTN_YN = pjtU.str(rs.getCol07());
+				String  MK_DT 	= pjtU.str(rs.getCol08());
 				
-				if(PjtUtil.isEmpty(AV_NM)) {
+				if(pjtU.isEmpty(AV_NM)) {
 					throw new BizRuntimeException("품번이 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(MSC_CD)) {
+				if(pjtU.isEmpty(MSC_CD)) {
 					throw new BizRuntimeException("모자이크코드가 입력되지 않았습니다.");
 				}
-				if(PjtUtil.isEmpty(CPTN_YN)) {
+				if(pjtU.isEmpty(CPTN_YN)) {
 					throw new BizRuntimeException("자막 유무가 입력되지 않았습니다.");
 				}
 				

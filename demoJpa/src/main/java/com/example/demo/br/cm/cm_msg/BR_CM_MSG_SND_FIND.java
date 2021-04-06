@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_MSG_SND_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_MSG_SND_FIND")
@@ -168,13 +170,13 @@ public class BR_CM_MSG_SND_FIND {
 			row.RCV_CNT = String.valueOf(cm.get(Expressions.stringPath("rcv_cnt")));
 			row.RCV_NM = cm.get(Expressions.stringPath("rcv_nm"));
 			row.RCV_TEL_NO = cm.get(Expressions.stringPath("rcv_tel_no"));
-			row.SND_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.sndDtm));			
-			row.SND_CMPL_DTM= PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.sndCmplDtm));			
+			row.SND_DTM= pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.sndDtm));			
+			row.SND_CMPL_DTM= pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.sndCmplDtm));			
 
 			row.UPDT_USR_NO= String.valueOf(cm.get(QCmMsgSnd.cmMsgSnd.updtUsrNo));
-			row.UPDT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.updtDtm));
+			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.updtDtm));
 			row.CRT_USR_NO= String.valueOf(cm.get(QCmMsgSnd.cmMsgSnd.updtUsrNo));
-			row.CRT_DTM=PjtUtil.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.crtDtm));
+			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.get(QCmMsgSnd.cmMsgSnd.crtDtm));
 			outDs.OUT_DATA.add(row);
 		}
 		return outDs;

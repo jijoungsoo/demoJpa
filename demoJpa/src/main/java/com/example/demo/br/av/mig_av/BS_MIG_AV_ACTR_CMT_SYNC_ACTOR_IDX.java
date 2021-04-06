@@ -60,6 +60,9 @@ public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
 		String SYNC_YN = "";
 		
 	}
+
+	@Autowired
+    PjtUtil pjtU;
 	
 	@JsonRootName("OUT_DS")
 	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
@@ -87,10 +90,10 @@ public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
 		}
 		
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= PjtUtil.str(rs.ACTOR_IDX);
-		String  SYNC_YN 		= PjtUtil.str(rs.SYNC_YN);
+		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
+		String  SYNC_YN 		= pjtU.str(rs.SYNC_YN);
 
-		if(PjtUtil.isEmpty(ACTOR_IDX)){
+		if(pjtU.isEmpty(ACTOR_IDX)){
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);

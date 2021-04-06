@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_PGM_RM {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_PGM_RM")
@@ -80,15 +82,15 @@ public class BR_CM_PGM_RM {
 		}
 		
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW rs =inDS.IN_DATA.get(i);
-			String  PGM_NO 		= PjtUtil.str(rs.PGM_NO);
-			if(PjtUtil.isEmpty(PGM_NO)) {
+			String  PGM_NO 		= pjtU.str(rs.PGM_NO);
+			if(pjtU.isEmpty(PGM_NO)) {
 				throw new BizRuntimeException("프로그램번호가 입력되지 않았습니다.");
 			}
 			long L_PGM_NO = Long.parseLong(PGM_NO);

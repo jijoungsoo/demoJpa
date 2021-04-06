@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_SEQ_FIND {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_SEQ_FIND")
@@ -102,7 +104,7 @@ public class BR_CM_SEQ_FIND {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(USER_NO)) {
+		if(pjtU.isEmpty(USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_USER_NO = Long.parseLong(USER_NO);
@@ -118,8 +120,8 @@ public class BR_CM_SEQ_FIND {
 			row.COL_NM= cm.getColNm();
 			row.INIT_VAL= String.valueOf(cm.getInitVal());
 			row.ALLOCATION_SIZE= String.valueOf(cm.getAllocationSize());
-			row.CRT_DTM= PjtUtil.getYyyyMMddHHMMSS(cm.getCrtDtm());
-			row.UPDT_DTM= PjtUtil.getYyyyMMddHHMMSS(cm.getUpdtDtm());
+			row.CRT_DTM= pjtU.getYyyyMMddHHMMSS(cm.getCrtDtm());
+			row.UPDT_DTM= pjtU.getYyyyMMddHHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
 		}
 		

@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CHANGE_USER_PWD {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CHANGE_USER_PWD")
@@ -86,16 +88,16 @@ public class BR_CHANGE_USER_PWD {
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  USER_NO 		= PjtUtil.str(rs.USER_NO);
-			String  USER_PWD 		= PjtUtil.str(rs.USER_PWD);
-			String  RE_USER_PWD 	= PjtUtil.str(rs.RE_USER_PWD);
-			if(PjtUtil.isEmpty(USER_NO)) {
+			String  USER_NO 		= pjtU.str(rs.USER_NO);
+			String  USER_PWD 		= pjtU.str(rs.USER_PWD);
+			String  RE_USER_PWD 	= pjtU.str(rs.RE_USER_PWD);
+			if(pjtU.isEmpty(USER_NO)) {
 				throw new BizRuntimeException("사용자가 선택되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(USER_PWD)) {
+			if(pjtU.isEmpty(USER_PWD)) {
 				throw new BizRuntimeException("비밀번호가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(RE_USER_PWD)) {
+			if(pjtU.isEmpty(RE_USER_PWD)) {
 				throw new BizRuntimeException("비밀번호확인이 입력되지 않았습니다.");
 			}
 			if(USER_PWD.equals(RE_USER_PWD)==false) {

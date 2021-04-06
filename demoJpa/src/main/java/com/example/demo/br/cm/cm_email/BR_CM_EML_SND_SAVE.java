@@ -34,6 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_CM_EML_SND_SAVE {
 
+	@Autowired
+    PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_EML_SND_SAVE")
 	@Data
@@ -139,7 +142,7 @@ public class BR_CM_EML_SND_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
@@ -160,28 +163,28 @@ public class BR_CM_EML_SND_SAVE {
 		}
 
 		IN_DATA_ROW  rs 		=inDS.IN_DATA.get(0);			
-		String  SND_TYPE_CD 	= PjtUtil.str(rs.SND_TYPE_CD);
-		String  TTL				= PjtUtil.str(rs.TTL);
-		String  CNTNT				= PjtUtil.str(rs.CNTNT);
-		String  SNDR_NM			= PjtUtil.str(rs.SNDR_NM);
-		String  SNDR_ADDR		= PjtUtil.str(rs.SNDR_ADDR);
-		String  SND_DTM			= PjtUtil.str(rs.SND_DTM);
+		String  SND_TYPE_CD 	= pjtU.str(rs.SND_TYPE_CD);
+		String  TTL				= pjtU.str(rs.TTL);
+		String  CNTNT				= pjtU.str(rs.CNTNT);
+		String  SNDR_NM			= pjtU.str(rs.SNDR_NM);
+		String  SNDR_ADDR		= pjtU.str(rs.SNDR_ADDR);
+		String  SND_DTM			= pjtU.str(rs.SND_DTM);
 
 		Date D_SND_DTM  = null;
 
-		if(PjtUtil.isEmpty(SND_TYPE_CD)) {
+		if(pjtU.isEmpty(SND_TYPE_CD)) {
 			throw new BizRuntimeException("발송타입이 입력되지 않았습니다.");
 		}
-		if(PjtUtil.isEmpty(SNDR_ADDR)) {
+		if(pjtU.isEmpty(SNDR_ADDR)) {
 			throw new BizRuntimeException("발송주소가 입력되지 않았습니다.");
 		}
 
 
-		if(PjtUtil.isEmpty(TTL)) {
+		if(pjtU.isEmpty(TTL)) {
 			throw new BizRuntimeException("TTL가 입력되지 않았습니다.");
 		}
 
-		if(PjtUtil.isEmpty(CNTNT)) {
+		if(pjtU.isEmpty(CNTNT)) {
 			throw new BizRuntimeException("CNTNT가 입력되지 않았습니다.");
 		}
 		//날짜변환은 나중에 하자.
@@ -201,10 +204,10 @@ public class BR_CM_EML_SND_SAVE {
 
 		for(int i=0;i<inDS.RCV_DATA.size();i++){
 			RCV_DATA_ROW  rcv_rs =inDS.RCV_DATA.get(i);
-			String  RCV_ADDR 	= PjtUtil.str(rcv_rs.RCV_ADDR);
-			String  RCV_NM 	= PjtUtil.str(rcv_rs.RCV_NM);
+			String  RCV_ADDR 	= pjtU.str(rcv_rs.RCV_ADDR);
+			String  RCV_NM 	= pjtU.str(rcv_rs.RCV_NM);
 
-			if(PjtUtil.isEmpty(RCV_ADDR)) {
+			if(pjtU.isEmpty(RCV_ADDR)) {
 				throw new BizRuntimeException("받는 주소가 입력되지 않았습니다.");
 			}
 

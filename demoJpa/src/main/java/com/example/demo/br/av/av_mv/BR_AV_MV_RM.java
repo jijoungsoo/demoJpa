@@ -69,6 +69,8 @@ public class BR_AV_MV_RM {
 	static class OUT_DS {
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
+	@Autowired
+	PjtUtil pjtU;
 	
 	@Autowired
 	DA_AV_MV daAvMv;
@@ -87,15 +89,15 @@ public class BR_AV_MV_RM {
 		}
 		
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  AV_SEQ 		= PjtUtil.str(rs.AV_SEQ);
-			if(PjtUtil.isEmpty(AV_SEQ)) {
+			String  AV_SEQ 		= pjtU.str(rs.AV_SEQ);
+			if(pjtU.isEmpty(AV_SEQ)) {
 				throw new BizRuntimeException("["+AV_SEQ+"] 작품일련번호가 입력되지 않았습니다.");
 			}
 			long L_AV_SEQ = Long.parseLong(AV_SEQ);

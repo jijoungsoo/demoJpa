@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_CM_SEQ_SAVE {
+	@Autowired
+    PjtUtil pjtU;
 
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_CM_SEQ_SAVE")
@@ -107,29 +109,29 @@ public class BR_CM_SEQ_SAVE {
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		for (int i = 0; i < inDS.IN_DATA.size(); i++) {
 			DATA_ROW rs = inDS.IN_DATA.get(i);
-			String SEQ_NM = PjtUtil.str(rs.SEQ_NM);
-			String SEQ_NO = PjtUtil.str(rs.SEQ_NO);
-			String TB_NM = PjtUtil.str(rs.TB_NM);
-			String COL_NM = PjtUtil.str(rs.COL_NM);
-			String INIT_VAL = PjtUtil.str(rs.INIT_VAL);
-			String ALLOCATION_SIZE = PjtUtil.str(rs.ALLOCATION_SIZE);
+			String SEQ_NM = pjtU.str(rs.SEQ_NM);
+			String SEQ_NO = pjtU.str(rs.SEQ_NO);
+			String TB_NM = pjtU.str(rs.TB_NM);
+			String COL_NM = pjtU.str(rs.COL_NM);
+			String INIT_VAL = pjtU.str(rs.INIT_VAL);
+			String ALLOCATION_SIZE = pjtU.str(rs.ALLOCATION_SIZE);
 
-			if (PjtUtil.isEmpty(SEQ_NM)) {
+			if (pjtU.isEmpty(SEQ_NM)) {
 				throw new BizRuntimeException("시퀀스명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(SEQ_NO)) {
+			if (pjtU.isEmpty(SEQ_NO)) {
 				throw new BizRuntimeException("시퀀스번호가 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(TB_NM)) {
+			if (pjtU.isEmpty(TB_NM)) {
 				throw new BizRuntimeException("테이블명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(COL_NM)) {
+			if (pjtU.isEmpty(COL_NM)) {
 				throw new BizRuntimeException("컬럼명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(INIT_VAL)) {
+			if (pjtU.isEmpty(INIT_VAL)) {
 				throw new BizRuntimeException("초기값이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(ALLOCATION_SIZE)) {
+			if (pjtU.isEmpty(ALLOCATION_SIZE)) {
 				throw new BizRuntimeException("증가값이 입력되지 않았습니다.");
 			}
 
@@ -142,29 +144,29 @@ public class BR_CM_SEQ_SAVE {
 
 		for (int i = 0; i < inDS.UPDT_DATA.size(); i++) {
 			DATA_ROW rs = inDS.UPDT_DATA.get(i);
-			String SEQ_NM = PjtUtil.str(rs.SEQ_NM);
-			String SEQ_NO = PjtUtil.str(rs.SEQ_NO);
-			String TB_NM = PjtUtil.str(rs.TB_NM);
-			String COL_NM = PjtUtil.str(rs.COL_NM);
-			String INIT_VAL = PjtUtil.str(rs.INIT_VAL);
-			String ALLOCATION_SIZE = PjtUtil.str(rs.ALLOCATION_SIZE);
+			String SEQ_NM = pjtU.str(rs.SEQ_NM);
+			String SEQ_NO = pjtU.str(rs.SEQ_NO);
+			String TB_NM = pjtU.str(rs.TB_NM);
+			String COL_NM = pjtU.str(rs.COL_NM);
+			String INIT_VAL = pjtU.str(rs.INIT_VAL);
+			String ALLOCATION_SIZE = pjtU.str(rs.ALLOCATION_SIZE);
 			
-			if (PjtUtil.isEmpty(SEQ_NM)) {
+			if (pjtU.isEmpty(SEQ_NM)) {
 				throw new BizRuntimeException("시퀀스명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(SEQ_NO)) {
+			if (pjtU.isEmpty(SEQ_NO)) {
 				throw new BizRuntimeException("시퀀스번호가 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(TB_NM)) {
+			if (pjtU.isEmpty(TB_NM)) {
 				throw new BizRuntimeException("테이블명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(COL_NM)) {
+			if (pjtU.isEmpty(COL_NM)) {
 				throw new BizRuntimeException("컬럼명이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(INIT_VAL)) {
+			if (pjtU.isEmpty(INIT_VAL)) {
 				throw new BizRuntimeException("초기값이 입력되지 않았습니다.");
 			}
-			if (PjtUtil.isEmpty(ALLOCATION_SIZE)) {
+			if (pjtU.isEmpty(ALLOCATION_SIZE)) {
 				throw new BizRuntimeException("증가값이 입력되지 않았습니다.");
 			}
 			

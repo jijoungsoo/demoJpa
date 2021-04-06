@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_STCK_BUY_SAVE {
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_STCK_BUY_SAVE")
 	@Data
@@ -124,44 +127,44 @@ public class BR_STCK_BUY_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String LSESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(LSESSION_USER_NO)) {
+		if(pjtU.isEmpty(LSESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_LSESSION_USER_NO = Long.parseLong(LSESSION_USER_NO);
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  STOCK_CD 		= PjtUtil.str(rs.STOCK_CD);
-			String  STOCK_NM 		= PjtUtil.str(rs.STOCK_NM);
-			String  AMT			 	= PjtUtil.str(rs.BUY_AMT);
-			String  CNT 			= PjtUtil.str(rs.CNT);
-			String  BAL_CNT			= PjtUtil.str(rs.BAL_CNT);
-			String  FEE 			= PjtUtil.str(rs.FEE);
-			String  TOT_AMT 		= PjtUtil.str(rs.TOT_AMT);
-			String  BUY_DATE 		= PjtUtil.str(rs.BUY_DATE);
+			String  STOCK_CD 		= pjtU.str(rs.STOCK_CD);
+			String  STOCK_NM 		= pjtU.str(rs.STOCK_NM);
+			String  AMT			 	= pjtU.str(rs.BUY_AMT);
+			String  CNT 			= pjtU.str(rs.CNT);
+			String  BAL_CNT			= pjtU.str(rs.BAL_CNT);
+			String  FEE 			= pjtU.str(rs.FEE);
+			String  TOT_AMT 		= pjtU.str(rs.TOT_AMT);
+			String  BUY_DATE 		= pjtU.str(rs.BUY_DATE);
 			
-			if(PjtUtil.isEmpty(STOCK_CD)) {
+			if(pjtU.isEmpty(STOCK_CD)) {
 				throw new BizRuntimeException("주식코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(STOCK_NM)) {
+			if(pjtU.isEmpty(STOCK_NM)) {
 				throw new BizRuntimeException("주식명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(AMT)) {
+			if(pjtU.isEmpty(AMT)) {
 				throw new BizRuntimeException("단가가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(CNT)) {
+			if(pjtU.isEmpty(CNT)) {
 				throw new BizRuntimeException("수량이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(BAL_CNT)) {
+			if(pjtU.isEmpty(BAL_CNT)) {
 				throw new BizRuntimeException("잔고 수량이 입력되지 않았습니다.");
 			}
 			
 			
-			if(PjtUtil.isEmpty(FEE)) {
+			if(pjtU.isEmpty(FEE)) {
 				throw new BizRuntimeException("수수료가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(TOT_AMT)) {
+			if(pjtU.isEmpty(TOT_AMT)) {
 				throw new BizRuntimeException("총금액이 입력되지 않았습니다.");
 			}
 			
@@ -190,42 +193,42 @@ public class BR_STCK_BUY_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  BUY_SEQ 		= PjtUtil.str(rs.BUY_SEQ);
-			String  STOCK_CD 		= PjtUtil.str(rs.STOCK_CD);
-			String  STOCK_NM 		= PjtUtil.str(rs.STOCK_NM);
-			String  AMT			 	= PjtUtil.str(rs.BUY_AMT);
-			String  CNT 			= PjtUtil.str(rs.CNT);
-			String  BAL_CNT			= PjtUtil.str(rs.BAL_CNT);
-			String  FEE 			= PjtUtil.str(rs.FEE);
-			String  TOT_AMT 		= PjtUtil.str(rs.TOT_AMT);
-			String  BUY_DATE 		= PjtUtil.str(rs.BUY_DATE);
+			String  BUY_SEQ 		= pjtU.str(rs.BUY_SEQ);
+			String  STOCK_CD 		= pjtU.str(rs.STOCK_CD);
+			String  STOCK_NM 		= pjtU.str(rs.STOCK_NM);
+			String  AMT			 	= pjtU.str(rs.BUY_AMT);
+			String  CNT 			= pjtU.str(rs.CNT);
+			String  BAL_CNT			= pjtU.str(rs.BAL_CNT);
+			String  FEE 			= pjtU.str(rs.FEE);
+			String  TOT_AMT 		= pjtU.str(rs.TOT_AMT);
+			String  BUY_DATE 		= pjtU.str(rs.BUY_DATE);
 			
-			if(PjtUtil.isEmpty(BUY_SEQ)) {
+			if(pjtU.isEmpty(BUY_SEQ)) {
 				throw new BizRuntimeException("내가산주식일련번호가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(STOCK_CD)) {
+			if(pjtU.isEmpty(STOCK_CD)) {
 				throw new BizRuntimeException("주식코드가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(STOCK_NM)) {
+			if(pjtU.isEmpty(STOCK_NM)) {
 				throw new BizRuntimeException("주식명이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(AMT)) {
+			if(pjtU.isEmpty(AMT)) {
 				throw new BizRuntimeException("단가가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(CNT)) {
+			if(pjtU.isEmpty(CNT)) {
 				throw new BizRuntimeException("수량이 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(BAL_CNT)) {
+			if(pjtU.isEmpty(BAL_CNT)) {
 				throw new BizRuntimeException("잔고 수량이 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(FEE)) {
+			if(pjtU.isEmpty(FEE)) {
 				throw new BizRuntimeException("수수료가 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(TOT_AMT)) {
+			if(pjtU.isEmpty(TOT_AMT)) {
 				throw new BizRuntimeException("총금액이 입력되지 않았습니다.");
 			}
 		

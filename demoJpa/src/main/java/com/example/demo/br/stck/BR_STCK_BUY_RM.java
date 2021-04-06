@@ -72,6 +72,9 @@ public class BR_STCK_BUY_RM {
 	@Autowired
 	DA_STCK_BUY daStckB;
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
 	})
@@ -81,14 +84,14 @@ public class BR_STCK_BUY_RM {
 		if(inDS.LSESSION==null) {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
-		if(PjtUtil.isEmpty(inDS.LSESSION.getUSER_NO())) {
+		if(pjtU.isEmpty(inDS.LSESSION.getUSER_NO())) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  BUY_SEQ 		= PjtUtil.str(rs.BUY_SEQ);
-			if(PjtUtil.isEmpty(BUY_SEQ)) {
+			String  BUY_SEQ 		= pjtU.str(rs.BUY_SEQ);
+			if(pjtU.isEmpty(BUY_SEQ)) {
 				throw new BizRuntimeException("["+BUY_SEQ+"]내가산 주식 일련번호가 입력되지 않았습니다.");
 			}
 			long L_BUY_SEQ = Long.parseLong(BUY_SEQ);

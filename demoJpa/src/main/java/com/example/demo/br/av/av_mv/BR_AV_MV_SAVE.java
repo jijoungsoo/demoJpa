@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_AV_MV_SAVE {
 
+	@Autowired
+	PjtUtil pjtU;
+
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_AV_MV_SAVE")
 	@Data
@@ -133,24 +136,24 @@ public class BR_AV_MV_SAVE {
 			throw new BizRuntimeException("세션값이 넘어오지 않았습니다1.");
 		}
 		String SESSION_USER_NO =inDS.LSESSION.getUSER_NO();
-		if(PjtUtil.isEmpty(SESSION_USER_NO)) {
+		if(pjtU.isEmpty(SESSION_USER_NO)) {
 			throw new BizRuntimeException("사용자NO가 넘어오지 않았습니다2.");
 		}
 		Long L_SESSION_USER_NO = Long.parseLong(SESSION_USER_NO);
 				
 		for( int i=0;i<inDS.IN_DATA.size();i++) {
 			DATA_ROW  rs =inDS.IN_DATA.get(i);
-			String  AV_NM 	= PjtUtil.str(rs.AV_NM);
-			String  TTL 	= PjtUtil.str(rs.TTL);
-			String  CNTNT 	= PjtUtil.str(rs.CNTNT);
-			String  MSC_CD 	= PjtUtil.str(rs.MSC_CD);
-			String  VR_YN 	= PjtUtil.str(rs.VR_YN);
-			String  ORD 	= PjtUtil.str(rs.ORD);
-			String  RMK 	= PjtUtil.str(rs.RMK);
-			String  CPTN_YN = PjtUtil.str(rs.CPTN_YN);
-			String  MK_DT 	= PjtUtil.str(rs.MK_DT);
+			String  AV_NM 	= pjtU.str(rs.AV_NM);
+			String  TTL 	= pjtU.str(rs.TTL);
+			String  CNTNT 	= pjtU.str(rs.CNTNT);
+			String  MSC_CD 	= pjtU.str(rs.MSC_CD);
+			String  VR_YN 	= pjtU.str(rs.VR_YN);
+			String  ORD 	= pjtU.str(rs.ORD);
+			String  RMK 	= pjtU.str(rs.RMK);
+			String  CPTN_YN = pjtU.str(rs.CPTN_YN);
+			String  MK_DT 	= pjtU.str(rs.MK_DT);
 			
-			if(PjtUtil.isEmpty(AV_NM)) {
+			if(pjtU.isEmpty(AV_NM)) {
 				throw new BizRuntimeException("작품명이 입력되지 않았습니다.");
 			}
 			
@@ -161,13 +164,13 @@ public class BR_AV_MV_SAVE {
 			}
 			
 			
-			if(PjtUtil.isEmpty(MSC_CD)) {
+			if(pjtU.isEmpty(MSC_CD)) {
 				throw new BizRuntimeException("모자이크 유형이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(CPTN_YN)) {
+			if(pjtU.isEmpty(CPTN_YN)) {
 				throw new BizRuntimeException("자막유무가 입력되지 않았습니다.");
 			}	
-			if(PjtUtil.isEmpty(VR_YN)) {
+			if(pjtU.isEmpty(VR_YN)) {
 				throw new BizRuntimeException("VR여부가 입력되지 않았습니다.");
 			}	
 			
@@ -190,31 +193,31 @@ public class BR_AV_MV_SAVE {
 		
 		for( int i=0;i<inDS.UPDT_DATA.size();i++) {
 			DATA_ROW  rs =inDS.UPDT_DATA.get(i);
-			String  AV_SEQ 	= PjtUtil.str(rs.AV_SEQ);
-			String  AV_NM 	= PjtUtil.str(rs.AV_NM);
-			String  TTL 	= PjtUtil.str(rs.TTL);
-			String  CNTNT 	= PjtUtil.str(rs.CNTNT);
-			String  MSC_CD 	= PjtUtil.str(rs.MSC_CD);
-			String  VR_YN 	= PjtUtil.str(rs.VR_YN);
-			String  ORD 	= PjtUtil.str(rs.ORD);		
-			String  RMK 	= PjtUtil.str(rs.RMK);
-			String  CPTN_YN = PjtUtil.str(rs.CPTN_YN);
-			String  MK_DT	= PjtUtil.str(rs.MK_DT);
+			String  AV_SEQ 	= pjtU.str(rs.AV_SEQ);
+			String  AV_NM 	= pjtU.str(rs.AV_NM);
+			String  TTL 	= pjtU.str(rs.TTL);
+			String  CNTNT 	= pjtU.str(rs.CNTNT);
+			String  MSC_CD 	= pjtU.str(rs.MSC_CD);
+			String  VR_YN 	= pjtU.str(rs.VR_YN);
+			String  ORD 	= pjtU.str(rs.ORD);		
+			String  RMK 	= pjtU.str(rs.RMK);
+			String  CPTN_YN = pjtU.str(rs.CPTN_YN);
+			String  MK_DT	= pjtU.str(rs.MK_DT);
 			
-			if(PjtUtil.isEmpty(AV_SEQ)) {
+			if(pjtU.isEmpty(AV_SEQ)) {
 				throw new BizRuntimeException("작품일련번호가 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(AV_NM)) {
+			if(pjtU.isEmpty(AV_NM)) {
 				throw new BizRuntimeException("작품명이 입력되지 않았습니다.");
 			}
 			
-			if(PjtUtil.isEmpty(MSC_CD)) {
+			if(pjtU.isEmpty(MSC_CD)) {
 				throw new BizRuntimeException("모자이크 유형이 입력되지 않았습니다.");
 			}
-			if(PjtUtil.isEmpty(CPTN_YN)) {
+			if(pjtU.isEmpty(CPTN_YN)) {
 				throw new BizRuntimeException("자막유무가 입력되지 않았습니다.");
 			}	
-			if(PjtUtil.isEmpty(VR_YN)) {
+			if(pjtU.isEmpty(VR_YN)) {
 				throw new BizRuntimeException("VR여부가 입력되지 않았습니다.");
 			}	
 			long L_AV_SEQ =Long.parseLong(AV_SEQ);
