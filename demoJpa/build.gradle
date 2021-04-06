@@ -110,15 +110,14 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/javax.jdo/jdo-api
 	////javax.jdo.annotations.PrimaryKey can not find symbol  이거 오류 잡으려고 넣음
-	///https://seongbindb.tistory.com/134
-	///  org.springframework.boot.configurationprocessor.json ==>org.json
 	implementation group: 'javax.jdo', name: 'jdo-api', version: '3.1'
 
 
 
 	// https://mvnrepository.com/artifact/org.json/json
 	//java.lang.NoClassDefFoundError: org/springframework/boot/configurationprocessor/json/JSONException,
-	//
+	///https://seongbindb.tistory.com/134
+	///  org.springframework.boot.configurationprocessor.json ==>org.json
 	implementation group: 'org.json', name: 'json', version: '20210307'
 
 

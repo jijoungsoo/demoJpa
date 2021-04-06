@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 
+import com.example.demo.YmlConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -22,8 +23,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PjtUtil {
+	@Autowired
+	YmlConfig yc;
 
 	static DateFormat dateformat1 = new SimpleDateFormat("yyyyMMddHHmmss");
 	public static String getYyyyMMddHHMMSS(java.util.Date inDate) {
@@ -153,7 +159,7 @@ public class PjtUtil {
 
 
 
-			String filePath = "d:/avdbs.com"+path;
+			String filePath = yc.getServerfilepath()+path;
 			String p = filePath.substring(0,filePath.lastIndexOf("/"));
 			String OsDirPath = p.replace("/", Matcher.quoteReplacement(File.separator));
 			File d = new File(OsDirPath);
