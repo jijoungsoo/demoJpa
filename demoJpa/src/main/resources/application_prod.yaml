@@ -1,0 +1,66 @@
+server.port: 8091
+spring.mvc.view.prefix: /WEB-INF/jsp/
+spring.mvc.view.suffix: .jsp 
+
+spring:
+  h2:
+    console:
+      enabled: true
+  profiles:
+    active: default
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+      driver-class-name: org.postgresql.Driver       
+      jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
+      username: postgres
+      password: POSTGRES
+  output:
+    ansi:
+      enabled: always
+  security:
+    user:
+      name: test # Default user name.
+      password: test # Password for the default user name.
+      roles: # Granted roles for the default user name.      
+spring.datasource.sql-script-encoding: utf-8
+spring.jpa.database-platform: com.example.demo.db.sqlutil.CustomPostgreSQLDialect
+spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+spring.jpa.properties.hibernate.default_schema: public  #postgresql 디폴트 스키마 지정  일단 이거 제외 db를 빠꾸자. 
+spring.datasource.type: org.apache.tomcat.jdbc.pool.DataSource
+
+# MyBatis
+# mapper.xml 위치 지정
+mybatis.mapper-locations: mybatis-mapper/**/*.xml
+# model 프로퍼티 camel case 설정
+mybatis.configuration.map-underscore-to-camel-case: true
+# 패키지 명을 생략할 수 있도록 alias 설정
+       
+spring.jpa:
+   hibernate.ddl-auto: update
+   generate-ddl: true   #데이터베이스 자동 초기화 기능을 사용하려면 true로 세팅해야합니다.
+   show-sql: true   #쿼리문 보여주기
+logging:
+  level:
+    org:
+#     hibernate: 
+#      type:
+#       descriptor: 
+#        sql: trace  이거 데이터가 다 나와서 엄청 느려짐.
+     springframework.web : debug
+     springframework.security.web.csrf.CsrfFilter: DEBUG
+     sql: error
+     jdbc: off
+     jdbc.sqlonly: debug
+  file : /log/product.log
+  file.max-history: 9999999
+  file.max-size : 100MB        
+  config: classpath:logback-spring.xml
+  
+spring.jpa.properties.hibernate:
+  show-sql: false 
+  format_sql: false  # 압축된 쿼리를 읽기 좋게 포멧   
+  use_sql_comments: false
+
+env:
+  serverfilepath: /home/jijs/avdbs.com
