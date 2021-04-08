@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.YmlConfig;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_CMT;
 import com.example.demo.db.domain.mig_av.MigAvActr;
@@ -37,6 +38,9 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
 
     @Autowired
 	DA_MIG_AV_ACTR daMigAvActr;
+
+    @Autowired
+    YmlConfig yc;
 
     
     @Autowired
@@ -141,11 +145,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
                 break;
             }
             try {
-                if(i_page_cnt>4){
-                    Thread.sleep(3000);
-                } else {
-                    Thread.sleep(1000);
-                }
+                Thread.sleep(yc.getDelaysleep());
                 
             } catch(Exception e){
                 e.printStackTrace();

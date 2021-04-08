@@ -35,7 +35,7 @@ spring:
       #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명
       #jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy      
-      jdbc-url: jdbc:log4jdbc:postgresql://localhost:5432/stockweb  #postgres   db명      
+      jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
       username: postgres
       password: pwd
     #url: jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
@@ -152,3 +152,4 @@ spring.jpa.properties.hibernate:
 
 env:
   serverfilepath: d:\avdbs.com
+  delaysleep: 2100

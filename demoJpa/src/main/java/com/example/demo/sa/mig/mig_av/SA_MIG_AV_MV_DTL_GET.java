@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.example.demo.YmlConfig;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_GEN;
@@ -49,6 +50,10 @@ public class SA_MIG_AV_MV_DTL_GET {
     @Autowired
     DA_MIG_AV_MV_GEN daMigAvMvGen;
 
+
+    @Autowired
+    YmlConfig yc;
+
     	
 	@Autowired
 	MigAvMvRepository migAvMvR;
@@ -62,7 +67,7 @@ public class SA_MIG_AV_MV_DTL_GET {
             if(m.getSync().equals("N")){
                 updtMv(m.getDvdIdx());
                 try{
-                    Thread.sleep(3000);
+                    Thread.sleep(yc.getDelaysleep());
                 } catch(Exception e){
                     
                 }

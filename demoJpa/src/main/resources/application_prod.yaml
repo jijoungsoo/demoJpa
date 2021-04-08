@@ -38,8 +38,8 @@ mybatis.configuration.map-underscore-to-camel-case: true
        
 spring.jpa:
    hibernate.ddl-auto: update
-   generate-ddl: true   #데이터베이스 자동 초기화 기능을 사용하려면 true로 세팅해야합니다.
-   show-sql: true   #쿼리문 보여주기
+   generate-ddl: false   #데이터베이스 자동 초기화 기능을 사용하려면 true로 세팅해야합니다.
+   show-sql: false   #쿼리문 보여주기
 logging:
   level:
     org:
@@ -64,3 +64,4 @@ spring.jpa.properties.hibernate:
 
 env:
   serverfilepath: /home/jijs/avdbs.com
+  delaysleep: 2100

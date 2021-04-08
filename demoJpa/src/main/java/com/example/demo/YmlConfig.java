@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class YmlConfig {
     
     private String serverfilepath;
+    private Integer delaysleep;
     
     public String getServerfilepath() {
         return serverfilepath;
@@ -16,5 +17,13 @@ public class YmlConfig {
 
     public void setServerfilepath(String serverfilepath) {
         this.serverfilepath = serverfilepath;
+    }
+
+    public Integer getDelaysleep() {
+        return delaysleep;
+    }
+
+    public void setDelaysleep(Integer delaysleep) {
+        this.delaysleep = delaysleep;
     }
 }

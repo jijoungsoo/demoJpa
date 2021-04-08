@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.YmlConfig;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_CMT;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_IMG;
@@ -59,6 +60,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 
     @Autowired
     SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
+
+    @Autowired
+    YmlConfig yc;
     
     public MigAvActr run(Long L_ACTOR_IDX,Boolean sync) throws BizException  {
         Optional<MigAvActr> c = daMigAvActr.findById(L_ACTOR_IDX);
@@ -214,12 +218,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             updtMv( L_ACTOR_IDX, dvd_info);
             for(int i=2 ;i<=page_count;i++){
                 try {
-                    if(page_count>4){
-                        Thread.sleep(3000);
-                    } else {
-                        Thread.sleep(1000);
-                    }
-                    
+                    Thread.sleep(yc.getDelaysleep());
                 } catch(Exception e){
                     e.printStackTrace();
                 }

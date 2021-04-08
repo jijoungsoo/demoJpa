@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.example.demo.YmlConfig;
 import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.domain.mig_av.MigAvActr;
@@ -67,7 +68,9 @@ public class BR_MIG_AV_ACTR_PAGE {
 
 	@Autowired
 	DA_MIG_AV_ACTR daMigAvActr;
-	
+
+    @Autowired
+    YmlConfig yc;	
 
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
         @Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -95,7 +98,7 @@ public class BR_MIG_AV_ACTR_PAGE {
                 }
             }
             try{
-                Thread.sleep(3000);
+                Thread.sleep(yc.getDelaysleep());
             } catch(Exception e) {
                 e.printStackTrace();
             } 
