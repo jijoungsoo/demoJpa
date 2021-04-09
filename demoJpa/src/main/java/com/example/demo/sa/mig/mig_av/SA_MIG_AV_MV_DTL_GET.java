@@ -65,13 +65,18 @@ public class SA_MIG_AV_MV_DTL_GET {
             //여기면 있다는 거다.
             MigAvMv m = c.get();
             if(m.getSync().equals("N")){
+                //여기하고 
+                long start = System.currentTimeMillis();
                 updtMv(m.getDvdIdx());
-                try{
-                    Thread.sleep(yc.getDelaysleep());
-                } catch(Exception e){
-                    
+                long end = System.currentTimeMillis();
+			    if(   ((end - start)/1000.0)<1){
+                    //여기가 1초이상 차이가 나지 않는 다면 
+                    try{
+                        Thread.sleep(yc.getDelaysleep());
+                    } catch(Exception e){
+                        
+                    }
                 }
-                
             }
         }
         c = daMigAvMv.findById(L_DVD_IDX);

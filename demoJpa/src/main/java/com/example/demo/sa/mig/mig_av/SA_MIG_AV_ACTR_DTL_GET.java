@@ -217,12 +217,18 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             }
             updtMv( L_ACTOR_IDX, dvd_info);
             for(int i=2 ;i<=page_count;i++){
-                try {
-                    Thread.sleep(yc.getDelaysleep());
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
+                long start = System.currentTimeMillis();
                 getPageDvd(L_ACTOR_IDX , i);
+                long end = System.currentTimeMillis();
+			    if(   ((end - start)/1000.0)<1){
+                    //여기가 1초이상 차이가 나지 않는 다면 
+                    try{
+                        Thread.sleep(yc.getDelaysleep());
+                    } catch(Exception e){
+                        
+                    }
+                }
+
             }
         }
         
