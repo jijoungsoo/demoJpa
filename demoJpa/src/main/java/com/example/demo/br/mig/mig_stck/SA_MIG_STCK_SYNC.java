@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,8 +82,12 @@ public class SA_MIG_STCK_SYNC {
 	})
 	@ApiOperation(tags={"MARCAP"}, value = "주식")
     public void run(IN_DS inDs) throws BizException {
+        run2();
+    }
+
+    public void run2(){
         try {
-            execute("git pull");
+            execute("git pull https://github.com/FinanceData/marcap.git"); //git 내려받는거 있네!!
         } catch( IOException e){
 
             e.printStackTrace();
@@ -97,8 +105,19 @@ public class SA_MIG_STCK_SYNC {
         System.out.println(YYYYMMDD);
         String YYYY = YYYYMMDD.substring(0,4);
         System.out.println(YYYY);
-       
-        
+               
+        //디비를 읽어서 디비에 있는 max값을 가져와서 -7일 전 데이터 부터 다시 검색할수있도록 한다.
+        DateFormat dt = new SimpleDateFormat("yyyyMMdd");
+        String minusDtString =YYYYMMDD;
+        try {
+            Date lastDate = dt.parse(YYYYMMDD);
+            Date minusSevenDt = new Date(lastDate.getTime() - (1000 * 60 * 60 * 24*1));
+            minusDtString = dt.format(minusSevenDt);
+            
+        } catch (ParseException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } 
     
         int year = cal.get(Calendar.YEAR);
         System.out.println(year);
@@ -111,6 +130,8 @@ public class SA_MIG_STCK_SYNC {
             
             String before_tmp = "marcap-"+YYYY+".csv.gz";
             String after_tmp = "marcap-"+year+".csv.gz";
+
+            
             if(f.getName().compareTo(before_tmp)>=0  || f.getName().compareTo(after_tmp)>=0 ){//올해 데이터만 다시 올린다.
                 try {
                     ArrayList<String> al_tmp  = decompress(f);
@@ -126,7 +147,7 @@ public class SA_MIG_STCK_SYNC {
                         STOCK_DT = STOCK_DT.replaceAll("\"", "").trim();
                         String STOCK_NM = arr_tmp[1].replaceAll("\"", "").trim();
                         
-                        if(STOCK_DT.compareTo(YYYYMMDD)>0){
+                        if(STOCK_DT.compareTo(minusDtString)>0){
                             //System.out.println(STOCK_DT);
                             //System.out.println(YYYYMMDD);
                             //System.out.println(STOCK_DT.compareTo(YYYYMMDD));

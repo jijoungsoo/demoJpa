@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-@SpringBootTest(properties = "classpath:/application.yml"
+@SpringBootTest(properties = "classpath:/application.yaml"
 			,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 		)  /*https://velog.io/@hellozin/Spring-Boot-Test에서-Yaml-프로퍼티-적용하기*/
 @Transactional
