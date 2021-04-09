@@ -21,7 +21,11 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation ('org.springframework.boot:spring-boot-starter-web') {
+      exclude group: "org.springframework.boot", module: 'spring-boot-starter-tomcat'
+	}
+	implementation ('org.springframework.boot:spring-boot-starter-undertow')  //tomcat을 제거하고 더 나은 웹서버 쓰기
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	/* compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '3.1.0.RELEASE'  */  /*패스워드 암호화 때문에 사용   */

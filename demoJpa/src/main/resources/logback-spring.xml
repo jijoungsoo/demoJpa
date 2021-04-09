@@ -6,7 +6,7 @@
   <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
-      <fileNamePattern>d:/log/apilog-%d{yyyy-MM-dd}.%i.txt.zip</fileNamePattern>
+      <fileNamePattern>d:/log/demoJpa/apilog-%d{yyyy-MM-dd}.%i.txt.zip</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <!-- or whenever the file size reaches 100MB -->
         <maxFileSize>100MB</maxFileSize>
@@ -27,7 +27,7 @@
   <appender name="FLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
-      <fileNamePattern>d:/flonetd/flog-%d{yyyy-MM-dd}.txt.zip</fileNamePattern>
+      <fileNamePattern>d:/logs/demoJpa/flonetd/flog-%d{yyyy-MM-dd}.txt.zip</fileNamePattern>
 
     </rollingPolicy>
     <encoder>

@@ -52,7 +52,7 @@ logging:
      sql: error
      jdbc: off
      jdbc.sqlonly: debug
-  file : /log/product.log
+  file : log/product.log
   file.max-history: 9999999
   file.max-size : 100MB        
   config: classpath:logback-spring.xml
