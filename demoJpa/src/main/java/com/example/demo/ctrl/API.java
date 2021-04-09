@@ -45,8 +45,6 @@ public class API {
 			,@RequestBody/*중요 이거 없으면 못읽어옴*/ String jsonInString
 			)  {
 		String out = null;
-		ObjectMapper omOut = new ObjectMapper();
-		omOut.enable(SerializationFeature.INDENT_OUTPUT);
 		final ApiResultMap resMap = new ApiResultMap();
 		resMap.brId			= br;
 		resMap.jsonInString	= jsonInString;
@@ -56,8 +54,8 @@ public class API {
 		
 		try {
 			/*IN OUT 변수 감증 및 BR 존재하는지 검증, 아웃풋에 인풋까지 호출하는 정보까지 모두 담고있다.*/
-			System.out.println(br);
-			System.out.println(jsonInString);
+			log.debug(br);
+			log.debug(jsonInString);
 			validOpService(br,jsonInString,resMap /*아웃 참조로 써보자.*/);   
 			/*빌드 패턴이고   하나의 명령이 하나의 클래스면   java replaction으로   값을 보내기 좋은데 
 		 	*하나의 클래스에 여러개의 br이라고 생각하니까. 복잡하다.
@@ -69,9 +67,9 @@ public class API {
 			//https://blog.woniper.net/318  변경해서 달았다. CustomBeanNameGenerator 고고
 			Object ret = null;
 			Object bean = _appContext.getBean(resMap.rm.className);
-			System.out.println(resMap.rm.method.getName());
-			System.out.println(resMap.rm.method.getParameterTypes());
-			System.out.println(resMap.rm.method.getReturnType());
+			//System.out.println(resMap.rm.method.getName());
+			//System.out.println(resMap.rm.method.getParameterTypes());
+			//System.out.println(resMap.rm.method.getReturnType());
 			 Method method = bean.getClass().getMethod(resMap.rm.method.getName(),resMap.rm.method.getParameterTypes());  /*인풋타입은 무조건 정해졌다. */
 
 			 Object tmp=pjtU.JsonStringToObject(jsonInString, resMap.rm.method.getParameterTypes()[0]);
@@ -79,7 +77,7 @@ public class API {
 			 ret = method.invoke(bean, tmp);
 
 			 String outString = pjtU.ObjectToJsonString(ret);/*리턴타입은 무조건 정해져있다.*/
-			 System.out.println(outString);
+			 log.debug(outString);
 			 return outString;
 		} catch (BizException e) {
 			// TODO Auto-generated catch block

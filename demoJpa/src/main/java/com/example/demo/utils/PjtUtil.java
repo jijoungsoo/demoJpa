@@ -50,8 +50,8 @@ public class PjtUtil {
 		ObjectMapper omOut = new ObjectMapper();
 		//느리니까 정리도 하지 말자 
 		//omOut.enable(SerializationFeature.INDENT_OUTPUT);
-		System.out.println(JsonInString);
-		System.out.println(valueType);
+//		System.out.println(JsonInString);
+//		System.out.println(valueType);
 		//https://answer-id.com/ko/52045806
 		omOut.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);///변환활 클래스없는 필드는 json  필드 무시
 		
