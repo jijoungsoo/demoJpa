@@ -94,20 +94,10 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         for(int i=1;i<=i_page_cnt;i++){
             
             try {
-                long start = System.currentTimeMillis();
                 Boolean endPage =updateCmt( ACTOR_IDX, MAX_CMT_IDX, i);
-                long end = System.currentTimeMillis();
-                System.out.print("get cmt process time=>"+((end - start)/1000.0) );
                 if(endPage==true){
                     break;
                 }                    
-			    if(   ((end - start)/1000.0)<1){
-                    //여기가 1초이상 차이가 나지 않는 다면 
-                    try{
-                        Thread.sleep(yc.getDelaysleep());
-                    } catch(Exception e){
-                    }
-                }
             } catch (BizException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -133,6 +123,8 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder2.build().toString(), HttpMethod.GET,entity, String.class);
         String tmp = resultMap.getBody();
+        long start = System.currentTimeMillis();
+
         Document doc = Jsoup.parseBodyFragment(tmp);
         Elements  mention_row = doc.getElementsByClass("mention").select(".row");
 
@@ -150,9 +142,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
                 if(MAX_CMT_IDX>=l_cmt_idx){
                     endPage=true;
                     break;
-
-                }
-                
+                }                
                 
                 map.put("ACTOR_IDX", String.valueOf(ACTOR_IDX));
                 map.put("CMT_IDX", cmt_idx);
@@ -167,6 +157,10 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
             }
         }
         updtActorCmt(mention);
+        if(endPage==false) {
+            long end = System.currentTimeMillis();
+            pjtU.ActorCmtDelaySleep((int)((end - start)/1000.0));
+        }
         return endPage;
     }
 

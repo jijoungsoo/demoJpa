@@ -66,18 +66,7 @@ public class SA_MIG_AV_MV_DTL_GET {
             MigAvMv m = c.get();
             if(m.getSync().equals("N")){
                 //여기하고 
-                long start = System.currentTimeMillis();
-                updtMv(m.getDvdIdx());
-                long end = System.currentTimeMillis();
-                System.out.print("mv process time=>"+((end - start)/1000.0) );
-			    if(   ((end - start)/1000.0)<1){
-                    //여기가 1초이상 차이가 나지 않는 다면 
-                    try{
-                        Thread.sleep(yc.getDelaysleep());
-                    } catch(Exception e){
-                        
-                    }
-                }
+                updtMv(m.getDvdIdx());              
             }
         }
         c = daMigAvMv.findById(L_DVD_IDX);
@@ -87,6 +76,7 @@ public class SA_MIG_AV_MV_DTL_GET {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMv(Long L_DVD_IDX) throws BizException{
         HashMap<String, Object> tmp =getMv(L_DVD_IDX);
+        long start = System.currentTimeMillis();
         String  MV_NM    = tmp.get("MV_NM").toString();
         //모자이크 이미지가 나올지  아닐지 알수 없음.
         //일반이미지   https://s3.ap-northeast-2.amazonaws.com/img.avdbs.com/av/v0788/n_1412rebd535_a.jpg
@@ -182,6 +172,9 @@ public class SA_MIG_AV_MV_DTL_GET {
                 }
             }
         }
+
+        long end = System.currentTimeMillis();
+        pjtU.mvDelaySleep((int)((end - start)/1000.0));
     }
     
     private HashMap<String, Object> getMv(Long DVD_IDX)  {

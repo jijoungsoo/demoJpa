@@ -243,4 +243,31 @@ public class PjtUtil {
 		return path;
 	}
 
+	public void mvDelaySleep(int gap){
+		System.out.print("mv process time=>" +gap);
+		if(gap<2){
+			try{
+				Thread.sleep(yc.getDelaysleep());
+			} catch(Exception e){
+			}
+		}
+	}
+	public void ActorDelaySleep(int gap){
+		System.out.print("actor process time=>" +gap);
+		if(gap<2){
+			try{
+				Thread.sleep(yc.getDelaysleep());
+			} catch(Exception e){
+			}
+		}
+	}
+	public void ActorCmtDelaySleep(int gap){
+		System.out.print("actor cmt process time=>" +gap);
+		if(gap<2){
+			try{
+				Thread.sleep(yc.getDelaysleep());
+			} catch(Exception e){
+			}
+		}
+	}
 }

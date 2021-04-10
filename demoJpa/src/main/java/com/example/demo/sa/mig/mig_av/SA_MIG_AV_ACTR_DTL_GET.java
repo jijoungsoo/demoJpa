@@ -217,19 +217,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             }
             updtMv( L_ACTOR_IDX, dvd_info);
             for(int i=2 ;i<=page_count;i++){
-                long start = System.currentTimeMillis();
                 getPageDvd(L_ACTOR_IDX , i);
-                long end = System.currentTimeMillis();
-                System.out.print("getPageDvd process time=>"+((end - start)/1000.0) );
-			    if(   ((end - start)/1000.0)<1){
-                    //여기가 1초이상 차이가 나지 않는 다면 
-                    try{
-                        Thread.sleep(yc.getDelaysleep());
-                    } catch(Exception e){
-                        
-                    }
-                }
-
             }
         }
         
@@ -252,8 +240,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
         String tmp = resultMap.getBody();
-        Document doc = Jsoup.parseBodyFragment(tmp);
+        long start = System.currentTimeMillis();
 
+        Document doc = Jsoup.parseBodyFragment(tmp);
         Elements albums_li =     doc.getElementsByClass("album_vw").select("ul.lst").select("li");
         ArrayList<HashMap<String,String>> dvd_info = new ArrayList<HashMap<String,String>>();
         System.out.println(albums_li.size());
@@ -274,6 +263,8 @@ public class SA_MIG_AV_ACTR_DTL_GET {
             }
         }
         updtMv( L_ACTOR_IDX, dvd_info);
+        long end = System.currentTimeMillis();
+        pjtU.ActorDelaySleep((int)((end - start)/1000.0));
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMv(Long L_ACTR_IDX, ArrayList<HashMap<String,String>> arr_dvd) throws BizException{

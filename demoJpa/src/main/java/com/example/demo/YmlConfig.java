@@ -11,6 +11,7 @@ public class YmlConfig {
     private String serverfilepath;
     private Integer delaysleep;
     
+    
     public String getServerfilepath() {
         return serverfilepath;
     }
@@ -26,4 +27,5 @@ public class YmlConfig {
     public void setDelaysleep(Integer delaysleep) {
         this.delaysleep = delaysleep;
     }
+
 }
