@@ -9,6 +9,7 @@ import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
 import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -17,15 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @OpService
 @Service
 public class BR_MIG_AV_ACTR_PAGE {
+    @Autowired
+    HttpUtil httpU;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_MIG_AV_ACTR_PAGE")
@@ -108,25 +103,9 @@ public class BR_MIG_AV_ACTR_PAGE {
     }
    
    public ArrayList<HashMap<String, Object>>  getActorPage(String PAGE_NUM){
-        //https://www.avdbs.com/menu/actor_list.php
-        HashMap<String, Object> result = new HashMap<String, Object>();
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor_list.php?_sord=debutdate_d&_page="+PAGE_NUM;
-
-        String set_cookie = "adult_chk=1; user_nickname=dd; member_idx= 11;";
-        headers.add("Cookie", set_cookie);
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-        headers.add("x-pjax", "true");
-        headers.add("x-requested-with", "XMLHttpRequest");
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
+        //String url = "https://www.avdbs.com/menu/actor_list.php?_sord=debutdate_d&_page="+PAGE_NUM;
+        String url = "http://www.avdbs.com/menu/actor_list.php?_sord=debutdate_d&_page="+PAGE_NUM;
+        String tmp = httpU.httpGet(url);
         Document doc = Jsoup.parseBodyFragment(tmp);
         Elements lst =     doc.getElementsByClass("lst").select("li");
 

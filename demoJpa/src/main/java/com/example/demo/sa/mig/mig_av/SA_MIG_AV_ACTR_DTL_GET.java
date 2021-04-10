@@ -17,6 +17,7 @@ import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.db.domain.mig_av.MigAvMvActrMain;
 import com.example.demo.db.domain.mig_av.MigAvMvActrMainIdx;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
 
 import org.jsoup.Jsoup;
@@ -24,20 +25,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SA_MIG_AV_ACTR_DTL_GET {
+    @Autowired
+    HttpUtil httpU;
 
     @Autowired
 	DA_MIG_AV_ACTR daMigAvActr;
@@ -112,22 +110,11 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     }
 
 	public HashMap<String, Object> getActor(Long L_ACTOR_IDX) throws BizException  {
-        HashMap<String, Object> result = new HashMap<String, Object>();
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+        //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;
+        String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;  //인증오류가 나서 변경하였다.
+        String tmp =httpU.httpGet(url);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-
-        headers.add("Cookie", "adult_chk=1; user_nickname=dd; member_idx= 11;");
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
         Document doc = Jsoup.parseBodyFragment(tmp);
         String prf_img  = doc.getElementsByClass("profile_img_view").attr("src");
         String inner_name_kr  = doc.getElementsByClass("inner_name_kr").text();
@@ -225,21 +212,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     }
 
     private void getPageDvd(Long L_ACTOR_IDX , int i) throws BizException{
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-        //headers2.add("x-pjax", "true");
-        //headers2.add("x-requested-with", "XMLHttpRequest");
-        headers.add("Cookie",  "adult_chk=1; user_nickname=dd; member_idx= 11;");
+        //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
+        String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
+        String tmp = httpU.httpGet(url);
 
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
         long start = System.currentTimeMillis();
 
         Document doc = Jsoup.parseBodyFragment(tmp);

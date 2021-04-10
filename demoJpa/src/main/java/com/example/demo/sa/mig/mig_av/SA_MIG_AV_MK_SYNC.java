@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MK;
 import com.example.demo.db.domain.mig_av.MigAvMk;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
 
 import org.jsoup.Jsoup;
@@ -14,17 +15,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class SA_MIG_AV_MK_SYNC {    
@@ -33,6 +26,9 @@ public class SA_MIG_AV_MK_SYNC {
 
     @Autowired
     PjtUtil pjtU;
+
+    @Autowired
+    HttpUtil httpU;
 
     public void run() throws BizException {
         ArrayList<HashMap<String, Object>>  al = getMk();
@@ -62,23 +58,11 @@ public class SA_MIG_AV_MK_SYNC {
     }
     
     private ArrayList<HashMap<String, Object>> getMk()  {
+        //String url = "https://www.avdbs.com/av-maker";
+        String url = "http://www.avdbs.com/av-maker";
+        String tmp = httpU.httpGet(url);
 
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/av-maker";
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-
-        String set_cookie = "adult_chk=1; user_nickname=dd; member_idx= 11;";
-        headers.add("Cookie", set_cookie);
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
         Document doc = Jsoup.parseBodyFragment(tmp);
         Elements maker_lst  = doc.getElementById("maker_lst").select("a");
 
@@ -89,11 +73,9 @@ public class SA_MIG_AV_MK_SYNC {
             System.out.println(href);
             System.out.println(cate);
     
-             url = "https://www.avdbs.com"+href;
-             uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-    
-            resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-            tmp = resultMap.getBody();
+             //url = "https://www.avdbs.com"+href;
+             url = "http://www.avdbs.com"+href;
+            tmp = httpU.httpGet(url);
             doc = Jsoup.parseBodyFragment(tmp);
 
 

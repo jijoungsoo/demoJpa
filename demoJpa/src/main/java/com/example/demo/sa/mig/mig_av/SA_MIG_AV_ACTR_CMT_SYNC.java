@@ -11,6 +11,7 @@ import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_CMT;
 import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvActrCmt;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
 
 import org.jsoup.Jsoup;
@@ -18,18 +19,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SA_MIG_AV_ACTR_CMT_SYNC {
 
@@ -41,6 +37,9 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
 
     @Autowired
     YmlConfig yc;
+
+    @Autowired
+    HttpUtil httpU;
 
     
     @Autowired
@@ -60,22 +59,9 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
     }
 
 	public void  syncActorCmt(Long ACTOR_IDX,Long MAX_CMT_IDX)  {
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-
-        String set_cookie = "adult_chk=1; user_nickname=dd; member_idx= 11;";
-        headers.add("Cookie", set_cookie);
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
+        //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
+        String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
+        String tmp = httpU.httpGet(url);
         Document doc = Jsoup.parseBodyFragment(tmp);
         //mention
 
@@ -107,24 +93,11 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
 
     private Boolean updateCmt(Long ACTOR_IDX,Long MAX_CMT_IDX,Integer i) throws BizException{
         ArrayList<HashMap<String,String>> mention = new ArrayList<HashMap<String,String>>();
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
-        factory.setReadTimeout(10000);// 타임아웃 설정 5초
-        RestTemplate restTemplate = new RestTemplate(factory);
+        //String url = "https://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
+        String url = "http://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
+        String tmp = httpU.httpGetAjax(url);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String url = "https://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
-        
-        UriComponentsBuilder uriBuilder2 = UriComponentsBuilder.fromHttpUrl(url);
-        headers.add("x-pjax", "true");
-        headers.add("x-requested-with", "XMLHttpRequest");
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder2.build().toString(), HttpMethod.GET,entity, String.class);
-        String tmp = resultMap.getBody();
         long start = System.currentTimeMillis();
-
         Document doc = Jsoup.parseBodyFragment(tmp);
         Elements  mention_row = doc.getElementsByClass("mention").select(".row");
 
