@@ -245,27 +245,30 @@ public class PjtUtil {
 
 	public void mvDelaySleep(int gap){
 		System.out.print("mv process time=>" +gap);
-		if(gap<2){
+		int sleep =yc.getDelaysleep()-gap;
+		if(sleep>0){
 			try{
-				Thread.sleep(yc.getDelaysleep());
+				Thread.sleep(sleep);
 			} catch(Exception e){
 			}
 		}
 	}
 	public void ActorDelaySleep(int gap){
 		System.out.print("actor process time=>" +gap);
-		if(gap<2){
+		int sleep =yc.getDelaysleep()-gap;
+		if(sleep>0){
 			try{
-				Thread.sleep(yc.getDelaysleep());
+				Thread.sleep(sleep);
 			} catch(Exception e){
 			}
 		}
 	}
 	public void ActorCmtDelaySleep(int gap){
 		System.out.print("actor cmt process time=>" +gap);
-		if(gap<2){
+		int sleep =yc.getDelaysleep()-gap;
+		if(sleep>0){
 			try{
-				Thread.sleep(yc.getDelaysleep());
+				Thread.sleep(sleep);
 			} catch(Exception e){
 			}
 		}

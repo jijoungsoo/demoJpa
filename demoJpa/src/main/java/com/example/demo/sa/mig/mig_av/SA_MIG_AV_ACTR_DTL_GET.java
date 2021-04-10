@@ -240,7 +240,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         }
         updtMv( L_ACTOR_IDX, dvd_info);
         long end = System.currentTimeMillis();
-        pjtU.ActorDelaySleep((int)((end - start)/1000.0));
+        pjtU.ActorDelaySleep((int)(end - start));
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMv(Long L_ACTR_IDX, ArrayList<HashMap<String,String>> arr_dvd) throws BizException{

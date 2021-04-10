@@ -170,7 +170,7 @@ public class SA_MIG_AV_MV_DTL_GET {
         }
 
         long end = System.currentTimeMillis();
-        pjtU.mvDelaySleep((int)((end - start)/1000.0));
+        pjtU.mvDelaySleep((int)(end - start));
     }
     
     private HashMap<String, Object> getMv(Long DVD_IDX)  {

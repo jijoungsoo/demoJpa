@@ -132,7 +132,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         updtActorCmt(mention);
         if(endPage==false) {
             long end = System.currentTimeMillis();
-            pjtU.ActorCmtDelaySleep((int)((end - start)/1000.0));
+            pjtU.ActorCmtDelaySleep((int)(end - start));
         }
         return endPage;
     }

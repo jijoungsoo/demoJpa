@@ -9,7 +9,7 @@ public class AC_ACTR_GET {
     void download() {
         //String tmp =httpGet("https://www.avdbs.com/");
         HttpUtil h = new HttpUtil();
-        String tmp =h.httpGet("http://www.avdbs.com/menu/actor.php?actor_idx=6869");
+        String tmp =h.httpGet("http://www.avdbs.com/menu/actor.php?actor_idx=6826");
         System.out.println(tmp);
     }
 }
