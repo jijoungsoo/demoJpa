@@ -13,4 +13,4 @@ RUN pwd
 COPY build/libs/*.jar app.jar
 EXPOSE 8091
 # 외부에 노출할 포트 지정
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar -Xms1024m -Xmx1024m ","/app.jar"]
