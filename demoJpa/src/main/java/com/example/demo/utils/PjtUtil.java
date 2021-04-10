@@ -244,7 +244,7 @@ public class PjtUtil {
 	}
 
 	public void mvDelaySleep(int gap){
-		System.out.print("mv process time=>" +gap);
+		System.out.println("mv process time=>" +gap);
 		int sleep =yc.getDelaysleep()-gap;
 		if(sleep>0){
 			try{
@@ -254,7 +254,7 @@ public class PjtUtil {
 		}
 	}
 	public void ActorDelaySleep(int gap){
-		System.out.print("actor process time=>" +gap);
+		System.out.println("actor process time=>" +gap);
 		int sleep =yc.getDelaysleep()-gap;
 		if(sleep>0){
 			try{
@@ -264,7 +264,7 @@ public class PjtUtil {
 		}
 	}
 	public void ActorCmtDelaySleep(int gap){
-		System.out.print("actor cmt process time=>" +gap);
+		System.out.println("actor cmt process time=>" +gap);
 		int sleep =yc.getDelaysleep()-gap;
 		if(sleep>0){
 			try{
