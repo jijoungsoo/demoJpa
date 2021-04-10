@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import java.text.NumberFormat;
+
+import com.example.demo.ctrl.API;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +11,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.example.demo.ctrl.API;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
@@ -47,6 +50,22 @@ public class DemoJpaApplication {
 	        userRepository.save(new User("John"));
 	        userRepository.save(new User("Rambo"));
 	        */
+
+			Runtime runtime = Runtime.getRuntime();
+			final NumberFormat format = NumberFormat.getInstance();
+
+			final long maxMemory = runtime.maxMemory();
+			final long allocatedMemory = runtime.totalMemory();
+			final long freeMemory = runtime.freeMemory();
+			final long mb = 1024 * 1024;
+			final String mega = " MB";
+
+			log.info("========================== Memory Info ==========================");
+			log.info("Free memory: " + format.format(freeMemory / mb) + mega);
+			log.info("Allocated memory: " + format.format(allocatedMemory / mb) + mega);
+			log.info("Max memory: " + format.format(maxMemory / mb) + mega);
+			log.info("Total free memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / mb) + mega);
+			log.info("=================================================================\n");
 	   };
 	}
 }
