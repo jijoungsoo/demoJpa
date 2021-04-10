@@ -52,16 +52,14 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
             List<MigAvActrCmt> al= daMigAvActrCmt.findMigAvActrCmtByActorIdx(L_ACTOR_IDX);
             if(al.size()>0 && (SYNC_YN.equals("N"))){
                 Long MAX_CMT_IDX = al.get(0).getCmtIdx();
-                ArrayList<HashMap<String,String>>  tmp =getActorCmt( L_ACTOR_IDX,MAX_CMT_IDX);
-                updtActorCmt(tmp);
+                syncActorCmt( L_ACTOR_IDX,MAX_CMT_IDX);
             } else {
-                ArrayList<HashMap<String,String>>  tmp =getActorCmt( L_ACTOR_IDX,0L);
-                updtActorCmt(tmp);
+                syncActorCmt( L_ACTOR_IDX,0L);
             }
         }
     }
 
-	public ArrayList<HashMap<String,String>>  getActorCmt(Long ACTOR_IDX,Long MAX_CMT_IDX)  {
+	public void  syncActorCmt(Long ACTOR_IDX,Long MAX_CMT_IDX)  {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setConnectTimeout(10000); // 타임아웃 설정 5초
         factory.setReadTimeout(10000);// 타임아웃 설정 5초
@@ -80,12 +78,12 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         String tmp = resultMap.getBody();
         Document doc = Jsoup.parseBodyFragment(tmp);
         //mention
-        ArrayList<HashMap<String,String>> mention = new ArrayList<HashMap<String,String>>();
+
         Elements  mention_cnt = doc.getElementById("commlist").select(".page_navi.shw-640-over").select("strong");
         System.out.println("aaaaa");
 
         if(pjtU.isEmpty(mention_cnt.text())){
-            return null;
+            return;
         }
         System.out.println(mention_cnt.text());
         System.out.println(mention_cnt.text().split("/")[1]);
@@ -95,63 +93,81 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
 
         for(int i=1;i<=i_page_cnt;i++){
             
-            HttpHeaders headers2 = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            String url2 = "https://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
-            
-            UriComponentsBuilder uriBuilder2 = UriComponentsBuilder.fromHttpUrl(url2);
-            headers2.add("x-pjax", "true");
-            headers2.add("x-requested-with", "XMLHttpRequest");
-
-            HttpEntity<?> entity2 = new HttpEntity<>(headers2);
-            ResponseEntity<String> resultMap2 = restTemplate.exchange(uriBuilder2.build().toString(), HttpMethod.GET,entity2, String.class);
-            String tmp2 = resultMap2.getBody();
-            Document doc2 = Jsoup.parseBodyFragment(tmp2);
-            Elements  mention_row = doc2.getElementsByClass("mention").select(".row");
-
-            Boolean endPage =false;
-            for(Element m : mention_row) {
-                HashMap<String,String> map = new HashMap<String,String>();
-                String cmt_idx = m.attr("data-idx");
-                String cmt = m.select(".comment").text();
-                String writer = m.select(".writer").text();
-                String lk_cnt = m.select(".like").select(".cnt").text();
-                String dslk_cnt = m.select(".dislike").select(".cnt").text();
-
-                try{
-                    Long l_cmt_idx = Long.parseLong(cmt_idx);
-                    if(MAX_CMT_IDX>=l_cmt_idx){
-                        endPage=true;
-                        break;
-    
+            try {
+                long start = System.currentTimeMillis();
+                Boolean endPage =updateCmt( ACTOR_IDX, MAX_CMT_IDX, i);
+                long end = System.currentTimeMillis();
+                System.out.print("get cmt process time=>"+((end - start)/1000.0) );
+                if(endPage==true){
+                    break;
+                }                    
+			    if(   ((end - start)/1000.0)<1){
+                    //여기가 1초이상 차이가 나지 않는 다면 
+                    try{
+                        Thread.sleep(yc.getDelaysleep());
+                    } catch(Exception e){
                     }
-                    
-                    
-                    map.put("ACTOR_IDX", String.valueOf(ACTOR_IDX));
-                    map.put("CMT_IDX", cmt_idx);
-                    map.put("CMT", cmt);
-                    map.put("WRITER", writer);
-                    map.put("LK_CNT", lk_cnt);
-                    map.put("DSLK_CNT", dslk_cnt);
+                }
+            } catch (BizException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Boolean updateCmt(Long ACTOR_IDX,Long MAX_CMT_IDX,Integer i) throws BizException{
+        ArrayList<HashMap<String,String>> mention = new ArrayList<HashMap<String,String>>();
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setConnectTimeout(10000); // 타임아웃 설정 5초
+        factory.setReadTimeout(10000);// 타임아웃 설정 5초
+        RestTemplate restTemplate = new RestTemplate(factory);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        String url = "https://www.avdbs.com/w2017/page/actor/actor_mention.php?actor_idx="+ACTOR_IDX+"&page="+i;
         
-                    mention.add(map);    
-                } catch(Exception e){
-                    e.printStackTrace();
+        UriComponentsBuilder uriBuilder2 = UriComponentsBuilder.fromHttpUrl(url);
+        headers.add("x-pjax", "true");
+        headers.add("x-requested-with", "XMLHttpRequest");
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder2.build().toString(), HttpMethod.GET,entity, String.class);
+        String tmp = resultMap.getBody();
+        Document doc = Jsoup.parseBodyFragment(tmp);
+        Elements  mention_row = doc.getElementsByClass("mention").select(".row");
+
+        Boolean endPage =false;
+        for(Element m : mention_row) {
+            HashMap<String,String> map = new HashMap<String,String>();
+            String cmt_idx = m.attr("data-idx");
+            String cmt = m.select(".comment").text();
+            String writer = m.select(".writer").text();
+            String lk_cnt = m.select(".like").select(".cnt").text();
+            String dslk_cnt = m.select(".dislike").select(".cnt").text();
+
+            try{
+                Long l_cmt_idx = Long.parseLong(cmt_idx);
+                if(MAX_CMT_IDX>=l_cmt_idx){
+                    endPage=true;
+                    break;
+
                 }
                 
                 
-            }
-            if(endPage==true)  {
-                break;
-            }
-            try {
-                Thread.sleep(yc.getDelaysleep());
-                
+                map.put("ACTOR_IDX", String.valueOf(ACTOR_IDX));
+                map.put("CMT_IDX", cmt_idx);
+                map.put("CMT", cmt);
+                map.put("WRITER", writer);
+                map.put("LK_CNT", lk_cnt);
+                map.put("DSLK_CNT", dslk_cnt);
+    
+                mention.add(map);    
             } catch(Exception e){
                 e.printStackTrace();
             }
         }
-        return mention;
+        updtActorCmt(mention);
+        return endPage;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

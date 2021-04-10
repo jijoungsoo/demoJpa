@@ -69,6 +69,7 @@ public class SA_MIG_AV_MV_DTL_GET {
                 long start = System.currentTimeMillis();
                 updtMv(m.getDvdIdx());
                 long end = System.currentTimeMillis();
+                System.out.print("mv process time=>"+((end - start)/1000.0) );
 			    if(   ((end - start)/1000.0)<1){
                     //여기가 1초이상 차이가 나지 않는 다면 
                     try{
