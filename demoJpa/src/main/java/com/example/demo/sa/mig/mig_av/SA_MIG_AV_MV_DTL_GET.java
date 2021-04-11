@@ -113,6 +113,7 @@ public class SA_MIG_AV_MV_DTL_GET {
             RUN_TIME = tmp.get("RUN_TIME").toString();
         }
 
+        System.out.println(MAIN_ACTR_IDX);
         Long L_MAIN_ACTR_IDX  = Long.parseLong(MAIN_ACTR_IDX);
 
         daMigAvMv.updtMigAvMv(L_DVD_IDX, 
