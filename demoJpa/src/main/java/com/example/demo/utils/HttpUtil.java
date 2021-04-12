@@ -110,7 +110,7 @@ public class HttpUtil {
 			
 			UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(URL);
 	
-			headers.add("Cookie", "adult_chk=1; user_nickname=dd; member_idx= 11;");
+			//headers.add("Cookie", "adult_chk=1; user_nickname=dd; member_idx= 11;");
 	
 			HttpEntity<?> entity = new HttpEntity<>(headers);
 			ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
@@ -133,6 +133,40 @@ public class HttpUtil {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+		return  tmp;
+	}
+
+
+    public String httpGet2(String URL){
+        String tmp;
+			HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+			factory.setConnectTimeout(10000); // 타임아웃 설정 5초
+			factory.setReadTimeout(10000);// 타임아웃 설정 5초
+			RestTemplate restTemplate = new RestTemplate(factory);
+	
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+			
+			UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(URL);
+	
+			headers.add("Cookie", "adult_chk=1; user_nickname=dd; member_idx= 11;");
+            headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
+            headers.add("upgrade-insecure-requests", "1");
+            headers.add("sec-fetch-user", "?1");
+            headers.add("sec-fetch-site", "same-origin");
+            headers.add("sec-fetch-mode", "navigate");
+            headers.add("sec-fetch-dest", "document");
+            headers.add("sec-ch-ua-mobile", "?0");
+            headers.add("sec-ch-ua", "Google Chrome;v=89,Chromium;v=89,;Not A Brand;v=99");
+            headers.add("pragma", "no-cache");
+            headers.add("cache-control", " no-cache");
+	
+			HttpEntity<?> entity = new HttpEntity<>(headers);
+			ResponseEntity<String> resultMap = restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.GET,entity, String.class);
+			tmp = resultMap.getBody();
+
+			
+ 
 		return  tmp;
 	}
      

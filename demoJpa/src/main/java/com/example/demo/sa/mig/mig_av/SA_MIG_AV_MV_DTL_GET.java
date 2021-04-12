@@ -69,7 +69,6 @@ public class SA_MIG_AV_MV_DTL_GET {
         MigAvMv m = c.get();
         return m;	
 	}
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMv(Long L_DVD_IDX) throws BizException{
         HashMap<String, Object> tmp =getMv(L_DVD_IDX);
         long start = System.currentTimeMillis();
@@ -113,8 +112,9 @@ public class SA_MIG_AV_MV_DTL_GET {
             RUN_TIME = tmp.get("RUN_TIME").toString();
         }
 
-        System.out.println("L_DVD_IDX=>"+L_DVD_IDX);
-        System.out.println("MAIN_ACTR_IDX=>"+MAIN_ACTR_IDX);
+        System.out.println("1-MV_NM=>"+MV_NM);
+        System.out.println("1-L_DVD_IDX=>"+L_DVD_IDX);
+        System.out.println("1-MAIN_ACTR_IDX=>"+MAIN_ACTR_IDX);
         Long L_MAIN_ACTR_IDX  = Long.parseLong(MAIN_ACTR_IDX);
 
         daMigAvMv.updtMigAvMv(L_DVD_IDX, 
@@ -179,6 +179,7 @@ public class SA_MIG_AV_MV_DTL_GET {
         HashMap<String, Object> result = new HashMap<String, Object>();
         //String url = "https://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
         String url = "http://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
+        System.out.println(url);
         String tmp = httpU.httpGet(url);
 
         
@@ -254,7 +255,10 @@ public class SA_MIG_AV_MV_DTL_GET {
         }
         result.put("ACTOR_IDX", arr_actr);  //출연배우
 
-        System.out.println(DVD_IDX);
+        
+        System.out.println("main_actr_idx=>"+main_actr_idx);
+        System.out.println("mv_nm=>"+mv_nm);
+        System.out.println("DVD_IDX=>"+DVD_IDX);
         String story_kr  = "";
         if(doc.getElementById("story_kr")!=null) {
             story_kr = doc.getElementById("story_kr").text();
