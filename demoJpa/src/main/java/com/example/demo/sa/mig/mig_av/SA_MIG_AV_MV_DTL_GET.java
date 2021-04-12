@@ -60,10 +60,12 @@ public class SA_MIG_AV_MV_DTL_GET {
         if(c.isPresent()){
             //여기면 있다는 거다.
             MigAvMv m = c.get();
+            /* 2021-04-12  조회이슈가 있어서 막았다.
             if(m.getSync().equals("N")){
                 //여기하고 
                 updtMv(m.getDvdIdx());              
             }
+            */
         }
         c = daMigAvMv.findById(L_DVD_IDX);
         MigAvMv m = c.get();
