@@ -122,6 +122,8 @@ dependencies {
 
 
 
+	//웹사이트긁는데 사용
+	implementation 'org.seleniumhq.selenium:selenium-java'
 
 }
 /* 유투브보고 querydsl 설정했다.
