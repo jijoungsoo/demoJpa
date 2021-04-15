@@ -79,12 +79,12 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 sync=true;
             }
 
-            /* update 기능 막았음 2021-04-12   url 링크를 던져도 다른 데이터가 읽힘.
+            /* update 기능 막았음 2021-04-12   url 링크를 던져도 다른 데이터가 읽힘.*/
             if(m.getSync().equals("N")  || sync==true){
                 //상세 update
                 updtActor(m.getActrIdx());
             }
-            */
+            
             
         }
         c = daMigAvActr.findById(L_ACTOR_IDX);
