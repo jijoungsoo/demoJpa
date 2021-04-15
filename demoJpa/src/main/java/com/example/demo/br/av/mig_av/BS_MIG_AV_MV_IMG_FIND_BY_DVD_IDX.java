@@ -8,6 +8,7 @@ import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -99,6 +100,9 @@ public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
 	
 	@Autowired
 	DA_MIG_AV_MV daMigAvMv;
+
+	@Autowired
+	SA_MIG_AV_MV_DTL_GET saMigAvMvDtlGet;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -124,15 +128,22 @@ public class BS_MIG_AV_MV_IMG_FIND_BY_DVD_IDX {
 		OUT_DS outDs = new OUT_DS();
 		if (c.isPresent()) { //있다.
             MigAvMv m = c.get();
-			OUT_DATA_ROW row = new OUT_DATA_ROW();
-			row.DVD_IDX = m.getDvdIdx();
-			row.IMG_A  = m.getImgA();
-			row.IMG_AS  = m.getImgAs();
-			row.IMG_LA  = m.getImgLA();
-			row.IMG_LAS  = m.getImgLAs();
-			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
-			outDs.OUT_DATA.add(row);
-        } 			
+			if(pjtU.isEmpty(m.getImgA())){
+				//이미지 값이 비어있다면 싱크해서 넣는게 필요하다.
+				saMigAvMvDtlGet.run(L_DVD_IDX);				
+			}
+			c = daMigAvMv.findById(L_DVD_IDX);
+		}
+		MigAvMv m = c.get();
+		OUT_DATA_ROW row = new OUT_DATA_ROW();
+		row.DVD_IDX = m.getDvdIdx();
+		row.IMG_A  = m.getImgA();
+		row.IMG_AS  = m.getImgAs();
+		row.IMG_LA  = m.getImgLA();
+		row.IMG_LAS  = m.getImgLAs();
+		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
+		outDs.OUT_DATA.add(row);
+        
 		return outDs;          
 	}
 }
