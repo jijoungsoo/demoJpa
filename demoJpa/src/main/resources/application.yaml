@@ -152,4 +152,4 @@ spring.jpa.properties.hibernate:
 
 env:
   serverfilepath: d:\avdbs.com
-  delaysleep: 2010
+  delaysleep: 3000
