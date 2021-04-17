@@ -115,6 +115,9 @@ public class MigAvMv {
 	@Column(nullable = true,unique=false, length = 4000 ,name="file_path")
 	String filePath;
 
+	@Column(nullable = true,unique=false, length = 4000 ,name="rmk")
+	String rmk;
+
 	@Column(nullable = true,unique=false, length = 1 ,name="del_yn")
 	String delYn;
 

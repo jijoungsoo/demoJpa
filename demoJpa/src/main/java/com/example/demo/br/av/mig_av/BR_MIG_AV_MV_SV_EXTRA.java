@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_MIG_AV_MV_SV_FILE_PATH_DEL_YN {
+public class BR_MIG_AV_MV_SV_EXTRA {
 
 	@Autowired
     PjtUtil pjtU;
@@ -75,6 +75,10 @@ public class BR_MIG_AV_MV_SV_FILE_PATH_DEL_YN {
 		@JsonProperty("DEL_YN")
 		@Schema(name = "DEL_YN", example = "1", description = "DEL_YN")
 		String DEL_YN = "";
+
+		@JsonProperty("RMK")
+		@Schema(name = "RMK", example = "1", description = "RMK")
+		String RMK = "";
 
 	}
 	
@@ -119,8 +123,9 @@ public class BR_MIG_AV_MV_SV_FILE_PATH_DEL_YN {
 		Long L_DVD_IDX = Long.parseLong(inDS.IN_DATA.get(0).DVD_IDX);
 		String FILE_PATH = inDS.IN_DATA.get(0).FILE_PATH;
 		String DEL_YN = inDS.IN_DATA.get(0).DEL_YN;
+		String RMK = inDS.IN_DATA.get(0).RMK;
 		
-		daMigAvMv.updtMigAvMvFilePathDelYn(L_DVD_IDX,FILE_PATH,DEL_YN);
+		daMigAvMv.updtMigAvMvExtra(L_DVD_IDX,FILE_PATH,DEL_YN,RMK);
 		
 		OUT_DS outDs = new OUT_DS();
 		return outDs;

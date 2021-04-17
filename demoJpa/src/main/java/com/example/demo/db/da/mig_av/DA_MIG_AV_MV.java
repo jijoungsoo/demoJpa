@@ -204,9 +204,10 @@ public class DA_MIG_AV_MV {
 	}
 
 	
-	public void updtMigAvMvFilePathDelYn(long L_DVD_IDX
+	public void updtMigAvMvExtra(long L_DVD_IDX
 	, String FILE_PATH
 	, String DEL_YN
+	, String RMK
 	) throws BizException {
 		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
 		if(c==null) {
@@ -215,6 +216,7 @@ public class DA_MIG_AV_MV {
 		MigAvMv tmp = c.get();
 		tmp.setFilePath(FILE_PATH);
 		tmp.setDelYn(DEL_YN);	
+		tmp.setRmk(RMK);	
 		tmp.setUpdtDtm(new Date());
 		migAvMvR.save(tmp);
 	}

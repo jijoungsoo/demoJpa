@@ -201,6 +201,10 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		@JsonProperty("FILE_PATH")
 		@Schema(name = "FILE_PATH", example = "e:av.avi", description = "로컬 파일 경로")
 		String FILE_PATH = null;
+
+		@JsonProperty("RMK")
+		@Schema(name = "RMK", example = "RMK", description = "RMK")
+		String RMK = null;
 		
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
@@ -345,6 +349,7 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		row.GEN_LIST = m.getGenLst();
 		row.DEL_YN = m.getDelYn();
 		row.FILE_PATH = m.getFilePath();
+		row.RMK		=m.getRmk();
 		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 		outDs.OUT_DATA.add(row);
 
