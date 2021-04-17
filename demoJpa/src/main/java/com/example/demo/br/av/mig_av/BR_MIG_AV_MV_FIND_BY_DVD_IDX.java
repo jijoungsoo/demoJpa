@@ -6,13 +6,17 @@ import java.util.Optional;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
+import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_GEN;
 import com.example.demo.db.domain.mig_av.MigAvMv;
+import com.example.demo.db.domain.mig_av.QMigAvGen;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,6 +78,10 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		@JsonProperty("OUT_DATA_DVD")
 		@Schema(name="OUT_DATA_DVD-BR_MIG_AV_MV_FIND_BY_DVD_IDX", description = "출력 데이터")
 		ArrayList<OUT_DATA_DVD_ROW> OUT_DATA_DVD = new ArrayList<OUT_DATA_DVD_ROW>();
+
+		@JsonProperty("OUT_DATA_GEN")
+		@Schema(name="OUT_DATA_GEN-BR_MIG_AV_MV_FIND_BY_DVD_IDX", description = "출력 데이터")
+		ArrayList<OUT_DATA_GEN_ROW> OUT_DATA_GEN = new ArrayList<OUT_DATA_GEN_ROW>();
 	}
 
 	@ApiModel(value="OUT_DATA_ROW-BR_MIG_AV_MV_FIND_BY_DVD_IDX")
@@ -185,6 +193,14 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		@JsonProperty("GEN_LIST")
 		@Schema(name = "GEN_LIST", example = "장르", description = "장르")
 		String GEN_LIST = null;
+
+		@JsonProperty("DEL_YN")
+		@Schema(name = "DEL_YN", example = "(N,Y)", description = "로컬 파일 삭제여부")
+		String DEL_YN = null;
+
+		@JsonProperty("FILE_PATH")
+		@Schema(name = "FILE_PATH", example = "e:av.avi", description = "로컬 파일 경로")
+		String FILE_PATH = null;
 		
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
@@ -245,6 +261,22 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		String OPEN_DT = null;		
 	}
 
+	@ApiModel(value="OUT_DATA_GEN_ROW-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX")
+	@Data
+	static class OUT_DATA_GEN_ROW {
+		@JsonProperty("CATE_NM")
+		@Schema(name = "CATE_NM", example = "1", description = "메인 배우IDX")
+		String CATE_NM = null;
+
+		@JsonProperty("CATE_NO")
+		@Schema(name = "CATE_NO", example = "1", description = "CATE_NO")
+		Long CATE_NO = null;
+
+		@JsonProperty("MENU_NO")
+		@Schema(name = "MENU_NO", example = "1", description = "MENU_NO")
+		Long MENU_NO = null;
+	}
+
 	@Autowired
     PjtUtil pjtU;
 	
@@ -253,6 +285,10 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 
 	@Autowired
 	SA_MIG_AV_MV_DTL_GET saMigAvMvDtlGet;
+
+	
+	@Autowired
+	DA_MIG_AV_MV_GEN daMigAvMvGen;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -307,6 +343,8 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 		row.RUN_TIME = m.getRnTm();
 		row.STORY_KR = m.getStryKr();
 		row.GEN_LIST = m.getGenLst();
+		row.DEL_YN = m.getDelYn();
+		row.FILE_PATH = m.getFilePath();
 		row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(m.getCrtDtm());
 		outDs.OUT_DATA.add(row);
 
@@ -325,7 +363,18 @@ public class BR_MIG_AV_MV_FIND_BY_DVD_IDX {
 			outDs.OUT_DATA_BEST.add(rowBest);
 		}
 
-		List<MigAvMv> al2= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
+		/*DVD 장르 */
+		List<Tuple> al_gen= daMigAvMvGen.findGenByDvdIdx(L_DVD_IDX);
+		for(int i=0;i<al_gen.size();i++){
+			OUT_DATA_GEN_ROW row_gen = new OUT_DATA_GEN_ROW();
+			Tuple t = al_gen.get(i);
+			row_gen.CATE_NM=t.get(QMigAvGen.migAvGen.cateNm);
+			row_gen.CATE_NO=t.get(QMigAvGen.migAvGen.cateNo);
+			row_gen.MENU_NO=t.get(QMigAvGen.migAvGen.menuNo);
+			outDs.OUT_DATA_GEN.add(row_gen);
+		}
+
+		List<MigAvMv> al2= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX,null);
 		for(int i=0;i<al2.size();i++){
 			MigAvMv m2 = al2.get(i);
 			MigAvMv c2 =saMigAvMvDtlGet.run(m2.getDvdIdx());

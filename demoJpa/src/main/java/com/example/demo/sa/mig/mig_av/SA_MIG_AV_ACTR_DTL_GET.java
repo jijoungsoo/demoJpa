@@ -66,7 +66,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         Optional<MigAvActr> c = daMigAvActr.findById(L_ACTOR_IDX);
         if (c.isPresent()) { //있다.
             MigAvActr m = c.get();
-            List<MigAvMv> al =daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
+            List<MigAvMv> al =daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX,null);
             if(al.size()==0){
                 sync=true;
             }

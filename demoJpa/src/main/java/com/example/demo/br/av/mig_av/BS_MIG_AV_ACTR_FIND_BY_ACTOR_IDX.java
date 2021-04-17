@@ -6,9 +6,11 @@ import java.util.List;
 import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR_IMG;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
+import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_GEN;
 import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.MigAvActrImg;
 import com.example.demo.db.domain.mig_av.MigAvMv;
+import com.example.demo.db.domain.mig_av.QMigAvGen;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
 import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_DTL_GET;
@@ -16,6 +18,8 @@ import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +65,10 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		@JsonProperty("ACTOR_IDX")
 		@Schema(name = "ACTOR_IDX", example = "1", description = "ACTOR_IDX")
 		String ACTOR_IDX = "";
+
+		@JsonProperty("CATE_NO")
+		@Schema(name = "CATE_NO", example = "1", description = "CATE_NO")
+		String CATE_NO = "";
 	}
 
 	@Autowired
@@ -81,6 +89,11 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		@JsonProperty("OUT_DATA_BEST")
 		@Schema(name="OUT_DATA_BEST-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX", description = "출력 데이터")
 		ArrayList<OUT_DATA_BEST_ROW> OUT_DATA_BEST = new ArrayList<OUT_DATA_BEST_ROW>();
+
+		@JsonProperty("OUT_DATA_GEN")
+		@Schema(name="OUT_DATA_GEN-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX", description = "출력 데이터")
+		ArrayList<OUT_DATA_GEN_ROW> OUT_DATA_GEN = new ArrayList<OUT_DATA_GEN_ROW>();
+
 
 		@JsonProperty("OUT_DATA_DVD")
 		@Schema(name="OUT_DATA_DVD-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX", description = "출력 데이터")
@@ -199,6 +212,26 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 	}
 
 
+	
+	@ApiModel(value="OUT_DATA_GEN_ROW-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX")
+	@Data
+	static class OUT_DATA_GEN_ROW {
+		@JsonProperty("CATE_NM")
+		@Schema(name = "CATE_NM", example = "1", description = "메인 배우IDX")
+		String CATE_NM = null;
+
+		@JsonProperty("CATE_NO")
+		@Schema(name = "CATE_NO", example = "1", description = "CATE_NO")
+		Long CATE_NO = null;
+
+		@JsonProperty("MENU_NO")
+		@Schema(name = "MENU_NO", example = "1", description = "MENU_NO")
+		Long MENU_NO = null;
+	}
+
+
+
+
 	@ApiModel(value="OUT_DATA_DVD_ROW-BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX")
 	@Data
 	static class OUT_DATA_DVD_ROW {
@@ -238,6 +271,12 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 	@Autowired
 	DA_MIG_AV_ACTR_IMG daMigAvActrImg;
 
+
+	@Autowired
+	DA_MIG_AV_MV_GEN daMigAvMvGen;
+
+	
+
 	@Autowired
 	DA_MIG_AV_MV daMigAvMv;
 	
@@ -260,6 +299,17 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 		if(pjtU.isEmpty(ACTOR_IDX)){
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
+		Long L_CATE_NO = null;
+		if(!PjtUtil.isEmpty(inDS.IN_DATA.get(0).CATE_NO)){
+			try{
+				L_CATE_NO = Long.parseLong(inDS.IN_DATA.get(0).CATE_NO);
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}
+
+
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
 		MigAvActr c= saMigAvActrDtlGet.run(L_ACTOR_IDX,false);
 		if(c==null){
@@ -334,7 +384,21 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 			outDs.OUT_DATA_BEST.add(rowBest);
 		}
 
-		List<MigAvMv> al2= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
+
+		/*DVD 장르 */
+		List<Tuple> al_gen= daMigAvMvGen.findGenByActrIdx(L_ACTOR_IDX, L_CATE_NO);
+		for(int i=0;i<al_gen.size();i++){
+			OUT_DATA_GEN_ROW row_gen = new OUT_DATA_GEN_ROW();
+			Tuple t = al_gen.get(i);
+			Long cnt = t.get(Expressions.numberPath(Long.class,"cnt"));
+			row_gen.CATE_NM=t.get(QMigAvGen.migAvGen.cateNm)+"("+cnt+")";
+			row_gen.CATE_NO=t.get(QMigAvGen.migAvGen.cateNo);
+			row_gen.MENU_NO=t.get(QMigAvGen.migAvGen.menuNo);
+			outDs.OUT_DATA_GEN.add(row_gen);
+		}
+
+		/*DVD*/
+		List<MigAvMv> al2= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX, L_CATE_NO);
 		for(int i=0;i<al2.size();i++){
 			MigAvMv m = al2.get(i);
 			MigAvMv c2 =saMigAvMvDtlGet.run(m.getDvdIdx());

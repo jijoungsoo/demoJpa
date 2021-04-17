@@ -113,6 +113,7 @@ public class BS_MIG_AV_MV_FIND_BY_ACTOR_IDX {
 	@ApiOperation(tags={"AV"}, value = "AV배우 MV 조회한다.", notes = "페이징 처리")
 	//@PostMapping(path= "/api/BS_MIG_AV_MV_FIND_BY_ACTOR_IDX", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
+		Long L_CATE_NO =null;
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
 		}
@@ -127,7 +128,7 @@ public class BS_MIG_AV_MV_FIND_BY_ACTOR_IDX {
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
-		List<MigAvMv> al= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX);
+		List<MigAvMv> al= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX, L_CATE_NO);
 
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++){

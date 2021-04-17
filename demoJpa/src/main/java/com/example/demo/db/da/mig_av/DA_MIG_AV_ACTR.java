@@ -100,6 +100,13 @@ public class DA_MIG_AV_ACTR {
 			BooleanBuilder tmp = new BooleanBuilder();
             tmp.or(QMigAvActr.migAvActr.nmKr.contains(SEARCH_NM));
 			tmp.or(QMigAvActr.migAvActr.nmEn.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.brth.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.height.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.size.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.brSize.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.oNm.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.dscr.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.dscrTtl.contains(SEARCH_NM));
 			builder.and(tmp);
 	//		builder.and(QMigAvActr.migAvActr.nmCn.contains(SEARCH_NM));
         }
