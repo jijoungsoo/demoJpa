@@ -10,8 +10,6 @@ import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Throwables;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +52,8 @@ public class API {
 		
 		try {
 			/*IN OUT 변수 감증 및 BR 존재하는지 검증, 아웃풋에 인풋까지 호출하는 정보까지 모두 담고있다.*/
-			log.debug(br);
-			log.debug(jsonInString);
+			log.info(br);
+			log.info(jsonInString);
 			validOpService(br,jsonInString,resMap /*아웃 참조로 써보자.*/);   
 			/*빌드 패턴이고   하나의 명령이 하나의 클래스면   java replaction으로   값을 보내기 좋은데 
 		 	*하나의 클래스에 여러개의 br이라고 생각하니까. 복잡하다.
@@ -77,7 +75,7 @@ public class API {
 			 ret = method.invoke(bean, tmp);
 
 			 String outString = pjtU.ObjectToJsonString(ret);/*리턴타입은 무조건 정해져있다.*/
-			 log.debug(outString);
+			 log.info(outString);
 			 return outString;
 		} catch (BizException e) {
 			// TODO Auto-generated catch block
