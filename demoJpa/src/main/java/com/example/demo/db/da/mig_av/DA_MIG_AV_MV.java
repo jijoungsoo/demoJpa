@@ -64,9 +64,9 @@ public class DA_MIG_AV_MV {
 			tmp.or(QMigAvMv.migAvMv.drctr.contains(SEARCH_NM));
 			tmp.or(QMigAvMv.migAvMv.stryKr.contains(SEARCH_NM));
 			tmp.or(QMigAvMv.migAvMv.actrNm.contains(SEARCH_NM));
+			tmp.or(QMigAvMv.migAvMv.dvdIdx.like("%"+SEARCH_NM+"%"));
 			builder.and(tmp);
         }
-
 
 		QueryResults<Tuple>  r= qf
 		.select(QMigAvMv.migAvMv.dvdIdx,

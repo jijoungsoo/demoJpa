@@ -19,6 +19,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -107,6 +108,7 @@ public class DA_MIG_AV_ACTR {
 			tmp.or(QMigAvActr.migAvActr.oNm.contains(SEARCH_NM));
 			tmp.or(QMigAvActr.migAvActr.dscr.contains(SEARCH_NM));
 			tmp.or(QMigAvActr.migAvActr.dscrTtl.contains(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.actrIdx.like("%"+SEARCH_NM+"%"));
 			builder.and(tmp);
 	//		builder.and(QMigAvActr.migAvActr.nmCn.contains(SEARCH_NM));
         }
@@ -296,6 +298,37 @@ public class DA_MIG_AV_ACTR {
 		.orderBy(QMigAvActr.migAvActr.actrIdx.asc())
 		.fetch();
 		 return al;
+	}
+
+
+	public List<Tuple> findActrDebutDtYYMM() {
+		//https://github.com/querydsl/querydsl/issues/2196
+		//postgresql에서   case문과 groupby  count를 써을때 발생하는 오류에 대해서 올라온게 있다.
+		//StringTemplate  를 사용하라고 한다.
+		//CaseBuilder를 쓰는게 아니라   case문을 직접사용하라고한다.
+/*
+		StringExpression t=	new CaseBuilder()
+		.when(QMigAvActr.migAvActr.debutDt.between("19000101", "23001231"))
+		.then(Expressions.stringTemplate("substring({0},0,7)",QMigAvActr.migAvActr.debutDt))
+		.otherwise("--");
+*/
+/*바꾸니까 된다. */
+StringExpression yymm =Expressions.stringTemplate(
+	"case when {0} between '19000101' and '23001231' then  substring({0},0,7) else '--' end",QMigAvActr.migAvActr.debutDt); //2020만 남음		
+
+		StringPath debut_yymm2 = Expressions.stringPath("debut_yymm");
+		List<Tuple> al=qf
+		.select(
+			yymm.as(debut_yymm2)
+		,QMigAvActr.migAvActr.count().as("cnt")		
+		)
+		.from(QMigAvActr.migAvActr)	
+		.groupBy(
+			yymm
+		)
+		.orderBy(debut_yymm2.desc())
+		.fetch();
+		return al;
 	}
 }
 
