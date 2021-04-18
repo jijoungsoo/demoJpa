@@ -183,24 +183,25 @@ public class DA_MIG_AV_MV {
 	, String STORY_KR
 	) throws BizException {
 		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
-		if(c==null) {
-			throw new BizException("["+L_DVD_IDX+"] 작품이  존재하지 않습니다.[수정X]");
+		if(c.isPresent()){
+			MigAvMv tmp = c.get();
+			tmp.setMvNm(MV_NM);
+			tmp.setTtlKr(TITLE_KR);
+			tmp.setMnActrIdx(MAIN_ACTR_IDX);
+			tmp.setOpenDt(OPEN_DT);
+			tmp.setActrNm(ACTR_NM);
+			tmp.setCmpNm(COMP_NM);
+			tmp.setLbl(LABEL);
+			tmp.setSeries(SERIES);
+			tmp.setDrctr(DIRECTOR);
+			tmp.setRnTm(RUN_TIME);
+			tmp.setStryKr(STORY_KR);
+			tmp.setSync("Y");
+			tmp.setUpdtDtm(new Date());
+			migAvMvR.save(tmp);
+
 		}
-		MigAvMv tmp = c.get();
-		tmp.setMvNm(MV_NM);
-		tmp.setTtlKr(TITLE_KR);
-		tmp.setMnActrIdx(MAIN_ACTR_IDX);
-		tmp.setOpenDt(OPEN_DT);
-		tmp.setActrNm(ACTR_NM);
-		tmp.setCmpNm(COMP_NM);
-		tmp.setLbl(LABEL);
-		tmp.setSeries(SERIES);
-		tmp.setDrctr(DIRECTOR);
-		tmp.setRnTm(RUN_TIME);
-		tmp.setStryKr(STORY_KR);
-		tmp.setSync("Y");
-		tmp.setUpdtDtm(new Date());
-		migAvMvR.save(tmp);
+		
 	}
 
 	
@@ -210,26 +211,26 @@ public class DA_MIG_AV_MV {
 	, String RMK
 	) throws BizException {
 		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
-		if(c==null) {
-			throw new BizException("["+L_DVD_IDX+"] 작품이  존재하지 않습니다.[수정X]");
+		if(c.isPresent()){
+			MigAvMv tmp = c.get();
+			tmp.setFilePath(FILE_PATH);
+			tmp.setDelYn(DEL_YN);	
+			tmp.setRmk(RMK);	
+			tmp.setUpdtDtm(new Date());
+			migAvMvR.save(tmp);
 		}
-		MigAvMv tmp = c.get();
-		tmp.setFilePath(FILE_PATH);
-		tmp.setDelYn(DEL_YN);	
-		tmp.setRmk(RMK);	
-		tmp.setUpdtDtm(new Date());
-		migAvMvR.save(tmp);
+		
 	}
 
 	public void updtMigAvMvSync(long L_DVD_IDX,String SYNC_YN) throws BizException {
 		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
-		if(c==null) {
-			throw new BizException("["+L_DVD_IDX+"] 작품이  존재하지 않습니다.[수정X]");
+		if(c.isPresent()){
+			MigAvMv tmp = c.get();
+			tmp.setSync(SYNC_YN);
+			tmp.setUpdtDtm(new Date());
+			migAvMvR.save(tmp);
 		}
-		MigAvMv tmp = c.get();
-		tmp.setSync(SYNC_YN);
-		tmp.setUpdtDtm(new Date());
-		migAvMvR.save(tmp);
+		
 	}
 
 
@@ -248,23 +249,22 @@ public class DA_MIG_AV_MV {
 		,String IMG_LNS
 	) throws BizException {
 		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
-		if(c==null) {
-			throw new BizException("["+L_DVD_IDX+"] 작품이  존재하지 않습니다.[수정X]");
+		if(c.isPresent()){
+			MigAvMv tmp = c.get();
+			tmp.setMvNm(MV_NM);
+			tmp.setTtlKr(TTL_KR);
+			tmp.setSampleYn(SAMPLE_YN);
+			tmp.setImgA(IMG_A);
+			tmp.setImgAs(IMG_AS);
+			tmp.setImgN(IMG_N);
+			tmp.setImgNs(IMG_NS);
+			tmp.setImgLA(IMG_LA);
+			tmp.setImgLAs(IMG_LAS);
+			tmp.setImgLN(IMG_LN);
+			tmp.setImgLNs(IMG_LNS);
+			tmp.setUpdtDtm(new Date());
+			migAvMvR.save(tmp);
 		}
-		MigAvMv tmp = c.get();
-		tmp.setMvNm(MV_NM);
-		tmp.setTtlKr(TTL_KR);
-		tmp.setSampleYn(SAMPLE_YN);
-		tmp.setImgA(IMG_A);
-		tmp.setImgAs(IMG_AS);
-		tmp.setImgN(IMG_N);
-		tmp.setImgNs(IMG_NS);
-		tmp.setImgLA(IMG_LA);
-		tmp.setImgLAs(IMG_LAS);
-		tmp.setImgLN(IMG_LN);
-		tmp.setImgLNs(IMG_LNS);
-		tmp.setUpdtDtm(new Date());
-		migAvMvR.save(tmp);
 	}
 	
 	public void crtMigAvMv(Long L_DVD_IDX
@@ -306,14 +306,14 @@ public class DA_MIG_AV_MV {
 				,Long L_MN_ACTOR_IDX
 	) {
 		Optional<MigAvMv> c = findById(L_DVD_IDX);
-		if(c==null) {
-			
+		if(c.isPresent()){
+			MigAvMv tmp = c.get();
+			tmp.setMnActrIdx(L_MN_ACTOR_IDX);
+			tmp.setBestYn("Y");
+			tmp.setUpdtDtm(new Date());
+			migAvMvR.save(tmp);	
 		}
-		MigAvMv tmp = c.get();
-		tmp.setMnActrIdx(L_MN_ACTOR_IDX);
-		tmp.setBestYn("Y");
-		tmp.setUpdtDtm(new Date());
-		migAvMvR.save(tmp);
+		
 	}
 	
 	public Optional<MigAvMv> findById(Long L_DVD_IDX){
