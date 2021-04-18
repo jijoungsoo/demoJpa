@@ -170,11 +170,13 @@ public class BR_MIG_AV_MV_SYNC {
          STORY_KR
         );
         
+        daMigAvMvActr.rmMigAvMvActr(L_DVD_IDX);
         ArrayList<String>  arr_actr = (ArrayList<String>)tmp.get("ACTOR_IDX");
         if(arr_actr!=null){
             for(var j=0;j<arr_actr.size();j++){
                 String ACTR_IDX = arr_actr.get(j);
                 Long L_ACTR_IDX = Long.parseLong(ACTR_IDX);
+                /*                
                 MigAvMvActrIdx  key = new MigAvMvActrIdx();
                 key.setDvdIdx(L_DVD_IDX);
                 key.setActrIdx(L_ACTR_IDX);
@@ -184,6 +186,8 @@ public class BR_MIG_AV_MV_SYNC {
                 } else {
                     daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_MAIN_ACTR_IDX);
                 }
+                */
+                daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_ACTR_IDX);
             }
         }
 

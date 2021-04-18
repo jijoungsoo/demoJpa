@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import com.example.demo.YmlConfig;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_ACTR;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_MV_GEN;
 import com.example.demo.db.domain.mig_av.MigAvMv;
-import com.example.demo.db.domain.mig_av.MigAvMvActr;
-import com.example.demo.db.domain.mig_av.MigAvMvActrIdx;
 import com.example.demo.db.domain.mig_av.MigAvMvGen;
 import com.example.demo.db.domain.mig_av.MigAvMvGenIdx;
 import com.example.demo.db.repository.mig_av.MigAvMvRepository;
@@ -48,6 +49,9 @@ public class SA_MIG_AV_MV_DTL_GET {
     @Autowired
     YmlConfig yc;
 
+    @Autowired
+	EntityManager em;
+
     	
 	@Autowired
 	MigAvMvRepository migAvMvR;
@@ -67,6 +71,7 @@ public class SA_MIG_AV_MV_DTL_GET {
         MigAvMv m = c.get();
         return m;	
 	}
+    
     private void updtMv(Long L_DVD_IDX) throws BizException{
         HashMap<String, Object> tmp =getMv(L_DVD_IDX);
         long start = System.currentTimeMillis();
@@ -129,20 +134,26 @@ public class SA_MIG_AV_MV_DTL_GET {
          STORY_KR
         );
         
+        daMigAvMvActr.rmMigAvMvActr(L_DVD_IDX);
+        //em.flush();
         ArrayList<String>  arr_actr = (ArrayList<String>)tmp.get("ACTOR_IDX");
         if(arr_actr!=null){
             for(var j=0;j<arr_actr.size();j++){
                 String ACTR_IDX = arr_actr.get(j);
                 Long L_ACTR_IDX = Long.parseLong(ACTR_IDX);
+                daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_ACTR_IDX);
+                /*
                 MigAvMvActrIdx  key = new MigAvMvActrIdx();
                 key.setDvdIdx(L_DVD_IDX);
                 key.setActrIdx(L_ACTR_IDX);
                 
+                
                 Optional<MigAvMvActr> tmp2 =daMigAvMvActr.findById(key);
                 if (tmp2.isPresent()) {
                 } else {
-                    daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_ACTR_IDX);
+                  
                 }
+                */
             }
         }
 
