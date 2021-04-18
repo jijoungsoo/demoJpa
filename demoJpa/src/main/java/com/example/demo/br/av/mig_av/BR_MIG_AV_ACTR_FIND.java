@@ -69,6 +69,11 @@ public class BR_MIG_AV_ACTR_FIND {
 		@JsonProperty("SEARCH_NM")
 		@Schema(name = "SEARCH_NM", example = "1", description = "이름검색어")
 		String SEARCH_NM = "";
+
+
+		@JsonProperty("DEBUT_YYMM")
+		@Schema(name = "DEBUT_YYMM", example = "1", description = "데뷔월")
+		String DEBUT_YYMM = "";
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -184,6 +189,7 @@ public class BR_MIG_AV_ACTR_FIND {
 		PAGE_DATA_ROW rs_page =inDS.PAGE_DATA;
 		String SEARCH_AGE = null;
 		String SEARCH_NM = null;
+		String DEBUT_YYMM = null;
 
 		Pageable p = rs_page.getPageable();
 
@@ -191,10 +197,11 @@ public class BR_MIG_AV_ACTR_FIND {
 			if(inDS.IN_DATA.size()>0) {
 				SEARCH_AGE =inDS.IN_DATA.get(0).AGE;
 				SEARCH_NM  =inDS.IN_DATA.get(0).SEARCH_NM;
+				DEBUT_YYMM  =inDS.IN_DATA.get(0).DEBUT_YYMM;
 			}	
 		}
 		
-		Page<Tuple>  pg=daMigAvActr.findMigAvActr(SEARCH_AGE,SEARCH_NM,p);
+		Page<Tuple>  pg=daMigAvActr.findMigAvActr(DEBUT_YYMM,SEARCH_AGE,SEARCH_NM,p);
 		List<Tuple> al=pg.toList();
 		OUT_DS outDs = new OUT_DS();
 		for (int i = 0; i < al.size(); i++) {

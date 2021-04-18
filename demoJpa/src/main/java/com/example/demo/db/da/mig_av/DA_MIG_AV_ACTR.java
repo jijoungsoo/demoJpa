@@ -73,7 +73,8 @@ public class DA_MIG_AV_ACTR {
 	}
 
 
-	public Page<Tuple> findMigAvActr(String SEARCH_AGE,String SEARCH_NM, Pageable p) {
+	public Page<Tuple> findMigAvActr(String DEBUT_YYMM, String SEARCH_AGE,String SEARCH_NM, Pageable p) {
+		
 		//StringTemplate age = Expressions.stringTemplate("(SUBSTR(to_char(now(), 'YYYYMMDD'),0,5)::INTEGER-SUBSTR({0},0,5)::inTEGER)", QMigAvActr.migAvActr.brth); 
 		//결국엔  ::integer가 먹지 않아서    cast로 변경하니 되었다.
 
@@ -94,8 +95,12 @@ public class DA_MIG_AV_ACTR {
 
 		BooleanBuilder builder = new BooleanBuilder();
 
-        if (!ObjectUtils.isEmpty(SEARCH_AGE)) {
+		if (!ObjectUtils.isEmpty(SEARCH_AGE)) {
             builder.and(age.eq(SEARCH_AGE));
+        }
+
+        if (!ObjectUtils.isEmpty(DEBUT_YYMM)) {
+            builder.and(QMigAvActr.migAvActr.debutDt.startsWith(DEBUT_YYMM));
         }
         if (!ObjectUtils.isEmpty(SEARCH_NM)) {
 			BooleanBuilder tmp = new BooleanBuilder();

@@ -1,5 +1,8 @@
 package com.example.demo.br.av.mig_av;
 
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringPath;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BS_MIG_AV_ACTR_DEBUT_DT_YYMM {
+public class BS_MIG_AV_ACTR_DEBUT_YYMM {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_DEBUT_DT_YYMM")
+	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_DEBUT_YYMM")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -47,15 +49,15 @@ public class BS_MIG_AV_ACTR_DEBUT_DT_YYMM {
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_DEBUT_DT_YYMM")
+	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_DEBUT_YYMM")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_DEBUT_DT_YYMM", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_DEBUT_YYMM", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BS_MIG_AV_ACTR_DEBUT_DT_YYMM")
+	@ApiModel(value="OUT_DATA_ROW-BS_MIG_AV_ACTR_DEBUT_YYMM")
 	@Data
 	static class OUT_DATA_ROW {
 		@JsonProperty("CD")
@@ -78,6 +80,31 @@ public class BS_MIG_AV_ACTR_DEBUT_DT_YYMM {
 		OUT_DS outDs = new OUT_DS();
 		List<Tuple> al = daMigAvActr.findActrDebutDtYYMM();
 
+		if(al.size()>0){
+			
+			Tuple c= al.get(0);
+			String yymm=c.get(Expressions.stringPath("debut_yymm"));
+			String yymmdd =yymm+"01";
+			LocalDate end = LocalDate.parse(yymmdd, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+			String s = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+			s=s.substring(0,6)+"01";
+			LocalDate start = LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+			while(start.compareTo(end)==1){				
+				OUT_DATA_ROW row = new OUT_DATA_ROW();
+				String tmp =start.format(DateTimeFormatter.ofPattern("yyyyMM"));
+				String val="";
+				if(tmp.trim().length()==6){
+					val=tmp.substring(0,4)+"년"+tmp.substring(4,6)+"월";
+				}
+				row.CD_NM = val;
+				outDs.OUT_DATA.add(row);
+				start = start.plusMonths(-1);	//1달씩 빼줌
+				
+			}
+		}
+
 	
 		for(int i=0;i<al.size();i++){
 			OUT_DATA_ROW row = new OUT_DATA_ROW();
@@ -85,7 +112,11 @@ public class BS_MIG_AV_ACTR_DEBUT_DT_YYMM {
 			String yymm=c.get(Expressions.stringPath("debut_yymm"));
 			String cnt=c.get(Expressions.numberPath(Long.class,"cnt")).toString();
 			row.CD = yymm;
-			row.CD_NM = yymm;
+			String val="";
+			if(yymm.trim().length()==6){
+				val=yymm.substring(0,4)+"년"+yymm.substring(4,6)+"월("+cnt+")";
+			}
+			row.CD_NM = val;
 			outDs.OUT_DATA.add(row);
 		}
 	
