@@ -93,11 +93,12 @@ public class BS_MIG_AV_ACTR_DEBUT_YYMM {
 
 			while(start.compareTo(end)==1){				
 				OUT_DATA_ROW row = new OUT_DATA_ROW();
-				String tmp =start.format(DateTimeFormatter.ofPattern("yyyyMM"));
+				String key =start.format(DateTimeFormatter.ofPattern("yyyyMM"));
 				String val="";
-				if(tmp.trim().length()==6){
-					val=tmp.substring(0,4)+"년"+tmp.substring(4,6)+"월";
+				if(key.trim().length()==6){
+					val=key.substring(0,4)+"년"+key.substring(4,6)+"월";
 				}
+				row.CD = key;
 				row.CD_NM = val;
 				outDs.OUT_DATA.add(row);
 				start = start.plusMonths(-1);	//1달씩 빼줌
