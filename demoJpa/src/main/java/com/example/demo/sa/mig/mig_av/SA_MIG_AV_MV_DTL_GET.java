@@ -141,7 +141,7 @@ public class SA_MIG_AV_MV_DTL_GET {
                 Optional<MigAvMvActr> tmp2 =daMigAvMvActr.findById(key);
                 if (tmp2.isPresent()) {
                 } else {
-                    daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_MAIN_ACTR_IDX);
+                    daMigAvMvActr.crtMigAvMvActr(L_DVD_IDX, L_ACTR_IDX);
                 }
             }
         }
