@@ -99,15 +99,15 @@ public class DA_MIG_AV_ACTR {
         }
         if (!ObjectUtils.isEmpty(SEARCH_NM)) {
 			BooleanBuilder tmp = new BooleanBuilder();
-            tmp.or(QMigAvActr.migAvActr.nmKr.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.nmEn.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.brth.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.height.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.size.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.brSize.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.oNm.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.dscr.contains(SEARCH_NM));
-			tmp.or(QMigAvActr.migAvActr.dscrTtl.contains(SEARCH_NM));
+            tmp.or(QMigAvActr.migAvActr.nmKr.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.nmEn.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.brth.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.height.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.size.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.brSize.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.oNm.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.dscr.containsIgnoreCase(SEARCH_NM));
+			tmp.or(QMigAvActr.migAvActr.dscrTtl.containsIgnoreCase(SEARCH_NM));
 			tmp.or(QMigAvActr.migAvActr.actrIdx.like("%"+SEARCH_NM+"%"));
 			builder.and(tmp);
 	//		builder.and(QMigAvActr.migAvActr.nmCn.contains(SEARCH_NM));
