@@ -65,7 +65,7 @@ public class MigAvMv {
 	@Column(nullable = true,unique=false, length = 1000 ,name="mv_nm")
 	String mvNm;
 	
-	@Column(nullable = true,unique=false, length = 1000 ,name="title_kr")
+	@Column(nullable = true,unique=false, length = 4000 ,name="title_kr")
 	String ttlKr;
 
 	@Column(nullable = true,unique=false, length = 1000 ,name="main_actor_nm")
@@ -75,7 +75,7 @@ public class MigAvMv {
 	@Column(nullable = true,unique=false, name="main_actor_idx")
 	long mnActrIdx;
 
-	@Column(nullable = true,unique=false, length = 1000 ,name="actr_nm")
+	@Column(nullable = true,unique=false, length = 4000 ,name="actr_nm")
 	String actrNm;
 	
 	@Column(nullable = true,unique=false, length = 100 ,name="open_dt")
