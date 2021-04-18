@@ -221,7 +221,17 @@ public class DA_MIG_AV_MV {
 		migAvMvR.save(tmp);
 	}
 
-	
+	public void updtMigAvMvSync(long L_DVD_IDX,String SYNC_YN) throws BizException {
+		Optional<MigAvMv> c = migAvMvR.findById(L_DVD_IDX);
+		if(c==null) {
+			throw new BizException("["+L_DVD_IDX+"] 작품이  존재하지 않습니다.[수정X]");
+		}
+		MigAvMv tmp = c.get();
+		tmp.setSync(SYNC_YN);
+		tmp.setUpdtDtm(new Date());
+		migAvMvR.save(tmp);
+	}
+
 
 
 	public void updtMigAvMvImg(long L_DVD_IDX
