@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @IdClass(MigAvMvActrIdx.class)  
 public class MigAvMvActr {
 	@Id
-	@Column(nullable = false,unique=true ,name="dvd_idx")
+	@Column(nullable = false,unique=false ,name="dvd_idx")
 	long dvdIdx;
 
 	@Id

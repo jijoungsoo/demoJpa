@@ -145,6 +145,7 @@ public class SA_MIG_AV_MV_DTL_GET {
                 MigAvMvActrIdx  key = new MigAvMvActrIdx();
                 key.setDvdIdx(L_DVD_IDX);
                 key.setActrIdx(L_ACTR_IDX);
+                System.out.println("AAAAAAAAAA=>"+L_DVD_IDX+"=>"+L_ACTR_IDX);
                 Optional<MigAvMvActr> tmp2 =daMigAvMvActr.findById(key);
                 if (tmp2.isPresent()) {
                 } else {

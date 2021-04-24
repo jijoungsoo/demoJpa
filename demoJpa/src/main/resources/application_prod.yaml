@@ -64,4 +64,4 @@ spring.jpa.properties.hibernate:
 
 env:
   serverfilepath: /home/jijs/avdbs.com
-  delaysleep: 3000
+  delaysleep: 10000 #10초 하자
