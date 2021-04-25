@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:12180,http://api.st.com") // 추가
+@CrossOrigin(origins = "http://localhost:12180,http://f.st.com") // 추가
 @RestController 
 public class API {
 
