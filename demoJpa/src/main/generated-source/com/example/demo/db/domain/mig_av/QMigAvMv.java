@@ -27,9 +27,13 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
 
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
+    public final StringPath delYn = createString("delYn");
+
     public final StringPath drctr = createString("drctr");
 
     public final NumberPath<Long> dvdIdx = createNumber("dvdIdx", Long.class);
+
+    public final StringPath filePath = createString("filePath");
 
     public final StringPath genLst = createString("genLst");
 
@@ -58,6 +62,8 @@ public class QMigAvMv extends EntityPathBase<MigAvMv> {
     public final StringPath mvNm = createString("mvNm");
 
     public final StringPath openDt = createString("openDt");
+
+    public final StringPath rmk = createString("rmk");
 
     public final StringPath rnTm = createString("rnTm");
 

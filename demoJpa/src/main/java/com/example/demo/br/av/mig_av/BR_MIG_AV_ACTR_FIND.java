@@ -162,6 +162,11 @@ public class BR_MIG_AV_ACTR_FIND {
 		@Schema(name = "ACTOR_CMT_CNT", example = "1", description = "베우댓글수")
 		Long ACTOR_CMT_CNT = null;
 
+		
+		@JsonProperty("MV_CMT_CNT")
+		@Schema(name = "MV_CMT_CNT", example = "1", description = "베우댓글수")
+		Long MV_CMT_CNT = null;
+
 
 		@JsonProperty("ACTOR_DSLK_CNT")
 		@Schema(name = "ACTOR_DSLK_CNT", example = "1", description = "베스트비디오수")
@@ -233,6 +238,7 @@ public class BR_MIG_AV_ACTR_FIND {
 			
 			row.BEST_DVD_CNT = c.get(Expressions.numberPath(Long.class,"best_dvd_cnt"));
 			row.ACTOR_CMT_CNT = c.get(Expressions.numberPath(Long.class,"actor_cmt_cnt"));
+			row.MV_CMT_CNT = c.get(Expressions.numberPath(Long.class,"mv_cmt_cnt"));
 			row.ACTOR_LK_CNT = c.get(Expressions.numberPath(Long.class,"actor_lk_cnt"));
 			row.ACTOR_DSLK_CNT = c.get(Expressions.numberPath(Long.class,"actor_dslk_cnt"));
 			

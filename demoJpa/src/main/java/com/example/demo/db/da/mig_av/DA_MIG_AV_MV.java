@@ -9,6 +9,7 @@ import com.example.demo.db.domain.mig_av.QMigAvActr;
 import com.example.demo.db.domain.mig_av.QMigAvActrCmt;
 import com.example.demo.db.domain.mig_av.QMigAvMv;
 import com.example.demo.db.domain.mig_av.QMigAvMvActrMain;
+import com.example.demo.db.domain.mig_av.QMigAvMvCmt;
 import com.example.demo.db.domain.mig_av.QMigAvMvGen;
 import com.example.demo.db.repository.mig_av.MigAvMvRepository;
 import com.example.demo.exception.BizException;
@@ -108,7 +109,13 @@ public class DA_MIG_AV_MV {
 		JPAExpressions.select(QMigAvActrCmt.migAvActrCmt.count())
 				.from(QMigAvActrCmt.migAvActrCmt)
 				.where(QMigAvActrCmt.migAvActrCmt.actorIdx.eq(QMigAvActr.migAvActr.actrIdx)),
-		"actor_cmt_cnt"))		
+		"actor_cmt_cnt"),
+		ExpressionUtils.as(				
+		JPAExpressions.select(QMigAvMvCmt.migAvMvCmt.count())
+				.from(QMigAvMvCmt.migAvMvCmt)
+				.where(QMigAvMvCmt.migAvMvCmt.dvdIdx.eq(QMigAvMv.migAvMv.dvdIdx)),
+		"mv_cmt_cnt")
+		)		
 		.from(QMigAvMv.migAvMv)
 		.leftJoin(QMigAvActr.migAvActr)
 		.on(QMigAvMv.migAvMv.mnActrIdx.eq(QMigAvActr.migAvActr.actrIdx))

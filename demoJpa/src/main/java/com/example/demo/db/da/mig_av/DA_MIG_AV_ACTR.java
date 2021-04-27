@@ -8,6 +8,7 @@ import com.example.demo.db.domain.mig_av.MigAvActr;
 import com.example.demo.db.domain.mig_av.QMigAvActr;
 import com.example.demo.db.domain.mig_av.QMigAvActrCmt;
 import com.example.demo.db.domain.mig_av.QMigAvMv;
+import com.example.demo.db.domain.mig_av.QMigAvMvCmt;
 import com.example.demo.db.repository.mig_av.MigAvActrRepository;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
@@ -19,7 +20,6 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -162,6 +162,11 @@ public class DA_MIG_AV_ACTR {
 					.from(QMigAvActrCmt.migAvActrCmt)
 					.where(QMigAvActrCmt.migAvActrCmt.actorIdx.eq(QMigAvActr.migAvActr.actrIdx)),
 			"actor_cmt_cnt"),
+			ExpressionUtils.as(				
+			JPAExpressions.select(QMigAvMvCmt.migAvMvCmt.count())
+					.from(QMigAvMvCmt.migAvMvCmt)
+					.where(QMigAvMvCmt.migAvMvCmt.actorIdx.eq(QMigAvActr.migAvActr.actrIdx)),
+			"mv_cmt_cnt"),
 			ExpressionUtils.as(				
 			JPAExpressions.select(QMigAvMv.migAvMv.dvdIdx.count())
 					.from(QMigAvMv.migAvMv)

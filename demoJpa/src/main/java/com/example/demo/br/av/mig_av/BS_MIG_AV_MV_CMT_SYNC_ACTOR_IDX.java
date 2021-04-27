@@ -29,10 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
+public class BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
+	@ApiModel(value="IN_DS-BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -45,16 +45,21 @@ public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
 
 		
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX", description = "입력 데이터")
+		@Schema(name="IN_DATA-BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
+	@ApiModel(value="IN_DATA_ROW-BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("ACTOR_IDX")
 		@Schema(name = "ACTOR_IDX", example = "1", description = "ACTOR_IDX")
 		String ACTOR_IDX = "";
+
+		@JsonProperty("DVD_IDX")
+		@Schema(name = "DVD_IDX", example = "1", description = "DVD_IDX")
+		String DVD_IDX = "";
+
 
 		@JsonProperty("SYNC_YN")
 		@Schema(name = "SYNC_YN", example = "Y, N", description = "전체싱크여부")
@@ -66,16 +71,16 @@ public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
     PjtUtil pjtU;
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX")
+	@ApiModel(value="OUT_DS-BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BS_MIG_AV_MV_CMT_SYNC_ACTOR_IDX", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
 	@Autowired
-	SA_MIG_AV_ACTR_CMT_SYNC saMigAvActrCmtSync;
+	SA_MIG_AV_MV_CMT_SYNC saMigAvMvCmtSync;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -98,8 +103,9 @@ public class BS_MIG_AV_ACTR_CMT_SYNC_ACTOR_IDX {
 			throw new BizRuntimeException("ACTOR_IDX가 전달되지 않았습니다.");
 		}
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
+
 		try {
-			saMigAvActrCmtSync.run(L_ACTOR_IDX,SYNC_YN);
+			saMigAvMvCmtSync.run(L_ACTOR_IDX,SYNC_YN);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
