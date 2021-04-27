@@ -150,6 +150,10 @@ public class BR_MIG_AV_ACTR_FIND {
 		@Schema(name = "DVD_CNT", example = "1", description = "비디오수")
 		Long DVD_CNT = null;
 
+		@JsonProperty("DVD_SYNC_CNT")
+		@Schema(name = "DVD_SYNC_CNT", example = "1", description = "SYNC 비디오수")
+		Long DVD_SYNC_CNT = null;
+
 		@JsonProperty("BEST_DVD_CNT")
 		@Schema(name = "BEST_DVD_CNT", example = "1", description = "베스트비디오수")
 		Long BEST_DVD_CNT = null;
@@ -225,6 +229,8 @@ public class BR_MIG_AV_ACTR_FIND {
 			row.SYNC = c.get(QMigAvActr.migAvActr.sync);
 			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS( c.get(QMigAvActr.migAvActr.crtDtm));
 			row.DVD_CNT = c.get(Expressions.numberPath(Long.class,"dvd_cnt"));
+			row.DVD_SYNC_CNT = c.get(Expressions.numberPath(Long.class,"dvd_sync_cnt"));
+			
 			row.BEST_DVD_CNT = c.get(Expressions.numberPath(Long.class,"best_dvd_cnt"));
 			row.ACTOR_CMT_CNT = c.get(Expressions.numberPath(Long.class,"actor_cmt_cnt"));
 			row.ACTOR_LK_CNT = c.get(Expressions.numberPath(Long.class,"actor_lk_cnt"));

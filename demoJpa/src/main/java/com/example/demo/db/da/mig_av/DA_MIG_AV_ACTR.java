@@ -142,6 +142,12 @@ public class DA_MIG_AV_ACTR {
 					.where(QMigAvMv.migAvMv.mnActrIdx.eq(QMigAvActr.migAvActr.actrIdx)),
 			"dvd_cnt"),
 			ExpressionUtils.as(				
+				JPAExpressions.select(QMigAvMv.migAvMv.dvdIdx.count())
+						.from(QMigAvMv.migAvMv)
+						.where(QMigAvMv.migAvMv.mnActrIdx.eq(QMigAvActr.migAvActr.actrIdx))
+						.where(QMigAvMv.migAvMv.sync.eq("Y")),
+				"dvd_sync_cnt"),			
+			ExpressionUtils.as(				
 			JPAExpressions.select(QMigAvActrCmt.migAvActrCmt.lkCnt.sum())
 					.from(QMigAvActrCmt.migAvActrCmt)
 					.where(QMigAvActrCmt.migAvActrCmt.actorIdx.eq(QMigAvActr.migAvActr.actrIdx)),
