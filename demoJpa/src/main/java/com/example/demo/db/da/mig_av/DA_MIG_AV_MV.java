@@ -71,6 +71,7 @@ public class DA_MIG_AV_MV {
 
 		QueryResults<Tuple>  r= qf
 		.select(QMigAvMv.migAvMv.dvdIdx,
+		QMigAvMv.migAvMv.delYn,
 		QMigAvMv.migAvMv.imgAs,
 		QMigAvMv.migAvMv.imgNs,
 		QMigAvMv.migAvMv.mvNm,

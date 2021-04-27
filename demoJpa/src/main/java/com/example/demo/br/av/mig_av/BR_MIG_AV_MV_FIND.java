@@ -89,6 +89,10 @@ public class BR_MIG_AV_MV_FIND {
 	@ApiModel(value="OUT_DATA_ROW-BR_MIG_AV_MV_FIND")
 	@Data
 	static class OUT_DATA_ROW {
+		@JsonProperty("DEL_YN")
+		@Schema(name = "DEL_YN", example = "adf.jpg", description = "DEL_YN")
+		String DEL_YN = null;
+
 		@JsonProperty("DVD_IDX")
 		@Schema(name = "DVD_IDX", example = "1", description = "DVD IDX")
 		Long DVD_IDX = null;
@@ -225,6 +229,7 @@ public class BR_MIG_AV_MV_FIND {
 			Tuple c = al.get(i);
 					
 			OUT_DATA_ROW row = new OUT_DATA_ROW();
+			row.DEL_YN = c.get(QMigAvMv.migAvMv.delYn);
 			row.DVD_IDX = c.get(QMigAvMv.migAvMv.dvdIdx);
 			row.IMG_AS = c.get(QMigAvMv.migAvMv.imgAs);
 			row.IMG_NS = c.get(QMigAvMv.migAvMv.imgNs);
