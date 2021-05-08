@@ -20,8 +20,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -137,7 +135,6 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
         return endPage;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtActorCmt(ArrayList<HashMap<String,String>> arr_cmt) throws BizException{
    
         if(arr_cmt!=null){

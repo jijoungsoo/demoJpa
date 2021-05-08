@@ -144,7 +144,6 @@ public class SA_MIG_AV_MV_CMT_SYNC {
         return endPage;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMvCmt(ArrayList<HashMap<String,String>> arr_cmt) throws BizException{
    
         if(arr_cmt!=null){
