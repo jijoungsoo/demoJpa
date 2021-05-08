@@ -60,6 +60,9 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
 
     @Autowired
+    SA_MIG_AV_MV_CMT_SYNC saMigAvMvCmtSync;
+
+    @Autowired
     YmlConfig yc;
     
     public MigAvActr run(Long L_ACTOR_IDX,Boolean sync) throws BizException  {
@@ -474,7 +477,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         }
 
         saMigAvActorCmtSync.run(L_ACTR_IDX, "N");
-
+        saMigAvMvCmtSync.run(L_ACTR_IDX, "N");
     }
 
 

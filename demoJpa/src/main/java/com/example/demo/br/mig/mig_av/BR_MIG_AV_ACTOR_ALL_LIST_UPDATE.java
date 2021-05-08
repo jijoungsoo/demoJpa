@@ -35,10 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_MIG_AV_ACTR_SYNC_AUTO {
+public class BR_MIG_AV_ACTOR_ALL_LIST_UPDATE {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_MIG_AV_ACTR_SYNC_AUTO")
+	@ApiModel(value="IN_DS-BR_MIG_AV_ACTOR_ALL_LIST_UPDATE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -52,11 +52,11 @@ public class BR_MIG_AV_ACTR_SYNC_AUTO {
 
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_MIG_AV_ACTR_SYNC_AUTO")
+	@ApiModel(value="OUT_DS-BR_MIG_AV_ACTOR_ALL_LIST_UPDATE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_MIG_AV_ACTR_SYNC_AUTO", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_MIG_AV_ACTOR_ALL_LIST_UPDATE", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 
@@ -90,9 +90,12 @@ public class BR_MIG_AV_ACTR_SYNC_AUTO {
                     String DEBUT_DT =m.get("OPEN_DT").toString();
                     String NM_KR =m.get("K_NAME").toString();
                     Optional<MigAvActr> tmp2 =daMigAvActr.findById(L_ACTR_IDX);
-                    if(tmp2==null) {
+                    if(tmp2.isPresent()){
+                        //비어있지 않다.
+                    } else {
+                        //비어있다.
                         daMigAvActr.crtMigAvActr(L_ACTR_IDX, IMG_S, DEBUT_DT, NM_KR);
-                    } 
+                    }
                 }
             }
 

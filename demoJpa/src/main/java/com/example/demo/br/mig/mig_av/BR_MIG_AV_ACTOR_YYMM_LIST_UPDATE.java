@@ -37,10 +37,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_MIG_AV_ACTR_SYNC_YYYYMM {
+public class BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE {
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_MIG_AV_ACTR_SYNC_YYYYMM")
+	@ApiModel(value="IN_DS-BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -52,11 +52,11 @@ public class BR_MIG_AV_ACTR_SYNC_YYYYMM {
 		String brRs;
 
         @JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_MIG_AV_ACTR_SYNC_YYYYMM", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-    @ApiModel(value="IN_DATA_ROW-BR_MIG_AV_ACTR_SYNC_YYYYMM")
+    @ApiModel(value="IN_DATA_ROW-BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("DEBUT_YYMM")
@@ -66,11 +66,11 @@ public class BR_MIG_AV_ACTR_SYNC_YYYYMM {
 
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_MIG_AV_ACTR_SYNC_YYYYMM")
+	@ApiModel(value="OUT_DS-BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_MIG_AV_ACTR_SYNC_YYYYMM", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_MIG_AV_ACTOR_YYMM_LIST_UPDATE", description = "출력 데이터")
 		ArrayList<String> OUT_DATA = new ArrayList<String>();
 	}
 

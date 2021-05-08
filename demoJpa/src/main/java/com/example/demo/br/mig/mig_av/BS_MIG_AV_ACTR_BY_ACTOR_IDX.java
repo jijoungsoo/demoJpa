@@ -82,18 +82,20 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 		if(inDS.IN_DATA==null) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터가 전달되지 않았습니다.");
 		}
-		if(inDS.IN_DATA.size()!=1) {
+		if(inDS.IN_DATA.size()==0) {
 			throw new BizRuntimeException("[IN_DATA]입력파라미터의 ["+inDS.IN_DATA.size()+"]행수가 잘못되었습니다.");
 		}
 		
-		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
-		String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);
-
-		if(pjtU.isEmpty(ACTOR_IDX)) {
-			throw new BizRuntimeException("["+ACTOR_IDX+"]가 비어있습니다.");
+		for(int i=0;i<inDS.IN_DATA.size();i++){
+			IN_DATA_ROW  rs =inDS.IN_DATA.get(i);
+			String  ACTOR_IDX 		= pjtU.str(rs.ACTOR_IDX);	
+			if(pjtU.isEmpty(ACTOR_IDX)) {
+				throw new BizRuntimeException("["+ACTOR_IDX+"]가 비어있습니다.");
+			}
+			Long L_ACTOR_IDX = Long.parseLong(ACTOR_IDX);
+			br.run(L_ACTOR_IDX,true);//상태가 N이면 업데이트
 		}
-		Long L_ACTOR_IDX = Long.parseLong(ACTOR_IDX);
-		br.run(L_ACTOR_IDX,true);//상태가 N이면 업데이트
+		
 		OUT_DS outDs = new OUT_DS();
 		return outDs;		
 	}
