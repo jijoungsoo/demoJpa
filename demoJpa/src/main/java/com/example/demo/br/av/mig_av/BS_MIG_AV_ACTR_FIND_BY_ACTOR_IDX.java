@@ -13,7 +13,9 @@ import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.db.domain.mig_av.QMigAvGen;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_CMT_SYNC;
 import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_DTL_GET;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_CMT_SYNC;
 import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -275,7 +277,12 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 	@Autowired
 	DA_MIG_AV_MV_GEN daMigAvMvGen;
 
-	
+		
+	@Autowired
+    SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
+
+    @Autowired
+    SA_MIG_AV_MV_CMT_SYNC saMigAvMvCmtSync;
 
 	@Autowired
 	DA_MIG_AV_MV daMigAvMv;
@@ -309,12 +316,15 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 			
 		}
 
-
 		Long L_ACTOR_IDX  = Long.parseLong(ACTOR_IDX);
 		MigAvActr c= saMigAvActrDtlGet.run(L_ACTOR_IDX,false);
 		if(c==null){
 			throw new BizRuntimeException("ACTOR_IDX에 해당하는 배우가 없습니다.");
 		}
+		/*배우 코멘트 */
+		saMigAvActorCmtSync.run(L_ACTOR_IDX, "N");
+		/*작품 코멘트 */
+		saMigAvMvCmtSync.run(L_ACTOR_IDX, "N");
 		OUT_DS outDs = new OUT_DS();
 		OUT_DATA_ROW row = new OUT_DATA_ROW();
 		row.ACTOR_IDX = c.getActrIdx();

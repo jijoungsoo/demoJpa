@@ -56,11 +56,6 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     @Autowired
 	DA_MIG_AV_MV_ACTR_MAIN daMigAvMvActrMain;
 
-    @Autowired
-    SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
-
-    @Autowired
-    SA_MIG_AV_MV_CMT_SYNC saMigAvMvCmtSync;
 
     @Autowired
     YmlConfig yc;
@@ -475,9 +470,6 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 daMigAvMv.setBestYn(L_DVD_IDX, L_ACTR_IDX);
             }
         }
-
-        saMigAvActorCmtSync.run(L_ACTR_IDX, "N");
-        saMigAvMvCmtSync.run(L_ACTR_IDX, "N");
     }
 
 

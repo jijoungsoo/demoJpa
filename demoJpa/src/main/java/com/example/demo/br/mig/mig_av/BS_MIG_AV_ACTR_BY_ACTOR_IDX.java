@@ -1,12 +1,18 @@
 package com.example.demo.br.mig.mig_av;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.mig_av.DA_MIG_AV_ACTR;
+import com.example.demo.db.da.mig_av.DA_MIG_AV_MV;
+import com.example.demo.db.domain.mig_av.MigAvMv;
 import com.example.demo.exception.BizException;
 import com.example.demo.exception.BizRuntimeException;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_CMT_SYNC;
 import com.example.demo.sa.mig.mig_av.SA_MIG_AV_ACTR_DTL_GET;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_CMT_SYNC;
+import com.example.demo.sa.mig.mig_av.SA_MIG_AV_MV_DTL_GET;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -72,6 +78,19 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 
     @Autowired
 	SA_MIG_AV_ACTR_DTL_GET br;
+
+	
+    @Autowired
+    SA_MIG_AV_ACTR_CMT_SYNC saMigAvActorCmtSync;
+
+    @Autowired
+    SA_MIG_AV_MV_CMT_SYNC saMigAvMvCmtSync;
+
+	@Autowired
+	DA_MIG_AV_MV daMigAvMv;
+
+	@Autowired
+	SA_MIG_AV_MV_DTL_GET saMigAvMvDtlGet;
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = OUT_DS.class)) }) 
@@ -94,6 +113,19 @@ public class BS_MIG_AV_ACTR_BY_ACTOR_IDX {
 			}
 			Long L_ACTOR_IDX = Long.parseLong(ACTOR_IDX);
 			br.run(L_ACTOR_IDX,true);//상태가 N이면 업데이트
+
+			
+			/*배우 코멘트 */
+			saMigAvActorCmtSync.run(L_ACTOR_IDX, "N");
+			/*작품 코멘트 */
+			saMigAvMvCmtSync.run(L_ACTOR_IDX, "N");
+
+			/*DVD 상세정보 */
+			List<MigAvMv> al2= daMigAvMv.findMigAvMvByActorIdx(L_ACTOR_IDX, null);
+			for(int j=0;j<al2.size();j++){
+				MigAvMv m = al2.get(j);
+				MigAvMv c2 =saMigAvMvDtlGet.run(m.getDvdIdx());
+			}
 		}
 		
 		OUT_DS outDs = new OUT_DS();
