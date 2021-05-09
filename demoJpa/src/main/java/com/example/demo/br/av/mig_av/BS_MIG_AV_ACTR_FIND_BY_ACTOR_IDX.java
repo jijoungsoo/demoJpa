@@ -322,9 +322,10 @@ public class BS_MIG_AV_ACTR_FIND_BY_ACTOR_IDX {
 			throw new BizRuntimeException("ACTOR_IDX에 해당하는 배우가 없습니다.");
 		}
 		/*배우 코멘트 */
-		saMigAvActorCmtSync.run(L_ACTOR_IDX, "N");
+		//saMigAvActorCmtSync.run(L_ACTOR_IDX, "N");
 		/*작품 코멘트 */
-		saMigAvMvCmtSync.run(L_ACTOR_IDX, "N");
+		//saMigAvMvCmtSync.run(L_ACTOR_IDX, "N");
+		
 		OUT_DS outDs = new OUT_DS();
 		OUT_DATA_ROW row = new OUT_DATA_ROW();
 		row.ACTOR_IDX = c.getActrIdx();
