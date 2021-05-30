@@ -104,6 +104,11 @@ public class BR_MIG_AV_ACTR_FIND {
 		@JsonProperty("DEBUT_DT")
 		@Schema(name = "DEBUT_DT", example = "20200302", description = "데뷔일")
 		String DEBUT_DT = null;
+		
+		@JsonProperty("LAST_DT")
+		@Schema(name = "LAST_DT", example = "20200302", description = "마지막작품일자")
+		String LAST_DT = null;
+
 		@JsonProperty("NAME_KR")
 		@Schema(name = "NAME_KR", example = "마사카", description = "이름(한글)")
 		String NAME_KR = null;
@@ -221,6 +226,7 @@ public class BR_MIG_AV_ACTR_FIND {
 			row.IMG = c.get(QMigAvActr.migAvActr.img);
 			row.IMG_S = c.get(QMigAvActr.migAvActr.imgS);
 			row.DEBUT_DT = c.get(QMigAvActr.migAvActr.debutDt);
+			row.LAST_DT = c.get(Expressions.stringPath("last_dt"));
 			row.NAME_KR = c.get(QMigAvActr.migAvActr.nmKr);
 			row.NAME_EN = c.get(QMigAvActr.migAvActr.nmEn);
 			row.NAME_CN = c.get(QMigAvActr.migAvActr.nmCn);

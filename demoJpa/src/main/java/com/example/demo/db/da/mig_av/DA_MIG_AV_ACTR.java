@@ -123,6 +123,11 @@ public class DA_MIG_AV_ACTR {
 			QMigAvActr.migAvActr.img,
 			QMigAvActr.migAvActr.imgS,
 			QMigAvActr.migAvActr.debutDt,
+			ExpressionUtils.as(				
+				JPAExpressions.select(QMigAvMv.migAvMv.openDt.max())
+						.from(QMigAvMv.migAvMv)
+						.where(QMigAvMv.migAvMv.openDt.between("19000101", "23001231")),
+				"last_dt"),
 			QMigAvActr.migAvActr.nmKr,
 			QMigAvActr.migAvActr.nmEn,
 			QMigAvActr.migAvActr.nmCn,

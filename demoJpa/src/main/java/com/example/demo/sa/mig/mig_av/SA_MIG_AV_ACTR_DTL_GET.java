@@ -268,6 +268,19 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 }
 
                 if (tmp2.isPresent()) {
+                    //이전에 db에서 IMS_S를 읽어서
+                    //이것이 값이 비어있을 때 만 진행되는게 맞는 것 같다.
+                    //보니까.  저작권 문제로 
+                    //있던 파일이 sample로 대체 되는 경우가 있었다.
+
+                    
+                    if(PjtUtil.isEmpty(tmp2.get().getImgAs())==false){
+                        continue; //값이 있다면 종료하고 다시   for문으로 가도록 한다.
+
+                    }
+
+
+
                     if(SAMPLE_YN.equals("N")) {
                         // ns 파일이 있을수 있고
                         // s파일이 있을수 있고
