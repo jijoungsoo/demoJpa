@@ -202,15 +202,24 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 
             }
             updtMv( L_ACTOR_IDX, dvd_info);
+            ///페이지만큼 돌고 있는데 실상은
+            // max dvd_idx보다 클때만 돌면 된다.
+            // 개선이 필요하다.
+            //getPageDvd가 리턴으로 true,false를 보내도록 해서
+            //getpageDvd에서 구한 dvd_idx가   L_Actor_idx에서 구한 dvd_idx의 맥스값 보다
+            //작으면 false를 리턴하게 하고    false를 리턴하면  break;로 for문을 끝내자.
             for(int i=2 ;i<=page_count;i++){
-                getPageDvd(L_ACTOR_IDX , i);
+                boolean flag = getPageDvd(L_ACTOR_IDX , i);
+                if(flag==false) {
+                    break;
+                }
             }
         }
         
         return result;
     }
 
-    private void getPageDvd(Long L_ACTOR_IDX , int i) throws BizException{
+    private boolean getPageDvd(Long L_ACTOR_IDX , int i) throws BizException{
         //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
         String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
         String tmp = httpU.httpGet(url);
@@ -221,6 +230,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
         Elements albums_li =     doc.getElementsByClass("album_vw").select("ul.lst").select("li");
         ArrayList<HashMap<String,String>> dvd_info = new ArrayList<HashMap<String,String>>();
         System.out.println(albums_li.size());
+
+        Boolean rtn = true;
+        
+        Long max_dvd_idx = daMigAvMv.getMaxDvdIdxByActorIdx(L_ACTOR_IDX);
         for(Element p : albums_li) {
             String dvd_idx  = p.select(".photo").select(".detail").attr("href");
             dvd_idx=dvd_idx.replaceAll("/menu/dvd.php\\?dvd_idx=","");
@@ -235,11 +248,19 @@ public class SA_MIG_AV_ACTR_DTL_GET {
                 m.put("MV_NM", MV_NM.trim());
                 m.put("TTL_KR", TTL_KR.trim());
                 dvd_info.add(m);
+
+                Long cur_dvd_dix = Long.parseLong(dvd_idx);
+
+                if(max_dvd_idx>=cur_dvd_dix){  //db에 있는 max_dvd_idx값이 현재 값 보다 크거나 같다면 더 http를 조회할의미가 없다.
+                    rtn=false;
+                }
             }
         }
         updtMv( L_ACTOR_IDX, dvd_info);
         long end = System.currentTimeMillis();
         pjtU.ActorDelaySleep((int)(end - start));
+
+        return rtn;
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void updtMv(Long L_ACTR_IDX, ArrayList<HashMap<String,String>> arr_dvd) throws BizException{

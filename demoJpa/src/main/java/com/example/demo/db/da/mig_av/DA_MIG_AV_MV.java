@@ -148,6 +148,25 @@ public class DA_MIG_AV_MV {
 		 return al;
 	}
 
+	
+	public Long getMaxDvdIdxByActorIdx(Long ACTOR_IDX) {
+
+		List<Long> al = qf
+		.select(QMigAvMv.migAvMv.dvdIdx.max())
+		.from(QMigAvMv.migAvMv)
+		.where(QMigAvMv.migAvMv.mnActrIdx.eq(ACTOR_IDX))
+		.fetch();
+
+		Long rtn =0L;
+		if(al.size()>0){
+			rtn = al.get(0);
+		}
+
+		 return rtn;
+	}
+
+
+
 	public List<MigAvMv> findMigAvMvByActorIdx(Long ACTOR_IDX,Long L_CATE_NO) {
 		
 		BooleanBuilder builder = new BooleanBuilder();
