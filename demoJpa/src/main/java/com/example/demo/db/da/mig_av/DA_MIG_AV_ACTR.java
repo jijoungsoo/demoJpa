@@ -126,7 +126,9 @@ public class DA_MIG_AV_ACTR {
 			ExpressionUtils.as(				
 				JPAExpressions.select(QMigAvMv.migAvMv.openDt.max())
 						.from(QMigAvMv.migAvMv)
-						.where(QMigAvMv.migAvMv.openDt.between("19000101", "23001231")),
+						.where(QMigAvMv.migAvMv.openDt.between("19000101", "23001231"))
+						.where(QMigAvMv.migAvMv.mnActrIdx.eq(QMigAvActr.migAvActr.actrIdx)
+						),
 				"last_dt"),
 			QMigAvActr.migAvActr.nmKr,
 			QMigAvActr.migAvActr.nmEn,
