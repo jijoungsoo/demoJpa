@@ -251,6 +251,10 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 
                 Long cur_dvd_dix = Long.parseLong(dvd_idx);
 
+                if(max_dvd_idx==null){
+                    max_dvd_idx=0L;
+                }
+
                 if(max_dvd_idx>=cur_dvd_dix){  //db에 있는 max_dvd_idx값이 현재 값 보다 크거나 같다면 더 http를 조회할의미가 없다.
                     rtn=false;
                 }
