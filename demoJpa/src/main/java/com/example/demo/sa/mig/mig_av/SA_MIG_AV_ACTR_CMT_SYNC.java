@@ -159,9 +159,11 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
                         L_LK_CNT = Long.parseLong(LK_CNT);
                     }
                     
-    
-                    
-                    Long L_DSLK_CNT = Long.parseLong(DSLK_CNT);
+                    Long L_DSLK_CNT =0L;
+                    if(!pjtU.isEmpty(DSLK_CNT)){
+                        //비추천 누적인경우 좋아여 데이터가 없다..
+                        L_DSLK_CNT = Long.parseLong(DSLK_CNT);
+                    }
     
                     daMigAvActrCmt.crtMigAvActrCmt(
                                     L_CMT_IDX

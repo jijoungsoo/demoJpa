@@ -170,9 +170,11 @@ public class SA_MIG_AV_MV_CMT_SYNC {
                         L_LK_CNT = Long.parseLong(LK_CNT);
                     }
                     
-    
-                    
-                    Long L_DSLK_CNT = Long.parseLong(DSLK_CNT);
+                    Long L_DSLK_CNT =0L;
+                    if(!pjtU.isEmpty(DSLK_CNT)){
+                        //이경우도 나왔다.
+                        L_DSLK_CNT = Long.parseLong(DSLK_CNT);
+                    }
     
                     daMigAvMvCmt.crtMigAvMvCmt(
                                     L_CMT_IDX
