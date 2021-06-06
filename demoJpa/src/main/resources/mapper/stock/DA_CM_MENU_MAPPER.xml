@@ -20,7 +20,7 @@ WITH RECURSIVE subdepartment AS
 	,a.updt_dtm
 	,a.menu_cd::text as menu_cd_path
 	FROM tb_cm_menu a 
-	where a.prnt_menu_cd is null
+	where (a.prnt_menu_cd is null or a.prnt_menu_cd='')
 	
 
     UNION ALL

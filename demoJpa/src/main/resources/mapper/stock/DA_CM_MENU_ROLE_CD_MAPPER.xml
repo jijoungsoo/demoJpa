@@ -102,7 +102,7 @@ and not exists (select '1' from tb_cm_menu_role_cd c WHERE a.menu_no=c.menu_no a
 	,a.menu_nm
 	,a.menu_kind
 	from tb_cm_menu a
-	where a.prnt_menu_cd is null
+	where (a.prnt_menu_cd is null or a.prnt_menu_cd ='')
 	and EXISTS (
 		SELECT 1 FROM TB_CM_MENU_ROLE_CD B
 		INNER JOIN TB_CM_USER_ROLE_CD C

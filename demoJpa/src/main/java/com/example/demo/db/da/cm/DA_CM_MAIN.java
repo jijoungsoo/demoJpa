@@ -21,7 +21,7 @@ public class DA_CM_MAIN {
 	public List<CmMenu> findMainMenu() {
 		List<CmMenu> al =  qf
 	                .selectFrom(QCmMenu.cmMenu)
-	                .where(QCmMenu.cmMenu.prntMenuCd.isNull())
+	                .where(QCmMenu.cmMenu.prntMenuCd.isNull().or(QCmMenu.cmMenu.prntMenuCd.isEmpty()))
 	                .orderBy(QCmMenu.cmMenu.ord.asc())
 	                .fetch();
 	                

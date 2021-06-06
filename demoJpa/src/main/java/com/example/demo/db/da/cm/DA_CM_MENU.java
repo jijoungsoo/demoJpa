@@ -48,7 +48,7 @@ public class DA_CM_MENU {
 	public List<CmMenu> findMenuRoot() {
 		JPAQuery<CmMenu> c =  qf
 		.selectFrom(QCmMenu.cmMenu)
-		.where(QCmMenu.cmMenu.prntMenuCd.isNull())
+		.where(QCmMenu.cmMenu.prntMenuCd.isNull().or(QCmMenu.cmMenu.prntMenuCd.isEmpty()))
 		.orderBy(QCmMenu.cmMenu.ord.asc());
 		
 
