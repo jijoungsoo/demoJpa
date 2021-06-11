@@ -60,7 +60,7 @@ public class SA_MIG_AV_MK_SYNC {
     private ArrayList<HashMap<String, Object>> getMk()  {
         //String url = "https://www.avdbs.com/av-maker";
         String url = "http://www.avdbs.com/av-maker";
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
 
 
         Document doc = Jsoup.parseBodyFragment(tmp);
@@ -75,7 +75,7 @@ public class SA_MIG_AV_MK_SYNC {
     
              //url = "https://www.avdbs.com"+href;
              url = "http://www.avdbs.com"+href;
-            tmp = httpU.httpGet(url);
+            tmp = httpU.httpGetAvdbs(url);
             doc = Jsoup.parseBodyFragment(tmp);
 
 

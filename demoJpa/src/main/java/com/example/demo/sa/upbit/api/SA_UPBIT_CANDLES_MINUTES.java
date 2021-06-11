@@ -14,6 +14,7 @@ import com.example.demo.db.da.upbit.DA_UPBIT_CANDLES_MINUTES;
 import com.example.demo.db.domain.upbit.UpbitCandlesMinutes;
 import com.example.demo.db.domain.upbit.UpbitCandlesMinutesIdx;
 import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
 
 import org.apache.http.client.ClientProtocolException;
@@ -31,9 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UBIT_CANDLES_MINUTES {
+public class SA_UPBIT_CANDLES_MINUTES {
     @Autowired
 	PjtUtil pjtU;
+
+  
+  @Autowired
+  HttpUtil httpU;
 
   @Autowired
 	DA_UPBIT_CANDLES_MINUTES daUpbitCandlesMinutes;
@@ -50,7 +55,7 @@ count
       캔들 개수(최대 200개까지 요청 가능)
     */
     try {
-      ArrayList<HashMap<String,String>> al = this.getCandlesMinutes(market, to ,  count);
+      ArrayList<HashMap<String,Object>> al = this.getCandlesMinutes(unit,market, to ,  count);
       for(int i=0;i<al.size();i++){
         updateMarket(al.get(i));
       }
@@ -67,18 +72,18 @@ count
   }
 
   
-  private void updateMarket(HashMap<String,String> m) {
-    String MARKET  =   m.get("market");
-    String CANDLE_DATE_TIME_UTC	  =   m.get("candle_date_time_utc");
-    String CANDLE_DATE_TIME_KST  =   m.get("candle_date_time_kst");
-    Double OPENING_PRICE  =  Double.parseDouble(m.get("opening_price"));
-    Double HIGH_PRICE  =   Double.parseDouble(m.get("high_price"));
-    Double LOW_PRICE	  =   Double.parseDouble(m.get("low_price"));
-    Double TRADE_PRICE  =   Double.parseDouble(m.get("trade_price"));
-    Long TIMESTAMP  =  Long.parseLong(m.get("timestamp"));
-    Double CANDLE_ACC_TRADE_PRICE  =   Double.parseDouble(m.get("candle_acc_trade_price"));
-    Double CANDLE_ACC_TRADE_VOLUME  =   Double.parseDouble(m.get("candle_acc_trade_volume"));
-    Integer UNIT  =   Integer.parseInt(m.get("unit"));
+  private void updateMarket(HashMap<String,Object> m) {
+    String MARKET  =   m.get("market").toString();
+    String CANDLE_DATE_TIME_UTC	  =   m.get("candle_date_time_utc").toString();
+    String CANDLE_DATE_TIME_KST  =   m.get("candle_date_time_kst").toString();
+    Double OPENING_PRICE  =  Double.parseDouble(m.get("opening_price").toString());
+    Double HIGH_PRICE  =   Double.parseDouble(m.get("high_price").toString());
+    Double LOW_PRICE	  =   Double.parseDouble(m.get("low_price").toString());
+    Double TRADE_PRICE  =   Double.parseDouble(m.get("trade_price").toString());
+    Long TIMESTAMP  =  Long.parseLong(m.get("timestamp").toString());
+    Double CANDLE_ACC_TRADE_PRICE  =   Double.parseDouble(m.get("candle_acc_trade_price").toString());
+    Double CANDLE_ACC_TRADE_VOLUME  =   Double.parseDouble(m.get("candle_acc_trade_volume").toString());
+    Integer UNIT  =   Integer.parseInt(m.get("unit").toString());
 
     UpbitCandlesMinutesIdx u = new UpbitCandlesMinutesIdx();
 		u.setMarket(MARKET);
@@ -125,7 +130,7 @@ count
     }
   }
    
-    public ArrayList<HashMap<String,String>> getCandlesMinutes(String market,String to , String count) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getCandlesMinutes(String unit,String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
 /*
 unit*
       분 단위. 가능한 값 : 1, 3, 5, 15, 10, 30, 60, 240
@@ -137,41 +142,56 @@ to
 count
       캔들 개수(최대 200개까지 요청 가능)
 */
-        CloseableHttpClient client = HttpClients.createDefault();
+
+
+
+
+
+	//QUOTATION API
+
+		/*
+		Websocket 연결 요청 수 제한
+		초당 5회, 분당 100회
+		REST API 요청 수 제한
+		분당 600회, 초당 10회 (종목, 캔들, 체결, 티커, 호가별)		
+		*/
+		/*
+		[Quotation API 추가 안내 사항]
+		. Quotation API의 요청 수 제한은 IP 주소를 기준으로 합니다.
+		. 향후 안정적인 서비스 제공을 위하여 API 요청 수는 추가적인 조정이 이루어질 수 있습니다. 요청 수 조정 필요 시 별도 공지를 통해 안내드리겠습니다.
+		. 초당 제한 조건과 분당 제한 조건 중 하나의 조건이라도 요청 수를 초과할 경우 요청 수 제한 적용 됩니다.
+		. 요청 수 제한 조건에 적용되는 시간 조건은 첫 요청 시간을 기준으로하며, 일정 시간 이후 초기화됩니다.(실패한 요청은 요청 횟수에 포함되지 않습니다.)
+		. 다수의 REST API 요청이 필요하신 경우, 웹소켓을 통한 수신 부탁드립니다.
+
+		앞으로 더욱 안정적이고 고도화된 서비스 제공을 위하여 노력하는 업비트 개발자 센터가 될 수 있도록 노력하겠으며,
+		추후 요청 수 제한 기준의 변경이 있을 경우, 공지를 통하여 안내해 드릴 수 있도록 하겠습니다.		
+		*/
+		/*
+		[Exchange API 잔여 요청 수 확인 방법]
+		업비트 Open API 서비스는 원활한 사용 환경을 위해 초당 / 분당 요청 수를 제한하고 있습니다.
+		Open API 호출 시 남아있는 요청 수는 Remaining-Req 응답 해더를 통해 확인 가능합니다.
+
+		Remaining-Req: group=default; min=1799; sec=29
+		위와 같은 포멧의 응답 해더를 수신했다면, default 라는 그룹에 대하여 해당 초에 29개의 요청, 남은 1분간 1799개의 요청이 가능하다는 것을 의미합니다.
+
+		주문하기 Open API의 경우,
+
+		Remaining-Req: group=order; min=59; sec=4
+		위와 같은 응답이 올 수 있으며, 이는 order 라는 그룹에 대해 해당 초에 4번, 남은 1분은 59번의 주문 요청이 가능하다는 것을 의미합니다.
+		*/
+		/*
+		해당 시간 내 초과된 요청에 대해서 429 Too Many Requests 오류가 발생할 수 있습니다. 하지만 별도의 추가적인 페널티는 부과되지 않습니다.
+		*/
+    
         List nameValuePairs = new ArrayList();
         nameValuePairs.add(new BasicNameValuePair("market", market));
         nameValuePairs.add(new BasicNameValuePair("to", to));
         nameValuePairs.add(new BasicNameValuePair("count", count));
-        //HttpGet httpGet = new HttpGet("https://api.upbit.com/v1/candles/minutes/"+unit);
-        HttpGet httpGet = new HttpGet("https://api.upbit.com/v1/candles/minutes/1");
-        URI uri = new URIBuilder(httpGet.getURI())
-          .addParameters(nameValuePairs)
-          .build();
-       ((HttpRequestBase) httpGet).setURI(uri);
-        CloseableHttpResponse response = client.execute(httpGet);
-        client.close();
-
-          //HTTP Response객체의 status 상태를 화면에 출력,  200 OK이면 정상
-          System.out.println(response.getStatusLine().toString()); 
-            
-          InputStream is = null;
-          BufferedInputStream bis = null;
-          //response객체의 body중 컨텐츠 부분을 획득
-          is = response.getEntity().getContent(); 
-          bis = new BufferedInputStream(is);
-          StringBuilder sb = new StringBuilder();
-          byte[] buffer = new byte[1024];
-          while ((bis.read(buffer)) != -1) {
-              //byte[]배열을 utf-8형식으로 인코딩하여 String 객체를 만들어내는곳
-              String str = new String(buffer, "utf-8"); 
-              //System.out.println(str);
-              sb.append(str);
-          }
-            String  jsonOutString = sb.toString();
-            ArrayList<HashMap<String,String>> rtn = new ArrayList<HashMap<String,String>>();
-            rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);
-          return rtn;
-
+        String jsonOutString = httpU.httpGetUpbit("https://api.upbit.com/v1/candles/minutes/"+unit, nameValuePairs);
+        ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
+        System.out.println("jsonOutString ="+jsonOutString);
+        rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);
+        return rtn;
           /*
 [
     {

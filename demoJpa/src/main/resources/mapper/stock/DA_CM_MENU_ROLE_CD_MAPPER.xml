@@ -15,7 +15,7 @@
 	,(case when (select count(1) from tb_cm_menu_role_cd b where b.menu_no=a.menu_no and b.role_cd=#{ROLE_CD})>0 then 'Y' ELSE 'N' END) as  role_yn
 	,#{ROLE_CD}  as  role_cd
 	from tb_cm_menu a
-	where a.prnt_menu_cd is null
+	where (a.prnt_menu_cd is null or a.prnt_menu_cd ='')
 	order by a.ord asc
 </select> 
 <select id="findSubMenuRoot" parameterType="map" resultType="hashmap"> 

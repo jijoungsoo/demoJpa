@@ -186,7 +186,7 @@ public class SA_MIG_AV_MV_DTL_GET {
         //String url = "https://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
         String url = "http://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
         System.out.println(url);
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
 
         
         Document doc = Jsoup.parseBodyFragment(tmp);

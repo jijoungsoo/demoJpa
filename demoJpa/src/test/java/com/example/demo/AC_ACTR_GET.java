@@ -54,7 +54,7 @@ public class AC_ACTR_GET {
         //String tmp =httpGet("https://www.avdbs.com/");
         HttpUtil h = new HttpUtil();
         //String tmp =h.httpGet("http://www.avdbs.com/menu/actor.php?actor_idx=6826");
-        String tmp =h.httpGet("https://www.avdbs.com/menu/dvd.php?dvd_idx=790097");
+        String tmp =h.httpGetAvdbs("https://www.avdbs.com/menu/dvd.php?dvd_idx=790097");
         //System.out.println(tmp);
         Document doc = Jsoup.parseBodyFragment(tmp);
         String mv_nm =  doc.getElementsByClass("profile_view_top").select(".tomato").text(); //작품번호

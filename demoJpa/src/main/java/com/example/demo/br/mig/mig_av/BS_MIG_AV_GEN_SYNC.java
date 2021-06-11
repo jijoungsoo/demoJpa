@@ -142,7 +142,7 @@ public class BS_MIG_AV_GEN_SYNC {
 	public ArrayList<HashMap<String,String>>  getAvGen()  {
         //String url = "https://www.avdbs.com/genre-av";
         String url = "http://www.avdbs.com/genre-av";
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
 
         Document doc = Jsoup.parseBodyFragment(tmp);
 		//System.out.println(doc.text());

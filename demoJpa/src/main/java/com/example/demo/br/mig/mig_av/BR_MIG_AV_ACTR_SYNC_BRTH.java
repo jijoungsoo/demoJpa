@@ -118,7 +118,7 @@ public class BR_MIG_AV_ACTR_SYNC_BRTH {
         HashMap<String, Object> result = new HashMap<String, Object>();
         //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
         String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
         
         Document doc = Jsoup.parseBodyFragment(tmp);
         String profile_birth  = doc.getElementsByClass("profile_birth").text();

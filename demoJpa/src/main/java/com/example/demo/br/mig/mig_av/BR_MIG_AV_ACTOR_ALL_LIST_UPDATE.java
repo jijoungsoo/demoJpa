@@ -115,7 +115,7 @@ public class BR_MIG_AV_ACTOR_ALL_LIST_UPDATE {
       HashMap<String, Object> result = new HashMap<String, Object>();
       //String url = "https://www.avdbs.com/menu/actor_list.php";
       String url = "http://www.avdbs.com/menu/actor_list.php";
-      String tmp = httpU.httpGet(url);
+      String tmp = httpU.httpGetAvdbs(url);
         
       Document doc =     Jsoup.parseBodyFragment(tmp);
       Elements els =     doc.getElementsByClass("selectbox for_pc").select("option");

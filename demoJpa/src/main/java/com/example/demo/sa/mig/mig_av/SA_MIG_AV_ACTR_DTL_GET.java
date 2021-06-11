@@ -112,7 +112,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
 		HashMap<String, Object> result = new HashMap<String, Object>();
         //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;
         String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX;  //인증오류가 나서 변경하였다.
-        String tmp =httpU.httpGet(url);
+        String tmp =httpU.httpGetAvdbs(url);
 
         Document doc = Jsoup.parseBodyFragment(tmp);
         String prf_img  = doc.getElementsByClass("profile_img_view").attr("src");
@@ -222,7 +222,7 @@ public class SA_MIG_AV_ACTR_DTL_GET {
     private boolean getPageDvd(Long L_ACTOR_IDX , int i) throws BizException{
         //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
         String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+L_ACTOR_IDX+"&_page="+i;
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
 
         long start = System.currentTimeMillis();
 

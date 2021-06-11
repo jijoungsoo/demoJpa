@@ -220,7 +220,7 @@ public class BR_MIG_AV_MV_SYNC {
 
         //String url = "https://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
         String url = "http://www.avdbs.com/menu/dvd.php?dvd_idx="+DVD_IDX;
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
 
         Document doc = Jsoup.parseBodyFragment(tmp);
         String mv_nm =  doc.getElementsByClass("profile_view_top").select(".tomato").text(); //작품번호

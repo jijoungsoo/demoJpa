@@ -105,7 +105,7 @@ public class BR_MIG_AV_ACTR_PAGE {
    public ArrayList<HashMap<String, Object>>  getActorPage(String PAGE_NUM){
         //String url = "https://www.avdbs.com/menu/actor_list.php?_sord=debutdate_d&_page="+PAGE_NUM;
         String url = "http://www.avdbs.com/menu/actor_list.php?_sord=debutdate_d&_page="+PAGE_NUM;
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
         Document doc = Jsoup.parseBodyFragment(tmp);
         Elements lst =     doc.getElementsByClass("lst").select("li");
 

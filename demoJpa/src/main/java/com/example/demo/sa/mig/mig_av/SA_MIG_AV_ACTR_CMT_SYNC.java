@@ -59,7 +59,7 @@ public class SA_MIG_AV_ACTR_CMT_SYNC {
 	public void  syncActorCmt(Long ACTOR_IDX,Long MAX_CMT_IDX)  {
         //String url = "https://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
         String url = "http://www.avdbs.com/menu/actor.php?actor_idx="+ACTOR_IDX;
-        String tmp = httpU.httpGet(url);
+        String tmp = httpU.httpGetAvdbs(url);
         Document doc = Jsoup.parseBodyFragment(tmp);
         //mention
 
