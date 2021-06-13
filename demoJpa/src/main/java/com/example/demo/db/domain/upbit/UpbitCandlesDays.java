@@ -34,7 +34,7 @@ public class UpbitCandlesDays {
 	@Column(nullable = false,unique=false, length = 1000 ,name="candle_date_time_utc")
 	String candleDateTimeUtc	;
 
-	@Column(nullable = true,unique=false, length = 1000 ,name="candle_date_time_kst	")
+	@Column(nullable = true,unique=false, length = 1000 ,name="candle_date_time_kst")
 	String candleDateTimeKst;
 
 	@Column(nullable = true,unique=false,name="opening_price")

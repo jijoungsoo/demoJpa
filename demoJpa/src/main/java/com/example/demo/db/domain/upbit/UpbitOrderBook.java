@@ -22,44 +22,25 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@IdClass(UpbitCandlesMinutesIdx.class)  
-@Table(name="tb_upbit_candles_minutes")
-public class UpbitCandlesMinutes {
-
+@IdClass(UpbitOrderBookIdx.class)  
+@Table(name="tb_upbit_orderbook")
+public class UpbitOrderBook {
 	@Id
 	@Column(nullable = false,unique=true ,length = 1000 ,name="market")
 	String market;
 
 	@Id
-	@Column(nullable = false,unique=false, length = 1000 ,name="candle_date_time_utc")
-	String candleDateTimeUtc	;
-
-	@Column(nullable = true,unique=false, length = 1000 ,name="candle_date_time_kst")
-	String candleDateTimeKst;
-
-	@Column(nullable = true,unique=false,name="opening_price")
-	Double openingPrice;
-
-	@Column(nullable = true,unique=false,name="high_price")
-	Double highPrice;
-
-	@Column(nullable = true,unique=false,name="low_price")
-	Double lowPrice;
-
-	@Column(nullable = true,unique=false,name="trade_price")
-	Double tradePrice;
-
-	@Column(nullable = true,unique=false,name="timestamp")
+	//호가 생성 시각
+	@Column(nullable = false,unique=false,name="timestamp")
 	Long timestamp;
 
-	@Column(nullable = true,unique=false,name="candle_acc_trade_price")
-	Double candleAccTradePrice;
-
-	@Column(nullable = true,unique=false,name="candle_acc_trade_volume")
-	Double candleAccTradeVolume;
-
-	@Column(nullable = true,unique=false,name="unit")
-	Integer unit;
+	//호가 매도 총 잔량
+	@Column(nullable = false,unique=false, name="total_ask_size")
+	Double totalAskSize	;
+	
+	//호가 매수 총 잔량
+	@Column(nullable = false,unique=false, name="total_bid_size")
+	Double totalBidSize	;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "crt_dtm")

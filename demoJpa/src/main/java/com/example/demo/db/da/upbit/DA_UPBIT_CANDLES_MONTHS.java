@@ -3,11 +3,11 @@ package com.example.demo.db.da.upbit;
 import java.util.Date;
 import java.util.Optional;
 
-import com.example.demo.db.domain.upbit.QUpbitCandlesDays;
+import com.example.demo.db.domain.upbit.QUpbitCandlesMonths;
 import com.example.demo.db.domain.upbit.QUpbitMarket;
-import com.example.demo.db.domain.upbit.UpbitCandlesDays;
-import com.example.demo.db.domain.upbit.UpbitCandlesDaysIdx;
-import com.example.demo.db.repository.upbit.UpbitCandlesDaysRepository;
+import com.example.demo.db.domain.upbit.UpbitCandlesMonths;
+import com.example.demo.db.domain.upbit.UpbitCandlesMonthsIdx;
+import com.example.demo.db.repository.upbit.UpbitCandlesMonthsRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
@@ -23,13 +23,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 @Service
-public class DA_UPBIT_CANDLES_DAYS {
+public class DA_UPBIT_CANDLES_MONTHS {
 	
 	@Autowired
 	JPAQueryFactory qf;
 		
 	@Autowired
-	UpbitCandlesDaysRepository upbitCandlesDaysR;
+	UpbitCandlesMonthsRepository upbitCandlesMonthsR;
 
 	
 	public Page<Tuple> find(Pageable p,String SEARCH_NM,String MARKET_WARNING,String MARKET_CD) {
@@ -57,29 +57,26 @@ public class DA_UPBIT_CANDLES_DAYS {
 		QUpbitMarket.upbitMarket.marketWarning,
 		QUpbitMarket.upbitMarket.enNm,
 		QUpbitMarket.upbitMarket.krNm,
-		QUpbitCandlesDays.upbitCandlesDays.candleDateTimeUtc,
-		QUpbitCandlesDays.upbitCandlesDays.candleDateTimeKst,
-		QUpbitCandlesDays.upbitCandlesDays.openingPrice,
-		QUpbitCandlesDays.upbitCandlesDays.highPrice,
-		QUpbitCandlesDays.upbitCandlesDays.lowPrice,
-		QUpbitCandlesDays.upbitCandlesDays.tradePrice,
-		QUpbitCandlesDays.upbitCandlesDays.timestamp,
-		QUpbitCandlesDays.upbitCandlesDays.candleAccTradePrice,
-		QUpbitCandlesDays.upbitCandlesDays.candleAccTradeVolume,
-		QUpbitCandlesDays.upbitCandlesDays.prevClosingPrice,
-		QUpbitCandlesDays.upbitCandlesDays.changePrice,
-		QUpbitCandlesDays.upbitCandlesDays.changeRate,
-		QUpbitCandlesDays.upbitCandlesDays.convertedTradePrice,
-		QUpbitCandlesDays.upbitCandlesDays.crtDtm,
-		QUpbitCandlesDays.upbitCandlesDays.updtDtm
+		QUpbitCandlesMonths.upbitCandlesMonths.candleDateTimeUtc,
+		QUpbitCandlesMonths.upbitCandlesMonths.candleDateTimeKst,
+		QUpbitCandlesMonths.upbitCandlesMonths.openingPrice,
+		QUpbitCandlesMonths.upbitCandlesMonths.highPrice,
+		QUpbitCandlesMonths.upbitCandlesMonths.lowPrice,
+		QUpbitCandlesMonths.upbitCandlesMonths.tradePrice,
+		QUpbitCandlesMonths.upbitCandlesMonths.timestamp,
+		QUpbitCandlesMonths.upbitCandlesMonths.candleAccTradePrice,
+		QUpbitCandlesMonths.upbitCandlesMonths.candleAccTradeVolume,
+		QUpbitCandlesMonths.upbitCandlesMonths.firstDayOfPeriod,
+		QUpbitCandlesMonths.upbitCandlesMonths.crtDtm,
+		QUpbitCandlesMonths.upbitCandlesMonths.updtDtm
 		)			
 		.from(QUpbitMarket.upbitMarket)
-		.innerJoin(QUpbitCandlesDays.upbitCandlesDays)
-		.on(QUpbitMarket.upbitMarket.market.eq(QUpbitCandlesDays.upbitCandlesDays.market))
+		.innerJoin(QUpbitCandlesMonths.upbitCandlesMonths)
+		.on(QUpbitMarket.upbitMarket.market.eq(QUpbitCandlesMonths.upbitCandlesMonths.market))
 		.where(builder)
 		.orderBy(QUpbitMarket.upbitMarket.krNm.asc()
-			,QUpbitCandlesDays.upbitCandlesDays.candleDateTimeUtc.desc()
-			,QUpbitCandlesDays.upbitCandlesDays.timestamp.desc()
+			,QUpbitCandlesMonths.upbitCandlesMonths.candleDateTimeUtc.desc()
+			,QUpbitCandlesMonths.upbitCandlesMonths.timestamp.desc()
 		);
 		
 
@@ -105,14 +102,11 @@ public class DA_UPBIT_CANDLES_DAYS {
 				,Long TIMESTAMP
 				,Double CANDLE_ACC_TRADE_PRICE
 				,Double CANDLE_ACC_TRADE_VOLUME
-				,Double PREV_CLOSING_PRICE
-				,Double CHANGE_PRICE
-				,Double CHANGE_RATE
-				,Double CONVERTED_TRADE_PRICE
+				,String FIRST_DAY_OF_PERIOD
 	) {
 		
-		upbitCandlesDaysR.save(
-			UpbitCandlesDays.builder()
+		upbitCandlesMonthsR.save(
+			UpbitCandlesMonths.builder()
 				.market(MARKET)
 				.candleDateTimeUtc(CANDLE_DATE_TIME_UTC)
 				.candleDateTimeKst(CANDLE_DATE_TIME_KST)
@@ -123,16 +117,13 @@ public class DA_UPBIT_CANDLES_DAYS {
 				.timestamp(TIMESTAMP)
 				.candleAccTradePrice(CANDLE_ACC_TRADE_PRICE)
 				.candleAccTradeVolume(CANDLE_ACC_TRADE_VOLUME)
-				.prevClosingPrice(PREV_CLOSING_PRICE)
-				.changePrice(CHANGE_PRICE)
-				.changeRate(CHANGE_RATE)
-				.convertedTradePrice(CONVERTED_TRADE_PRICE)
+				.firstDayOfPeriod(FIRST_DAY_OF_PERIOD)
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
 	}
 	
-	public Optional<UpbitCandlesDays> findById(UpbitCandlesDaysIdx u){
-		return upbitCandlesDaysR.findById(u);
+	public Optional<UpbitCandlesMonths> findById(UpbitCandlesMonthsIdx u){
+		return upbitCandlesMonthsR.findById(u);
 	}
 
 	public void updt(String MARKET
@@ -145,17 +136,14 @@ public class DA_UPBIT_CANDLES_DAYS {
 	,Long TIMESTAMP
 	,Double CANDLE_ACC_TRADE_PRICE
 	,Double CANDLE_ACC_TRADE_VOLUME
-	,Double PREV_CLOSING_PRICE
-	,Double CHANGE_PRICE
-	,Double CHANGE_RATE
-	,Double CONVERTED_TRADE_PRICE
+	,String FIRST_DAY_OF_PERIOD
 	) {
-		UpbitCandlesDaysIdx u = new UpbitCandlesDaysIdx();
+		UpbitCandlesMonthsIdx u = new UpbitCandlesMonthsIdx();
 		u.setMarket(MARKET);
 		u.setCandleDateTimeUtc(CANDLE_DATE_TIME_UTC);
-		Optional<UpbitCandlesDays> c =upbitCandlesDaysR.findById(u);
+		Optional<UpbitCandlesMonths> c =upbitCandlesMonthsR.findById(u);
 		if(c.isPresent()){
-			UpbitCandlesDays m =c.get();
+			UpbitCandlesMonths m =c.get();
 			m.setMarket(MARKET);
 			m.setCandleDateTimeUtc(CANDLE_DATE_TIME_UTC);
 			m.setCandleDateTimeKst(CANDLE_DATE_TIME_KST);
@@ -166,11 +154,8 @@ public class DA_UPBIT_CANDLES_DAYS {
 			m.setTimestamp(TIMESTAMP);
 			m.setCandleAccTradePrice(CANDLE_ACC_TRADE_PRICE);
 			m.setCandleAccTradeVolume(CANDLE_ACC_TRADE_VOLUME);
-			m.setPrevClosingPrice(PREV_CLOSING_PRICE);
-			m.setChangePrice(CHANGE_PRICE);
-			m.setChangeRate(CHANGE_RATE);
-			m.setConvertedTradePrice(CONVERTED_TRADE_PRICE);
-			upbitCandlesDaysR.save(m);
+			m.setFirstDayOfPeriod(FIRST_DAY_OF_PERIOD);
+			upbitCandlesMonthsR.save(m);
 		}
 	}
 }

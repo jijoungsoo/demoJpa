@@ -22,44 +22,56 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@IdClass(UpbitCandlesMinutesIdx.class)  
-@Table(name="tb_upbit_candles_minutes")
-public class UpbitCandlesMinutes {
+@IdClass(UpbitTradesTicksIdx.class)  
+@Table(name="tb_upbit_trades_ticks")
+public class UpbitTradesTicks {
+
+	@Id
+	//체결 번호(Unique)
+	@Column(nullable = true,unique=false,name="sequential_id")
+	Long sequentialId;
 
 	@Id
 	@Column(nullable = false,unique=true ,length = 1000 ,name="market")
 	String market;
 
+	//체결 시각(UTC 기준)
 	@Id
-	@Column(nullable = false,unique=false, length = 1000 ,name="candle_date_time_utc")
-	String candleDateTimeUtc	;
+	@Column(nullable = false,unique=false, length = 1000 ,name="trade_date_utc")
+	String tradeDateUtc	;
+	//체결 시각(UTC 기준)
+	@Id
+	@Column(nullable = false,unique=false, length = 1000 ,name="trade_time_utc")
+	String tradeTimeUtc;
 
-	@Column(nullable = true,unique=false, length = 1000 ,name="candle_date_time_kst")
-	String candleDateTimeKst;
-
-	@Column(nullable = true,unique=false,name="opening_price")
-	Double openingPrice;
-
-	@Column(nullable = true,unique=false,name="high_price")
-	Double highPrice;
-
-	@Column(nullable = true,unique=false,name="low_price")
-	Double lowPrice;
-
-	@Column(nullable = true,unique=false,name="trade_price")
-	Double tradePrice;
-
+	
+	//체결 타임스탬프
+	@Id
 	@Column(nullable = true,unique=false,name="timestamp")
 	Long timestamp;
 
-	@Column(nullable = true,unique=false,name="candle_acc_trade_price")
-	Double candleAccTradePrice;
+	//체결 가격
+	@Column(nullable = true,unique=false,name="trade_price")
+	Double tradePrice;
 
-	@Column(nullable = true,unique=false,name="candle_acc_trade_volume")
-	Double candleAccTradeVolume;
 
-	@Column(nullable = true,unique=false,name="unit")
-	Integer unit;
+	//체결량
+	@Column(nullable = true,unique=false,name="trade_volume")
+	Double tradeVolume;
+
+
+	//전일 종가
+	@Column(nullable = true,unique=false,name="prev_closing_price")
+	Double prevClosingPrice;
+
+	//변화량
+	@Column(nullable = true,unique=false,name="change_price")
+	Double changePrice;
+
+	//매도/매수
+	@Column(nullable = true,unique=false,name="ask_bid")
+	String askBid;
+
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "crt_dtm")

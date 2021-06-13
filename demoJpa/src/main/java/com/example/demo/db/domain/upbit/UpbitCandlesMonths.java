@@ -22,9 +22,9 @@ import lombok.NoArgsConstructor;
 @org.hibernate.annotations.DynamicInsert/*구분생성시 null인것은 보내지 않는다.*/
 @Data
 @Entity
-@IdClass(UpbitCandlesMinutesIdx.class)  
-@Table(name="tb_upbit_candles_minutes")
-public class UpbitCandlesMinutes {
+@IdClass(UpbitCandlesMonthsIdx.class)  
+@Table(name="tb_upbit_candles_months")
+public class UpbitCandlesMonths {
 
 	@Id
 	@Column(nullable = false,unique=true ,length = 1000 ,name="market")
@@ -58,8 +58,8 @@ public class UpbitCandlesMinutes {
 	@Column(nullable = true,unique=false,name="candle_acc_trade_volume")
 	Double candleAccTradeVolume;
 
-	@Column(nullable = true,unique=false,name="unit")
-	Integer unit;
+	@Column(nullable = true,unique=false,name="first_day_of_period")
+	String firstDayOfPeriod;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "crt_dtm")
