@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @IdClass(UpbitOrderBookUnitsIdx.class)  
-@Table(name="tb_upbit_orderbook_units")
+@Table(name="tb_upbit_order_book_units")
 public class UpbitOrderBookUnits {
 		/*
 	orderbook_unit 리스트에는 15호가 정보가 들어가며 차례대로 1호가, 2호가 ... 15호가의 정보를 담고 있습니다.

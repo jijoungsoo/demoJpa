@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @IdClass(UpbitOrderBookIdx.class)  
-@Table(name="tb_upbit_orderbook")
+@Table(name="tb_upbit_order_book")
 public class UpbitOrderBook {
 	@Id
 	@Column(nullable = false,unique=true ,length = 1000 ,name="market")

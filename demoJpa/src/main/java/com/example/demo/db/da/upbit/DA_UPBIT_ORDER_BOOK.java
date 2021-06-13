@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 @Service
-public class DA_UPBIT_ORDERBOOK {
+public class DA_UPBIT_ORDER_BOOK {
 	
 	@Autowired
 	JPAQueryFactory qf;
