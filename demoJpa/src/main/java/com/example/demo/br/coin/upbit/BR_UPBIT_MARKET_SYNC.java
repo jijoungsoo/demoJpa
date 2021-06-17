@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
-import com.example.demo.sa.upbit.api.SA_UPBIT_MARKET_ALL;
+import com.example.demo.sa.upbit.api.SA_UPBIT_QUOTATION_MARKET_ALL;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -55,7 +55,7 @@ public class BR_UPBIT_MARKET_SYNC {
 	}
 
 	@Autowired
-	SA_UPBIT_MARKET_ALL saUpbitMarketAll;
+	SA_UPBIT_QUOTATION_MARKET_ALL saUpbitMarketAll;
 
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {

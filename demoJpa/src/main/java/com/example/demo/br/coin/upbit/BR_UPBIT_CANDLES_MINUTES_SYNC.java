@@ -7,7 +7,7 @@ import com.example.demo.anotation.OpService;
 import com.example.demo.db.da.upbit.DA_UPBIT_MARKET;
 import com.example.demo.db.domain.upbit.UpbitMarket;
 import com.example.demo.exception.BizException;
-import com.example.demo.sa.upbit.api.SA_UPBIT_CANDLES_MINUTES;
+import com.example.demo.sa.upbit.api.SA_UPBIT_QUOTATION_CANDLES_MINUTES;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_UPBIT_CANDLES_MINUTES_SYNC {
 	@Autowired
-    SA_UPBIT_CANDLES_MINUTES saUpbitCandlesMinutes;
+    SA_UPBIT_QUOTATION_CANDLES_MINUTES saUpbitCandlesMinutes;
 	
 	@JsonRootName("IN_DS")
 	@ApiModel(value="IN_DS-BR_UPBIT_CANDLES_MINUTES_SYNC")

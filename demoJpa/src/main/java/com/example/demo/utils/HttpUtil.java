@@ -1,31 +1,42 @@
 package com.example.demo.utils;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.net.ssl.SSLContext;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.google.gson.Gson;
+
 import org.apache.http.Header;
-import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
@@ -231,6 +242,191 @@ public class HttpUtil {
         //remaining-req: group=candles; min=599; sec=9
         //분당 600회, 초당 10회
 
+        
+        String [] arr_tmp =remaining_req.split(";");
+        String group = arr_tmp[0].replace("group=", "").trim();
+        String min = arr_tmp[1].replace("min=", "").trim();
+        String sec = arr_tmp[2].replace("sec=", "").trim();
+
+        int i_sec= Integer.parseInt(sec);
+
+        if(i_sec==0){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e ){
+                
+            }
+        }
+
+        return  rtn;
+	}
+
+    
+    public String httpGetUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String rtn="";
+        String remaining_req="";
+        String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
+        String secretKey = System.getenv("UPBIT_OPEN_API_SECRET_KEY");
+
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(queryString.getBytes("UTF-8"));
+        String queryHash = String.format("%0128x", new BigInteger(1, md.digest()));
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        String jwtToken = JWT.create()
+                .withClaim("access_key", accessKey)
+                .withClaim("nonce", UUID.randomUUID().toString())
+                .withClaim("query_hash", queryHash)
+                .withClaim("query_hash_alg", "SHA512")
+                .sign(algorithm);
+        String authenticationToken = "Bearer " + jwtToken;
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            if(!PjtUtil.isEmpty(queryString)){
+                URL=URL+"?"+queryString;
+            }
+            HttpGet request = new HttpGet(URL);
+            request.setHeader("Content-Type", "application/json");
+            request.addHeader("Authorization", authenticationToken);
+
+            HttpResponse response = client.execute(request);
+            Header[] arr_header =response.getHeaders("remaining-req");
+            System.out.print("arr_header.length =");
+            System.out.println(arr_header.length);
+            if(arr_header.length>0){
+                remaining_req =arr_header[0].toString();
+            }
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        String [] arr_tmp =remaining_req.split(";");
+        String group = arr_tmp[0].replace("group=", "").trim();
+        String min = arr_tmp[1].replace("min=", "").trim();
+        String sec = arr_tmp[2].replace("sec=", "").trim();
+
+        int i_sec= Integer.parseInt(sec);
+
+        if(i_sec==0){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e ){
+                
+            }
+        }
+
+        return  rtn;
+	}
+
+    public String httpDelUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String rtn="";
+        String remaining_req="";
+        String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
+        String secretKey = System.getenv("UPBIT_OPEN_API_SECRET_KEY");
+
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(queryString.getBytes("UTF-8"));
+        String queryHash = String.format("%0128x", new BigInteger(1, md.digest()));
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        String jwtToken = JWT.create()
+                .withClaim("access_key", accessKey)
+                .withClaim("nonce", UUID.randomUUID().toString())
+                .withClaim("query_hash", queryHash)
+                .withClaim("query_hash_alg", "SHA512")
+                .sign(algorithm);
+        String authenticationToken = "Bearer " + jwtToken;
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            if(!PjtUtil.isEmpty(queryString)){
+                URL=URL+"?"+queryString;
+            }
+            HttpDelete request = new HttpDelete(URL);
+            request.setHeader("Content-Type", "application/json");
+            request.addHeader("Authorization", authenticationToken);
+
+            HttpResponse response = client.execute(request);
+            Header[] arr_header =response.getHeaders("remaining-req");
+            System.out.print("arr_header.length =");
+            System.out.println(arr_header.length);
+            if(arr_header.length>0){
+                remaining_req =arr_header[0].toString();
+            }
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        String [] arr_tmp =remaining_req.split(";");
+        String group = arr_tmp[0].replace("group=", "").trim();
+        String min = arr_tmp[1].replace("min=", "").trim();
+        String sec = arr_tmp[2].replace("sec=", "").trim();
+
+        int i_sec= Integer.parseInt(sec);
+
+        if(i_sec==0){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e ){
+                
+            }
+        }
+
+        return  rtn;
+	}
+
+    
+    public String httpPostUpbitExchangeApi(String URL,  HashMap<String, String> params) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String rtn="";
+        String remaining_req="";
+        String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
+        String secretKey = System.getenv("UPBIT_OPEN_API_SECRET_KEY");
+
+        ArrayList<String> queryElements = new ArrayList<>();
+        for(Map.Entry<String, String> entity : params.entrySet()) {
+            queryElements.add(entity.getKey() + "=" + entity.getValue());
+        }
+
+        String queryString = String.join("&", queryElements.toArray(new String[0]));
+
+
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(queryString.getBytes("UTF-8"));
+        String queryHash = String.format("%0128x", new BigInteger(1, md.digest()));
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        String jwtToken = JWT.create()
+                .withClaim("access_key", accessKey)
+                .withClaim("nonce", UUID.randomUUID().toString())
+                .withClaim("query_hash", queryHash)
+                .withClaim("query_hash_alg", "SHA512")
+                .sign(algorithm);
+        String authenticationToken = "Bearer " + jwtToken;
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            if(!PjtUtil.isEmpty(queryString)){
+                URL=URL+"?"+queryString;
+            }
+            HttpPost request = new HttpPost(URL);
+            request.setHeader("Content-Type", "application/json");
+            request.addHeader("Authorization", authenticationToken);
+            request.setEntity(new StringEntity(new Gson().toJson(params)));
+
+            HttpResponse response = client.execute(request);
+            Header[] arr_header =response.getHeaders("remaining-req");
+            System.out.print("arr_header.length =");
+            System.out.println(arr_header.length);
+            if(arr_header.length>0){
+                remaining_req =arr_header[0].toString();
+            }
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         String [] arr_tmp =remaining_req.split(";");
         String group = arr_tmp[0].replace("group=", "").trim();

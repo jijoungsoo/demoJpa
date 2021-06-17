@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpbitOrderBookUnitsIdx implements Serializable {
 	@Id
-	@Column(nullable = false,unique=true ,length = 1000 ,name="market")
+	@Column(nullable = false,unique=false ,length = 1000 ,name="market")
 	String market;
 
 	@Id

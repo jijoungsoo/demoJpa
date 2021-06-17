@@ -29,7 +29,7 @@ public class UpbitOrderBookUnits {
 	orderbook_unit 리스트에는 15호가 정보가 들어가며 차례대로 1호가, 2호가 ... 15호가의 정보를 담고 있습니다.
 	*/
 	@Id
-	@Column(nullable = false,unique=true ,length = 1000 ,name="market")
+	@Column(nullable = false,unique=false ,length = 1000 ,name="market")
 	String market;
 
 	@Id
@@ -41,6 +41,8 @@ public class UpbitOrderBookUnits {
 	//1~15
 	@Column(nullable = false,unique=false,name="seq")
 	Integer seq;
+
+	
 
 	//매도호가
 	@Column(nullable = false,unique=false, name="ask_price")

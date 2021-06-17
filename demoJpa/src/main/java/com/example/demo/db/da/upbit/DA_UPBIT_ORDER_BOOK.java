@@ -3,17 +3,19 @@ package com.example.demo.db.da.upbit;
 import java.util.Date;
 import java.util.Optional;
 
+import com.example.demo.db.domain.mig_av.QMigAvMv;
+import com.example.demo.db.domain.mig_av.QMigAvMvCmt;
 import com.example.demo.db.domain.upbit.QUpbitMarket;
 import com.example.demo.db.domain.upbit.QUpbitOrderBook;
-import com.example.demo.db.domain.upbit.QUpbitTradesTicks;
+import com.example.demo.db.domain.upbit.QUpbitOrderBookUnits;
 import com.example.demo.db.domain.upbit.UpbitOrderBook;
 import com.example.demo.db.domain.upbit.UpbitOrderBookIdx;
-import com.example.demo.db.domain.upbit.UpbitTradesTicks;
-import com.example.demo.db.domain.upbit.UpbitTradesTicksIdx;
 import com.example.demo.db.repository.upbit.UpbitOrderBookRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -62,9 +64,10 @@ public class DA_UPBIT_ORDER_BOOK {
 		QUpbitMarket.upbitMarket.krNm,
 		QUpbitOrderBook.upbitOrderBook.totalAskSize,
 		QUpbitOrderBook.upbitOrderBook.totalBidSize,
-		QUpbitOrderBook.upbitOrderBook.timestamp
-		
-		)			
+		QUpbitOrderBook.upbitOrderBook.timestamp,
+		QUpbitOrderBook.upbitOrderBook.crtDtm,
+		QUpbitOrderBook.upbitOrderBook.updtDtm
+		)
 		.from(QUpbitMarket.upbitMarket)
 		.innerJoin(QUpbitOrderBook.upbitOrderBook)
 		.on(QUpbitMarket.upbitMarket.market.eq(QUpbitOrderBook.upbitOrderBook.market))

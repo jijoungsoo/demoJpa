@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UPBIT_ORDER_BOOK {
+public class SA_UPBIT_QUOTATION_ORDER_BOOK {
     @Autowired
 	PjtUtil pjtU;
 
@@ -111,8 +111,10 @@ array of strings
         , ASK_PRICE
         , BID_PRICE
         , ASK_SIZE
-        , BID_SIZE      
+        , BID_SIZE
+        , SEQ      
         );
+        
       } else {
         daUpbitOrderBookUnits.crt( MARKET
         , TIMESTAMP	
@@ -120,6 +122,7 @@ array of strings
         , BID_PRICE
         , ASK_SIZE
         , BID_SIZE
+        , SEQ
         );
       }
   

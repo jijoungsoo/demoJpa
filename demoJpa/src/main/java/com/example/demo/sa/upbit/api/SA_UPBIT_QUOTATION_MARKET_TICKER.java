@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UPBIT_MARKET_TICKER {
+public class SA_UPBIT_QUOTATION_MARKET_TICKER {
     @Autowired
 	PjtUtil pjtU;
 

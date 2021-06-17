@@ -33,6 +33,7 @@ public class UpbitOrderBook {
 	//호가 생성 시각
 	@Column(nullable = false,unique=false,name="timestamp")
 	Long timestamp;
+	
 
 	//호가 매도 총 잔량
 	@Column(nullable = false,unique=false, name="total_ask_size")

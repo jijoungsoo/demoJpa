@@ -125,6 +125,13 @@ dependencies {
 	//웹사이트긁는데 사용
 	implementation 'org.seleniumhq.selenium:selenium-java'
 
+
+	implementation 'com.auth0:java-jwt:3.16.0'
+
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.7'
+
+
 }
 /* 유투브보고 querydsl 설정했다.
 https://www.youtube.com/watch?v=hIw4EuhF9o8

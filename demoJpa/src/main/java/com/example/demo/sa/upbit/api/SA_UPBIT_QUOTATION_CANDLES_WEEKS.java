@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.db.da.upbit.DA_UPBIT_CANDLES_MONTHS;
-import com.example.demo.db.domain.upbit.UpbitCandlesMonths;
-import com.example.demo.db.domain.upbit.UpbitCandlesMonthsIdx;
+import com.example.demo.db.da.upbit.DA_UPBIT_CANDLES_WEEKS;
+import com.example.demo.db.domain.upbit.UpbitCandlesWeeks;
+import com.example.demo.db.domain.upbit.UpbitCandlesWeeksIdx;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UPBIT_CANDLES_MONTHS {
+public class SA_UPBIT_QUOTATION_CANDLES_WEEKS {
     @Autowired
 	PjtUtil pjtU;
 
@@ -32,7 +32,7 @@ public class SA_UPBIT_CANDLES_MONTHS {
   HttpUtil httpU;
 
   @Autowired
-	DA_UPBIT_CANDLES_MONTHS daUpbitCandlesMonths;
+	DA_UPBIT_CANDLES_WEEKS daUpbitCandlesWeeks;
   
 
   public void run(String market,String to , String count) throws BizException  {
@@ -46,9 +46,9 @@ count
       캔들 개수(최대 200개까지 요청 가능)
     */
     try {
-      ArrayList<HashMap<String,Object>> al = this.getCandlesMonths(market, to ,  count);
+      ArrayList<HashMap<String,Object>> al = this.getCandlesWeeks(market, to ,  count);
       for(int i=0;i<al.size();i++){
-        updateCandlesMonths(al.get(i));
+        updateCandlesWeeks(al.get(i));
       }
     } catch (ClientProtocolException e) {
       // TODO Auto-generated catch block
@@ -63,7 +63,7 @@ count
   }
 
   
-  private void updateCandlesMonths(HashMap<String,Object> m) {
+  private void updateCandlesWeeks(HashMap<String,Object> m) {
     String MARKET  =   m.get("market").toString();
     String CANDLE_DATE_TIME_UTC	  =   m.get("candle_date_time_utc").toString();
     String CANDLE_DATE_TIME_KST  =   m.get("candle_date_time_kst").toString();
@@ -71,21 +71,17 @@ count
     Double HIGH_PRICE  =   Double.parseDouble(m.get("high_price").toString());
     Double LOW_PRICE	  =   Double.parseDouble(m.get("low_price").toString());
     Double TRADE_PRICE  =   Double.parseDouble(m.get("trade_price").toString());
-    Long TIMESTAMP  = 0L;
-    if(m.get("timestamp") != null){
-      TIMESTAMP = Long.parseLong(m.get("timestamp").toString());
-    }
-    
+    Long TIMESTAMP  =  Long.parseLong(m.get("timestamp").toString());
     Double CANDLE_ACC_TRADE_PRICE  =   Double.parseDouble(m.get("candle_acc_trade_price").toString());
     Double CANDLE_ACC_TRADE_VOLUME  =   Double.parseDouble(m.get("candle_acc_trade_volume").toString());
     String FIRST_DAY_OF_PERIOD  =   m.get("first_day_of_period").toString();
     
-    UpbitCandlesMonthsIdx u = new UpbitCandlesMonthsIdx();
+    UpbitCandlesWeeksIdx u = new UpbitCandlesWeeksIdx();
 		u.setMarket(MARKET);
 		u.setCandleDateTimeUtc(CANDLE_DATE_TIME_UTC);
-    Optional<UpbitCandlesMonths> c =daUpbitCandlesMonths.findById(u);
+    Optional<UpbitCandlesWeeks> c =daUpbitCandlesWeeks.findById(u);
 		if(c.isPresent()){
-			daUpbitCandlesMonths.updt( MARKET
+			daUpbitCandlesWeeks.updt( MARKET
       , CANDLE_DATE_TIME_UTC	
       , CANDLE_DATE_TIME_KST
       , OPENING_PRICE
@@ -98,7 +94,7 @@ count
       , FIRST_DAY_OF_PERIOD
       );
 		} else {
-      daUpbitCandlesMonths.crt( MARKET
+      daUpbitCandlesWeeks.crt( MARKET
       , CANDLE_DATE_TIME_UTC	
       , CANDLE_DATE_TIME_KST
       , OPENING_PRICE
@@ -113,7 +109,7 @@ count
     }
   }
    
-    public ArrayList<HashMap<String,Object>> getCandlesMonths(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getCandlesWeeks(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
 /*
 market*
   마켓 코드 (ex. KRW-BTC)
@@ -126,7 +122,7 @@ count
         nameValuePairs.add(new BasicNameValuePair("market", market));
         nameValuePairs.add(new BasicNameValuePair("to", to));
         nameValuePairs.add(new BasicNameValuePair("count", count));
-        String jsonOutString = httpU.httpGetUpbit("https://api.upbit.com/v1/candles/months", nameValuePairs);
+        String jsonOutString = httpU.httpGetUpbit("https://api.upbit.com/v1/candles/weeks", nameValuePairs);
         ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
         System.out.println("jsonOutString ="+jsonOutString);
         rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);

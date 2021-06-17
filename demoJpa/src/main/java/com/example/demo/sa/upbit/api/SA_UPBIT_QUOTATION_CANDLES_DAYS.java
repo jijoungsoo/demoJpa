@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UPBIT_CANDLES_DAYS {
+public class SA_UPBIT_QUOTATION_CANDLES_DAYS {
     @Autowired
 	PjtUtil pjtU;
 
