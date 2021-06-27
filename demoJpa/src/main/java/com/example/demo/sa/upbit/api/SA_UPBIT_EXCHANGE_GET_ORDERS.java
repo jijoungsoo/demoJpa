@@ -27,17 +27,66 @@ public class SA_UPBIT_EXCHANGE_GET_ORDERS {
   @Autowired
   HttpUtil httpU;
 //주문리스트 조회
-  public ArrayList<HashMap<String,Object>> run(String STATE,ArrayList<String> al_uuid) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
+  public ArrayList<HashMap<String,Object>> run(String MARKET, 
+  String STATE,
+  ArrayList<String> AL_STATES,
+  ArrayList<String> AL_UUIDS,
+  ArrayList<String> AL_IDENTIFIERS,
+  String PAGE,
+  String LIMIT,
+  String ORDER_BY
+  ) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
+    
     HashMap<String, String> params = new HashMap<>();
-    params.put("state",STATE);
+    //params.put("market",MARKET);
+    /*
+    params.put("state","done");
+    params.put("page",PAGE);
+    params.put("limit","100");
+    params.put("order_by","desc");
+    */
+    
+    
+    if(!pjtU.isEmpty(MARKET)){
+      params.put("market",MARKET);
+    }
+    if(!pjtU.isEmpty(STATE)){   //디폴트   wait 체결대기
+      params.put("state",STATE);
+    }
+    
+    if(!pjtU.isEmpty(PAGE)){    //디폴트 1
+      params.put("page",PAGE); 
+    }
+
+    if(!pjtU.isEmpty(LIMIT)){    //디폴트 100
+      params.put("limit",LIMIT); 
+    }
+    if(!pjtU.isEmpty(ORDER_BY)){    //디폴트 desc
+      params.put("order_by",ORDER_BY);
+    }
+
     ArrayList<String> queryElements = new ArrayList<>();
     for(Map.Entry<String, String> entity : params.entrySet()) {
         queryElements.add(entity.getKey() + "=" + entity.getValue());
     }
-    for(String uuid : al_uuid) {
-        queryElements.add("uuids[]=" + uuid);
+    if(AL_STATES!=null){
+      for(String state : AL_STATES) {
+        queryElements.add("states[]=" + state);
+      }
     }
+    if(AL_UUIDS!=null){
+      for(String uuid : AL_UUIDS) {
+          queryElements.add("uuids[]=" + uuid);
+      }
+    }
+    if(AL_IDENTIFIERS!=null){
+      for(String identifier : AL_IDENTIFIERS) {
+        queryElements.add("identifiers[]=" + identifier);
+      }
+    }
+
     String queryString = String.join("&", queryElements.toArray(new String[0]));
+    System.out.println("queryString ="+queryString);
     String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/orders", queryString);
     ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
     System.out.println("jsonOutString ="+jsonOutString);

@@ -27,9 +27,15 @@ public class SA_UPBIT_EXCHANGE_GET_ORDER {
   @Autowired
   HttpUtil httpU;
 //개별주문조회
-  public HashMap<String,Object> run(String UUID) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
+  public HashMap<String,Object> run(String UUID,String IDENTIFIER) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
     HashMap<String, String> params = new HashMap<>();
-    params.put("uuid",UUID);
+    if(!pjtU.isEmpty(UUID)){
+      params.put("uuid",UUID);
+    }
+    if(!pjtU.isEmpty(IDENTIFIER)){
+      params.put("identifier",IDENTIFIER);
+    }
+
     ArrayList<String> queryElements = new ArrayList<>();
     for(Map.Entry<String, String> entity : params.entrySet()) {
         queryElements.add(entity.getKey() + "=" + entity.getValue());

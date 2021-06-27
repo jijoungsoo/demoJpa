@@ -5,21 +5,12 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.example.demo.db.da.upbit.DA_UPBIT_CANDLES_DAYS;
-import com.example.demo.db.domain.upbit.UpbitCandlesDays;
-import com.example.demo.db.domain.upbit.UpbitCandlesDaysIdx;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.HttpUtil;
 import com.example.demo.utils.PjtUtil;
 
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +27,7 @@ public class SA_UPBIT_EXCHANGE_GET_ACCOUNTS {
   HttpUtil httpU;
 //전체계좌조회
   public ArrayList<HashMap<String, Object>> run() throws BizException, ClientProtocolException, URISyntaxException, IOException, NoSuchAlgorithmException  {
-      String queryString = null;
-      String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/accoun", queryString);
+      String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/accounts");
       ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
       System.out.println("jsonOutString ="+jsonOutString);
       rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);

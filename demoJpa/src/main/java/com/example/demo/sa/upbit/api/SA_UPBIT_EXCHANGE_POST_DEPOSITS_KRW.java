@@ -1,0 +1,80 @@
+package com.example.demo.sa.upbit.api;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.example.demo.exception.BizException;
+import com.example.demo.utils.HttpUtil;
+import com.example.demo.utils.PjtUtil;
+
+import org.apache.http.client.ClientProtocolException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class SA_UPBIT_EXCHANGE_POST_DEPOSITS_KRW  {
+    @Autowired
+	PjtUtil pjtU;
+
+  
+  @Autowired
+  HttpUtil httpU;
+//코인출금하기
+  public HashMap<String,Object> run(String AMOUNT) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
+    HashMap<String, String> params = new HashMap<>();
+    params.put("amount", AMOUNT);
+
+    ArrayList<String> queryElements = new ArrayList<>();
+    for(Map.Entry<String, String> entity : params.entrySet()) {
+        queryElements.add(entity.getKey() + "=" + entity.getValue());
+    }
+
+    String queryString = String.join("&", queryElements.toArray(new String[0]));
+  
+    String jsonOutString = httpU.httpPostUpbitExchangeApi("https://api.upbit.com/v1/deposits/krw", params);
+    HashMap<String,Object> rtn = new HashMap<String,Object>();
+    System.out.println("jsonOutString ="+jsonOutString);
+    rtn=pjtU.JsonStringToObject(jsonOutString, HashMap.class);
+    return rtn;
+          /*
+{
+  "type": "deposit",
+  "uuid": "9f432943-54e0-40b7-825f-b6fec8b42b79",
+  "currency": "KRW",
+  "txid": "ebe6937b-130e-4066-8ac6-4b0e67f28adc",
+  "state": "processing",
+  "created_at": "2018-04-13T11:24:01+09:00",
+  "done_at": null,
+  "amount": "10000",
+  "fee": "0.0",
+  "transaction_type": "default"
+}
+
+Request Parameters
+Name	설명	타입
+amount *	입금액	Number
+Response
+필드	설명	타입
+type	입출금 종류	String
+uuid	입금의 고유 아이디	String
+currency	화폐를 의미하는 영문 대문자 코드	String
+txid	입금의 트랜잭션 아이디	String
+state	입금 상태	String
+created_at	입금 생성 시간	DateString
+done_at	입금 완료 시간	DateString
+amount	입금 금액/수량	NumberString
+fee	입금 수수료	NumberString
+transaction_type	트랜잭션 유형
+default : 일반출금
+internal : 바로출금	String
+
+*/
+    }
+}

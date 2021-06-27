@@ -27,16 +27,29 @@ public class SA_UPBIT_EXCHANGE_DELETE_ORDER {
   @Autowired
   HttpUtil httpU;
 //주문리스트 조회
-  public HashMap<String,Object> run(String UUID) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
+  public HashMap<String,Object> run(String UUID,String IDENTIFIER) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
     HashMap<String, String> params = new HashMap<>();
-    params.put("uuid",UUID);
+    if(!pjtU.isEmpty(UUID)){
+      params.put("uuid",UUID);
+    }
+
+    if(!pjtU.isEmpty(IDENTIFIER)){
+      params.put("identifier",IDENTIFIER);
+    }
+    
     ArrayList<String> queryElements = new ArrayList<>();
     for(Map.Entry<String, String> entity : params.entrySet()) {
         queryElements.add(entity.getKey() + "=" + entity.getValue());
     }
 
     String queryString = String.join("&", queryElements.toArray(new String[0]));
-    String jsonOutString = httpU.httpDelUpbitExchangeApi("https://api.upbit.com/v1/order", queryString);
+    String jsonOutString = "";
+    try{
+      jsonOutString = httpU.httpDelUpbitExchangeApi("https://api.upbit.com/v1/order", queryString);
+    } catch(BizException e){
+      throw e;
+    }
+    
     HashMap<String,Object> rtn = new HashMap<String,Object>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, HashMap.class);

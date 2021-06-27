@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
 import com.example.demo.utils.PjtUtil;
@@ -43,7 +45,8 @@ public class API {
 	@PostMapping(path= "/api/{br}", consumes = "application/json", produces = "application/json")
 	public String callAPI(@PathVariable("br") String br
 			,@RequestBody/*중요 이거 없으면 못읽어옴*/ String jsonInString
-			)  {
+			,HttpServletResponse response
+			) throws IOException  {
 		String out = null;
 		final ApiResultMap resMap = new ApiResultMap();
 		resMap.brId			= br;
@@ -84,13 +87,7 @@ public class API {
 			e.printStackTrace();
 			resMap.success="false";
 			resMap.errorMessage=e.getMessage();
-			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e);	
-			try {
-				out = pjtU.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
 			return out;
 			
 		} catch (JsonProcessingException e) {
@@ -99,15 +96,13 @@ public class API {
 			/*여길 타는건 없다.*/
 			resMap.success="false";
 			resMap.errorMessage="알수없는 시스템 오류입니다.(JsonProcessingException)";
-			try {
-				out = pjtU.ObjectToJsonString(resMap);
-			} catch (JsonProcessingException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
 			return out;
 			
 		} catch (java.lang.reflect.InvocationTargetException e) {
+			//리플렉션을 사용하면 안에서 에러가 발생되면 무조건 \
+			//java.lang.reflect.InvocationTargetException  
+			//에러가 발생한다고 한다.
 			e.printStackTrace();
 			e.getTargetException().printStackTrace();
 			//log.info("AAAAA");
@@ -116,13 +111,21 @@ public class API {
 			//log.info(e.getTargetException().getMessage());  이걸로 가져와야 값이 있다.
 			resMap.success="false";
 			resMap.errorMessage=e.getTargetException().getMessage();
+			//resMap.errorMessage="알수없는 시스템 오류입니다.(Exception)";
 			//resMap.errorMessage=PjtUtil.convertExceptionToJSON(e.getTargetException());
 
+			/*
+			음 ApiResultMap으로 값을 전달하면되지만.
+			난 ajax 성공으로 보내고 싶은게 아니였다.
+			난 실패로 보내고 싶었다.
+			*/
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getTargetException().getMessage());
 			return out;
 		} catch (Exception e) {
 			e.printStackTrace();
 			resMap.success="false";
 			resMap.errorMessage="알수없는 시스템 오류입니다.(Exception)";
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
 
 			return out;
 		}

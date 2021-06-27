@@ -21,6 +21,7 @@ import javax.net.ssl.SSLContext;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.demo.exception.BizException;
 import com.google.gson.Gson;
 
 import org.apache.http.Header;
@@ -261,6 +262,60 @@ public class HttpUtil {
         return  rtn;
 	}
 
+    public String httpGetUpbitExchangeApi(String URL) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String rtn="";
+        String remaining_req="";
+        String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
+        String secretKey = System.getenv("UPBIT_OPEN_API_SECRET_KEY");
+
+        System.out.println("전체 OS 환경변수 값 : " + System.getenv());
+        System.out.println("accessKey = " +accessKey);
+        System.out.println("secretKey = " +secretKey);
+
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        String jwtToken = JWT.create()
+                .withClaim("access_key", accessKey)
+                .withClaim("nonce", UUID.randomUUID().toString())
+                .sign(algorithm);
+        String authenticationToken = "Bearer " + jwtToken;
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet(URL);
+            request.setHeader("Content-Type", "application/json");
+            request.addHeader("Authorization", authenticationToken);
+
+            HttpResponse response = client.execute(request);
+            Header[] arr_header =response.getHeaders("remaining-req");
+            System.out.print("arr_header.length =");
+            System.out.println(arr_header.length);
+            if(arr_header.length>0){
+                remaining_req =arr_header[0].toString();
+            }
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        String [] arr_tmp =remaining_req.split(";");
+        String group = arr_tmp[0].replace("group=", "").trim();
+        String min = arr_tmp[1].replace("min=", "").trim();
+        String sec = arr_tmp[2].replace("sec=", "").trim();
+
+        int i_sec= Integer.parseInt(sec);
+
+        if(i_sec==0){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e ){
+                
+            }
+        }
+
+        return  rtn;
+	}
+
     
     public String httpGetUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
         String rtn="";
@@ -320,7 +375,7 @@ public class HttpUtil {
         return  rtn;
 	}
 
-    public String httpDelUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+    public String httpDelUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException, BizException{
         String rtn="";
         String remaining_req="";
         String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
@@ -337,7 +392,7 @@ public class HttpUtil {
                 .withClaim("query_hash_alg", "SHA512")
                 .sign(algorithm);
         String authenticationToken = "Bearer " + jwtToken;
-
+        int status_code = 0;
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
             if(!PjtUtil.isEmpty(queryString)){
@@ -354,8 +409,12 @@ public class HttpUtil {
             if(arr_header.length>0){
                 remaining_req =arr_header[0].toString();
             }
+            status_code = response.getStatusLine().getStatusCode();
             org.apache.http.HttpEntity entity = response.getEntity();
             rtn = EntityUtils.toString(entity, "UTF-8");
+            
+            
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -374,7 +433,17 @@ public class HttpUtil {
                 
             }
         }
-
+        System.out.print("status code ="+status_code);
+        if(status_code>=400 && status_code <500){
+            //에러 
+            /*
+            Object	error
+            String	error.name
+            String	error.message
+            {"error":{"message":"권한이 부족합니다.","name":"out_of_scope"}}
+            */
+            throw new BizException(rtn);
+        }
         return  rtn;
 	}
 

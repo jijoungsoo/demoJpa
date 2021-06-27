@@ -4,24 +4,26 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.db.domain.cm.CmEmlSnd;
-import com.example.demo.db.domain.cm.CmEmlSndRcv;
 import com.example.demo.db.domain.cm.QCmEmlSnd;
 import com.example.demo.db.domain.cm.QCmEmlSndRcv;
-import com.example.demo.db.repository.cm.CmEmlSndRcvRepository;
 import com.example.demo.db.repository.cm.CmEmlSndRepository;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLSerializer;
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class DA_CM_EML_SND {
 	
 	@Autowired
@@ -52,19 +54,19 @@ public class DA_CM_EML_SND {
 						.where(QCmEmlSndRcv.cmEmlSndRcv.orfCmEmlSnd.eq(QCmEmlSnd.cmEmlSnd)),
 				"rcv_cnt")
 			,ExpressionUtils.as(
-				JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvNm.min())
+				/*JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvNm.min())*/
+				JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvNm)
 						.from(QCmEmlSndRcv.cmEmlSndRcv)
 						.where(QCmEmlSndRcv.cmEmlSndRcv.orfCmEmlSnd.eq(QCmEmlSnd.cmEmlSnd))
-						/*.orderBy(QCmEmlSndRcv.cmEmlSndRcv.rcvSeq.asc())
-						.limit(1)*/
+						.orderBy(QCmEmlSndRcv.cmEmlSndRcv.rcvSeq.asc())
+						.limit(1)
 						,"rcv_nm")
 			,ExpressionUtils.as(			
-				JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvAddr.min())
-						.from(QCmEmlSndRcv.cmEmlSndRcv)
+				/*JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvAddr.min())*/
+				JPAExpressions.select(QCmEmlSndRcv.cmEmlSndRcv.rcvAddr)
 						.where(QCmEmlSndRcv.cmEmlSndRcv.orfCmEmlSnd.eq(QCmEmlSnd.cmEmlSnd))
-						/*
 						.orderBy(QCmEmlSndRcv.cmEmlSndRcv.rcvSeq.asc())
-						.limit(1)*/
+						.limit(1)
 						,"rcv_addr")
 						
 		)
@@ -72,6 +74,14 @@ public class DA_CM_EML_SND {
 		.orderBy(QCmEmlSnd.cmEmlSnd.sndSeq.desc());
 		List<Tuple> al =  c.fetch();
 		/*문제점 querydsl 하위 쿼리에  order by  limit 1이 안먹음 */
+		/*https://github.com/querydsl/querydsl/issues/2780 */
+		/*문제를 제기 했는데 기능이 제공된다고 아래 기능을 써서 query를 떠달라고 했다. */
+		JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+		serializer.serialize(c.getMetadata(), false, null);
+		String query =  serializer.toString();
+		log.info("findEmlSnd query: " + query);
+
+
 		 return al;
 		 
 	}
