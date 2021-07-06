@@ -80,6 +80,7 @@ public class BR_CM_GRP_CD_FIND {
 		@Schema(name = "RMK", example = "홍길동", description = "사용자명")
 		String RMK = null;
 
+
 		@JsonProperty("CRT_USR_NO")
 		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
 		String CRT_USR_NO = null;
@@ -116,6 +117,8 @@ public class BR_CM_GRP_CD_FIND {
 			row.USE_YN= cm.getUseYn();
 			row.ORD= String.valueOf(cm.getOrd());
 			row.RMK= cm.getRmk();
+			
+
 			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);

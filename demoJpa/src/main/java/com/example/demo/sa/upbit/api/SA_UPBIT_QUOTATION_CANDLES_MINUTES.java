@@ -130,7 +130,7 @@ count
     }
   }
    
-    public ArrayList<HashMap<String,Object>> getCandlesMinutes(String unit,String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getCandlesMinutes(String unit,String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException, BizException {
 /*
 unit*
       분 단위. 가능한 값 : 1, 3, 5, 15, 10, 30, 60, 240

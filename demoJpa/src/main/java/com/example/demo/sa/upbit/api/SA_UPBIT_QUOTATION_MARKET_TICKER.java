@@ -120,7 +120,7 @@ market
     }
   }
    
-    public ArrayList<HashMap<String,Object>> getTicker(String markets) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getTicker(String markets) throws URISyntaxException, ClientProtocolException, IOException, BizException {
 /*
 markets*
   반점으로 구분되는 마켓 코드 (ex. KRW-BTC, BTC-ETH)

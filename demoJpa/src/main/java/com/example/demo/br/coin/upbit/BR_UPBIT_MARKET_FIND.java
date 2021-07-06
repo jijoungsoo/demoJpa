@@ -71,6 +71,10 @@ public class BR_UPBIT_MARKET_FIND {
 		@Schema(name = "MARKET_CD", example = "1", description = "MARKET_CD")
 		String MARKET_CD = null;
 
+		@JsonProperty("DEL_YN")
+		@Schema(name = "DEL_YN", example = "Y, CAUTION(투자유의)", description = "삭제유무")
+		String DEL_YN = null;
+
 		
 	}
 	
@@ -104,6 +108,10 @@ public class BR_UPBIT_MARKET_FIND {
 		@Schema(name = "MARKET_WARNING", example = "NONE (해당 사항 없음), CAUTION(투자유의)", description = "MARKET_WARNING")
 		String MARKET_WARNING = null;
 
+		@JsonProperty("DEL_YN")
+		@Schema(name = "DEL_YN", example = "Y, CAUTION(투자유의)", description = "삭제유무")
+		String DEL_YN = null;
+
 
 		@JsonProperty("CRT_DTM")
 		@Schema(name = "CRT_DTM", example = "202012311640", description = "생성일시")
@@ -127,16 +135,18 @@ public class BR_UPBIT_MARKET_FIND {
 		String SEARCH_NM = null;
 		String MARKET_WARNING = null;
 		String MARKET_CD = null;
+		String DEL_YN = null;
 
 		if(inDS.IN_DATA!=null) {
 			if(inDS.IN_DATA.size()>0) {
 				SEARCH_NM  =inDS.IN_DATA.get(0).SEARCH_NM;
 				MARKET_WARNING  =inDS.IN_DATA.get(0).MARKET_WARNING;
 				MARKET_CD  =inDS.IN_DATA.get(0).MARKET_CD;
+				DEL_YN  =inDS.IN_DATA.get(0).DEL_YN;
 			}	
 		}
 		
-		List<UpbitMarket> al=daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD);
+		List<UpbitMarket> al=daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD,DEL_YN);
 		OUT_DS outDs = new OUT_DS();
 		for (int i = 0; i < al.size(); i++) {
 			UpbitMarket c = al.get(i);
@@ -147,6 +157,7 @@ public class BR_UPBIT_MARKET_FIND {
 			row.KR_NM = c.getKrNm();
 			row.EN_NM = c.getEnNm();
 			row.MARKET_WARNING = c.getMarketWarning();
+			row.DEL_YN = c.getDelYn();
 			row.UPDT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getUpdtDtm());
 			row.CRT_DTM = pjtU.getYyyy_MM_dd_HHMMSS(c.getCrtDtm());
 			outDs.OUT_DATA.add(row);

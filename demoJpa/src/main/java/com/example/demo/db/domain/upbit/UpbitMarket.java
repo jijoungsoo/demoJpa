@@ -118,6 +118,11 @@ public class UpbitMarket {
 	Long timestamp;
 
 
+	//폐지여부 del_yn
+	@Column(nullable = true,unique=false, name="del_yn")
+	String delYn;
+
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "crt_dtm")
 	Date crtDtm;

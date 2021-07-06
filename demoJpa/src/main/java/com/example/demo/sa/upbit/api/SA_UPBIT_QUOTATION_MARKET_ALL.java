@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.example.demo.db.da.upbit.DA_UPBIT_MARKET;
 import com.example.demo.db.domain.upbit.UpbitMarket;
 import com.example.demo.exception.BizException;
@@ -34,10 +36,14 @@ public class SA_UPBIT_QUOTATION_MARKET_ALL {
   @Autowired
 	DA_UPBIT_MARKET daUpbitMarket;
   
-
+  @Transactional 
   public void run() throws BizException  {
     try {
       ArrayList<HashMap<String,String>> al = this.getMarketAll();
+      //del_yn을 처음에 y로 변경하여  모두 폐지로 하고 
+      //전체 마켓을 조회해서 업데이트 하면서 사용으로 바꾼다.
+      Long cnt = daUpbitMarket.updtDelY();
+      System.out.println("cnt:"+cnt);
       for(int i=0;i<al.size();i++){
         updateMarket(al.get(i));
       }
@@ -53,7 +59,7 @@ public class SA_UPBIT_QUOTATION_MARKET_ALL {
     } 
   }
 
-  
+
   private void updateMarket(HashMap<String,String> m) {
               String market  =   m.get("market");
               String kNm  =   m.get("korean_name");
@@ -70,7 +76,7 @@ public class SA_UPBIT_QUOTATION_MARKET_ALL {
               }
   }
    
-    public ArrayList<HashMap<String,String>> getMarketAll() throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,String>> getMarketAll() throws URISyntaxException, ClientProtocolException, IOException, BizException {
         CloseableHttpClient client = HttpClients.createDefault();
         List nameValuePairs = new ArrayList();
         nameValuePairs.add(new BasicNameValuePair("isDetails", "true"));    

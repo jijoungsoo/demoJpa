@@ -113,7 +113,7 @@ count
     }
   }
    
-    public ArrayList<HashMap<String,Object>> getCandlesMonths(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getCandlesMonths(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException, BizException {
 /*
 market*
   마켓 코드 (ex. KRW-BTC)

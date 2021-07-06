@@ -22,6 +22,14 @@ public class QCmCd extends EntityPathBase<CmCd> {
 
     public static final QCmCd cmCd = new QCmCd("cmCd");
 
+    public final StringPath attr1 = createString("attr1");
+
+    public final StringPath attr2 = createString("attr2");
+
+    public final StringPath attr3 = createString("attr3");
+
+    public final StringPath attr4 = createString("attr4");
+
     public final StringPath cd = createString("cd");
 
     public final StringPath cdNm = createString("cdNm");

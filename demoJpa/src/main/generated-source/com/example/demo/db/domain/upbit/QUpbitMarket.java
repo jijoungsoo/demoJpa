@@ -35,6 +35,8 @@ public class QUpbitMarket extends EntityPathBase<UpbitMarket> {
 
     public final DateTimePath<java.util.Date> crtDtm = createDateTime("crtDtm", java.util.Date.class);
 
+    public final StringPath delYn = createString("delYn");
+
     public final StringPath enNm = createString("enNm");
 
     public final StringPath highest52WeekDate = createString("highest52WeekDate");

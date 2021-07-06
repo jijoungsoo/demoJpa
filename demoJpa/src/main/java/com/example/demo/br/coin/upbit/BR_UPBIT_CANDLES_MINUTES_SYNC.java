@@ -104,7 +104,7 @@ public class BR_UPBIT_CANDLES_MINUTES_SYNC {
 				UNIT  =inDS.IN_DATA.get(0).UNIT;
 			}	
 		}
-		List<UpbitMarket> al= daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD);
+		List<UpbitMarket> al= daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD,"N");
 		//QUOTATION API
 		//294 개이니까.
 		//1분에  2번 바뀐다.

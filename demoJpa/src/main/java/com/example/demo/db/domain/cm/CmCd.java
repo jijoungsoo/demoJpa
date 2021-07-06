@@ -49,6 +49,19 @@ public class CmCd {
 	
 	@Column(nullable = true, name="ord")
 	int ord;
+
+	
+	@Column(nullable = true, length = 100 ,name="attr1")
+	String attr1;
+
+	@Column(nullable = true, length = 100 ,name="attr2")
+	String attr2;
+
+	@Column(nullable = true, length = 100 ,name="attr3")
+	String attr3;
+
+	@Column(nullable = true, length = 100 ,name="attr4")
+	String attr4;
 	
 	@Column(nullable = false, name = "crt_usr_no")
 	long crtUsrNo;

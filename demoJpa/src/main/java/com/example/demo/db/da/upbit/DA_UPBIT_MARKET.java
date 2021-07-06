@@ -24,7 +24,7 @@ public class DA_UPBIT_MARKET {
 	@Autowired
 	UpbitMarketRepository upbitMarketR;
 
-	public List<UpbitMarket> find(String SEARCH_NM,String MARKET_WARNING,String MARKET_CD) {
+	public List<UpbitMarket> find(String SEARCH_NM,String MARKET_WARNING,String MARKET_CD,String DEL_YN) {
 		BooleanBuilder builder = new BooleanBuilder();
 
 		if (!ObjectUtils.isEmpty(SEARCH_NM)) {
@@ -41,6 +41,9 @@ public class DA_UPBIT_MARKET {
 
 		if (!ObjectUtils.isEmpty(MARKET_CD)) {
             builder.and(QUpbitMarket.upbitMarket.marketCd.eq(MARKET_CD));
+        }
+		if (!ObjectUtils.isEmpty(DEL_YN)) {
+            builder.and(QUpbitMarket.upbitMarket.delYn.eq(DEL_YN));
         }
 
 		JPAQuery<UpbitMarket> c =  qf
@@ -67,12 +70,23 @@ public class DA_UPBIT_MARKET {
 				.krNm(KR_NM)
 				.enNm(EN_NM)
 				.marketWarning(MARKET_WARNING)
+				.delYn("N")
 				.updtDtm(new Date())
 				.crtDtm(new Date()).build());
 	}
 	
 	public Optional<UpbitMarket> findById(String MARKET){
 		return upbitMarketR.findById(MARKET);
+	}
+
+	
+	public Long updtDelY() {
+		
+		long c =  qf
+		.update(QUpbitMarket.upbitMarket)
+		.set(QUpbitMarket.upbitMarket.delYn,"Y")
+		.execute();
+		return c;
 	}
 
 	public void updt(String MARKET
@@ -88,6 +102,7 @@ public class DA_UPBIT_MARKET {
 			m.setKrNm(KR_NM);
 			m.setEnNm(EN_NM);
 			m.setMarketWarning(MARKET_WARNING);
+			m.setDelYn("N");
 			m.setUpdtDtm(new Date());
 			upbitMarketR.save(m);
 		}

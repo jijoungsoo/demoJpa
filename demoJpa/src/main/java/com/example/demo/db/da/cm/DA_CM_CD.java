@@ -28,13 +28,31 @@ public class DA_CM_CD {
 	@Autowired
 	CmCdRepository cmCdR;
 	
-	public List<CmCd> findCmCd(String GRP_CD,String USE_YN) {
+	public List<CmCd> findCmCd(String GRP_CD,String USE_YN
+	,String ATTR1
+	,String ATTR2
+	,String ATTR3
+	,String ATTR4
+	) {
 		JPAQuery<CmCd> q=qf
         .selectFrom(QCmCd.cmCd)
         .where(QCmCd.cmCd.grpCd.eq(GRP_CD));
 		if(!pjtU.isEmpty(USE_YN)) {
 			q.where(QCmCd.cmCd.useYn.eq(USE_YN));
 		}
+		if(!pjtU.isEmpty(ATTR1)) {
+			q.where(QCmCd.cmCd.attr1.eq(ATTR1));
+		}
+		if(!pjtU.isEmpty(ATTR2)) {
+			q.where(QCmCd.cmCd.attr2.eq(ATTR2));
+		}
+		if(!pjtU.isEmpty(ATTR3)) {
+			q.where(QCmCd.cmCd.attr3.eq(ATTR3));
+		}
+		if(!pjtU.isEmpty(ATTR4)) {
+			q.where(QCmCd.cmCd.attr4.eq(ATTR4));
+		}
+
 		List<CmCd> al =  q.orderBy(QCmCd.cmCd.ord.asc())
 	                .fetch();
 		 return al;
@@ -47,6 +65,10 @@ public class DA_CM_CD {
 			,String USE_YN
 			,String ORD
 			,String RMK
+			,String ATTR1
+			,String ATTR2
+			,String ATTR3
+			,String ATTR4
 			,Long L_SESSION_USER_NO
 			) {
 		
@@ -59,6 +81,10 @@ public class DA_CM_CD {
 				.useYn(USE_YN)
 				.ord(Integer.parseInt(ORD))
 				.rmk(RMK)
+				.attr1(ATTR1)
+				.attr2(ATTR2)
+				.attr3(ATTR3)
+				.attr4(ATTR4)
 				.crtUsrNo(L_SESSION_USER_NO)
 				.updtUsrNo(L_SESSION_USER_NO)
 				.updtDtm(new Date())
@@ -71,6 +97,10 @@ public class DA_CM_CD {
 			,String USE_YN
 			,String ORD
 			,String RMK
+			,String ATTR1
+			,String ATTR2
+			,String ATTR3
+			,String ATTR4
 			,Long L_SESSION_USER_NO
 			) throws BizException {
 		CmCdId cm_cd_id = new CmCdId();
@@ -87,6 +117,10 @@ public class DA_CM_CD {
 		tmp.setUseYn(USE_YN);
 		tmp.setOrd(Integer.parseInt(ORD));
 		tmp.setRmk(RMK);
+		tmp.setAttr1(ATTR1);
+		tmp.setAttr2(ATTR2);
+		tmp.setAttr3(ATTR3);
+		tmp.setAttr4(ATTR4);
 		tmp.setUpdtUsrNo(L_SESSION_USER_NO);
 		tmp.setUpdtDtm(new Date());
 		

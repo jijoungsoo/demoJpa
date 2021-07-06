@@ -71,7 +71,9 @@ public class BR_UPBIT_MARKET_TICKER_SYNC {
 	//@PostMapping(path= "/api/BR_MIG_AV_ACTR_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 
-		List<UpbitMarket>  al = daUpbitMarket.find(null, null, null);
+		List<UpbitMarket>  al = daUpbitMarket.find(null, null, null,"N"
+		/*삭제유무 */
+		);
 		String MARKETS ="";
 		for(int i=0;i<al.size();i++){
 			MARKETS=MARKETS+al.get(i).getMarket();

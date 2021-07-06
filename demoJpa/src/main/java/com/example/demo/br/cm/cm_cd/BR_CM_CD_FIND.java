@@ -67,6 +67,25 @@ public class BR_CM_CD_FIND {
 		@JsonProperty("USE_YN")
 		@Schema(name = "USE_YN", example = "(Y-사용,N-미사용)", description = "사용여부")
 		String USE_YN = "";
+
+		
+		@JsonProperty("ATTR1")
+		@Schema(name = "ATTR1", example = "홍길동", description = "사용자명")
+		String ATTR1 = null;
+
+		@JsonProperty("ATTR2")
+		@Schema(name = "ATTR2", example = "홍길동", description = "사용자명")
+		String ATTR2 = null;
+
+		@JsonProperty("ATTR3")
+		@Schema(name = "ATTR3", example = "홍길동", description = "사용자명")
+		String ATTR3 = null;
+
+		@JsonProperty("ATTR4")
+		@Schema(name = "ATTR4", example = "홍길동", description = "사용자명")
+		String ATTR4 = null;
+
+
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -106,6 +125,23 @@ public class BR_CM_CD_FIND {
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
 
+		
+		@JsonProperty("ATTR1")
+		@Schema(name = "ATTR1", example = "홍길동", description = "사용자명")
+		String ATTR1 = null;
+
+		@JsonProperty("ATTR2")
+		@Schema(name = "ATTR2", example = "홍길동", description = "사용자명")
+		String ATTR2 = null;
+
+		@JsonProperty("ATTR3")
+		@Schema(name = "ATTR3", example = "홍길동", description = "사용자명")
+		String ATTR3 = null;
+
+		@JsonProperty("ATTR4")
+		@Schema(name = "ATTR4", example = "홍길동", description = "사용자명")
+		String ATTR4 = null;
+
 		@JsonProperty("CRT_USR_NO")
 		@Schema(name = "CRT_USR_NO", example = "1", description = "생성자NO")
 		String CRT_USR_NO = null;
@@ -142,8 +178,12 @@ public class BR_CM_CD_FIND {
 		IN_DATA_ROW  rs =inDS.IN_DATA.get(0);
 		String  GRP_CD 		= pjtU.str(rs.GRP_CD);
 		String  USE_YN 		= pjtU.str(rs.USE_YN);
+		String  ATTR1 		= pjtU.str(rs.ATTR1);
+		String  ATTR2 		= pjtU.str(rs.ATTR2);
+		String  ATTR3 		= pjtU.str(rs.ATTR3);
+		String  ATTR4 		= pjtU.str(rs.ATTR4);
 		
-		List<CmCd>  al =daCmCd.findCmCd(GRP_CD,USE_YN);
+		List<CmCd>  al =daCmCd.findCmCd(GRP_CD,USE_YN,ATTR1,ATTR2,ATTR3,ATTR4);
 		OUT_DS outDs = new OUT_DS();
 		for(int i=0;i<al.size();i++) {
 			CmCd cm=al.get(i);
@@ -154,9 +194,16 @@ public class BR_CM_CD_FIND {
 			row.USE_YN= cm.getUseYn();
 			row.ORD= String.valueOf(cm.getOrd());
 			row.RMK= cm.getRmk();
+			row.ATTR1= cm.getAttr1();
+			row.ATTR2= cm.getAttr2();
+			row.ATTR3= cm.getAttr3();
+			row.ATTR4= cm.getAttr4();
 			row.CRT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getCrtDtm());
 			row.UPDT_DTM=pjtU.getYyyy_MM_dd_HHMMSS(cm.getUpdtDtm());
 			outDs.OUT_DATA.add(row);
+
+
+
 		}
 
 		return outDs;

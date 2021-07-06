@@ -31,11 +31,18 @@ public class SA_UPBIT_EXCHANGE_POST_ORDERS {
     HashMap<String, String> params = new HashMap<>();
     params.put("market", MARKET);
     params.put("side", SIDE);
-    params.put("volume", VOLUME);
-    params.put("price", PRICE);
+
+    if(!pjtU.isEmpty(VOLUME)){
+      params.put("volume", VOLUME);
+    }
+
+    if(!pjtU.isEmpty(PRICE)){
+      params.put("price", PRICE);
+    }
+        
     params.put("ord_type", ORD_TYPE);
 
-    String jsonOutString = httpU.httpPostUpbitExchangeApi("https://api.upbit.com/v1/order", params);
+    String jsonOutString = httpU.httpPostUpbitExchangeApi("https://api.upbit.com/v1/orders", params);
     HashMap<String,Object> rtn = new HashMap<String,Object>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, HashMap.class);

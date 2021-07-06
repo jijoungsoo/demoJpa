@@ -219,8 +219,12 @@ public class BR_UPBIT_EXCHANGE_GET_ORDER {
 					row.STATE = h.get("state").toString();
 					row.MARKET = h.get("market").toString();
 					row.CREATED_AT = h.get("created_at").toString();
-					row.VOLUME = h.get("volume").toString();
-					row.REMAINING_VOLUME = h.get("remaining_volume").toString();
+					if(h.get("volume")!=null){
+						row.VOLUME = h.get("volume").toString();
+					}					
+					if(h.get("remaining_volume")!=null){
+						row.REMAINING_VOLUME = h.get("remaining_volume").toString();
+					}
 					row.RESERVED_FEE = h.get("reserved_fee").toString();
 					row.REMAINING_FEE = h.get("remaining_fee").toString();
 					row.PAID_FEE = h.get("paid_fee").toString();

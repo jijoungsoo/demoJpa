@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -41,6 +42,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -53,6 +55,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class HttpUtil {
+    @Autowired
+	PjtUtil pjtU;
    
     public String httpGetAjax(String URL){
         String tmp = null;
@@ -181,7 +185,7 @@ public class HttpUtil {
 	}
 
     
-    public String httpGetUpbit(String URL,List nameValuePairs) throws URISyntaxException, ClientProtocolException, IOException{
+    public String httpGetUpbit(String URL,List nameValuePairs) throws URISyntaxException, ClientProtocolException, IOException, BizException{
     	//QUOTATION API
 
 		/*
@@ -229,7 +233,8 @@ public class HttpUtil {
         }
         URI uri =uriBuilder.build();
         System.out.println("uri = "+uri.toString());
-        ((HttpRequestBase) httpGet).setURI(uri);
+        HttpRequestBase req =(HttpRequestBase) httpGet;
+        req.setURI(uri);
         try (CloseableHttpResponse response = client.execute(httpGet)){
             Header[] arr_header =response.getHeaders("remaining-req");
             System.out.print("arr_header.length =");
@@ -237,8 +242,24 @@ public class HttpUtil {
             if(arr_header.length>0){
                 remaining_req =arr_header[0].toString();
             }
-            System.out.println(response.getStatusLine().toString()); 
+            StatusLine tmp_status= response.getStatusLine();
+            int status_code = tmp_status.getStatusCode();
+            System.out.println("status_code : "+ status_code);
+            
+
+            System.out.println("URL:"+URL);
+            System.out.println("request.getURI().getRawQuery():"+req.getURI().getRawQuery());
             rtn = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+
+            System.out.println("remaining_req:"+remaining_req);
+            System.out.println("rtn:"+rtn);
+
+            if(status_code==404){
+                HashMap<String,Object> tmp_error=pjtU.JsonStringToObject(rtn, HashMap.class);
+                HashMap<String,Object> tmp_error2=(HashMap<String,Object>)tmp_error.get("error");
+                throw new BizException("error :"+tmp_error2.get("message"));
+            }
         }
         //remaining-req: group=candles; min=599; sec=9
         //분당 600회, 초당 10회
@@ -446,9 +467,8 @@ public class HttpUtil {
         }
         return  rtn;
 	}
-
     
-    public String httpPostUpbitExchangeApi(String URL,  HashMap<String, String> params) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+    public String httpPostUpbitExchangeApi(String URL,  HashMap<String, String> params) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException, BizException{
         String rtn="";
         String remaining_req="";
         String accessKey = System.getenv("UPBIT_OPEN_API_ACCESS_KEY");
@@ -476,23 +496,53 @@ public class HttpUtil {
 
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
+            /* post 전송이므로 빠져야한다.
             if(!PjtUtil.isEmpty(queryString)){
                 URL=URL+"?"+queryString;
             }
+            */
             HttpPost request = new HttpPost(URL);
             request.setHeader("Content-Type", "application/json");
             request.addHeader("Authorization", authenticationToken);
             request.setEntity(new StringEntity(new Gson().toJson(params)));
 
+
+            System.out.println("accessKey:"+accessKey);
+            System.out.println("secretKey:"+secretKey);
+
+            System.out.println("URL:"+URL);
+            System.out.println("request.getURI().getRawQuery():"+request.getURI().getRawQuery());
+
             HttpResponse response = client.execute(request);
+            StatusLine tmp_status =response.getStatusLine();
+            int status_code = tmp_status.getStatusCode();
+            System.out.println("status_code : "+ status_code);
+
             Header[] arr_header =response.getHeaders("remaining-req");
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+            System.out.println("rtn:"+rtn);
+            if(status_code==404){
+                throw new BizException("페이지 주소가 잘못되었다. URL :"+URL);
+            }
+
+            if(status_code==401){
+                HashMap<String,Object> tmp_error=pjtU.JsonStringToObject(rtn, HashMap.class);
+                HashMap<String,Object> tmp_error2=(HashMap<String,Object>)tmp_error.get("error");
+                throw new BizException("error :"+tmp_error2.get("message"));
+            }
+            
+
+
+            
             System.out.print("arr_header.length =");
             System.out.println(arr_header.length);
             if(arr_header.length>0){
                 remaining_req =arr_header[0].toString();
             }
-            org.apache.http.HttpEntity entity = response.getEntity();
-            rtn = EntityUtils.toString(entity, "UTF-8");
+            
+            System.out.print("remaining_req:");
+            System.out.println(remaining_req);
         } catch (IOException e) {
             e.printStackTrace();
         }

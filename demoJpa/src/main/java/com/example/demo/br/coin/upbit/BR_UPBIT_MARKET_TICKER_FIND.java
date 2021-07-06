@@ -235,7 +235,9 @@ public class BR_UPBIT_MARKET_TICKER_FIND {
 			}	
 		}
 		
-		List<UpbitMarket> al=daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD);
+		List<UpbitMarket> al=daUpbitMarket.find(SEARCH_NM,MARKET_WARNING,MARKET_CD,"N"
+		/*삭제유무 */
+		);
 		OUT_DS outDs = new OUT_DS();
 		for (int i = 0; i < al.size(); i++) {
 			UpbitMarket c = al.get(i);

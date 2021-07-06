@@ -81,6 +81,23 @@ public class BR_CM_CD_SAVE {
 		@JsonProperty("RMK")
 		@Schema(name = "RMK", example = "비고", description = "비고")
 		String RMK = null;
+
+			
+		@JsonProperty("ATTR1")
+		@Schema(name = "ATTR1", example = "홍길동", description = "사용자명")
+		String ATTR1 = null;
+
+		@JsonProperty("ATTR2")
+		@Schema(name = "ATTR2", example = "홍길동", description = "사용자명")
+		String ATTR2 = null;
+
+		@JsonProperty("ATTR3")
+		@Schema(name = "ATTR3", example = "홍길동", description = "사용자명")
+		String ATTR3 = null;
+
+		@JsonProperty("ATTR4")
+		@Schema(name = "ATTR4", example = "홍길동", description = "사용자명")
+		String ATTR4 = null;
 	}
 	
 	@JsonRootName("OUT_DS")
@@ -118,6 +135,11 @@ public class BR_CM_CD_SAVE {
 			String  USE_YN 		= pjtU.str(rs.USE_YN);
 			String  ORD 		= pjtU.str(rs.ORD);
 			String  RMK 		= pjtU.str(rs.RMK);
+			String  ATTR1 		= pjtU.str(rs.ATTR1);
+			String  ATTR2 		= pjtU.str(rs.ATTR2);
+			String  ATTR3 		= pjtU.str(rs.ATTR3);
+			String  ATTR4 		= pjtU.str(rs.ATTR4);
+
 			
 			if(pjtU.isEmpty(GRP_CD)) {
 				throw new BizRuntimeException("공통코드그룹코드가 입력되지 않았습니다.");
@@ -143,6 +165,10 @@ public class BR_CM_CD_SAVE {
 					,USE_YN
 					,ORD
 					,RMK
+					,ATTR1
+					,ATTR2
+					,ATTR3
+					,ATTR4
 					,L_SESSION_USER_NO
 					);
 		}
@@ -155,6 +181,10 @@ public class BR_CM_CD_SAVE {
 			String  USE_YN 		= pjtU.str(rs.USE_YN);
 			String  ORD 		= pjtU.str(rs.ORD);
 			String  RMK 		= pjtU.str(rs.RMK);
+			String  ATTR1 		= pjtU.str(rs.ATTR1);
+			String  ATTR2 		= pjtU.str(rs.ATTR2);
+			String  ATTR3 		= pjtU.str(rs.ATTR3);
+			String  ATTR4 		= pjtU.str(rs.ATTR4);
 			
 			if(pjtU.isEmpty(GRP_CD)) {
 				throw new BizRuntimeException("공통코드그룹코드가 입력되지 않았습니다.");
@@ -180,6 +210,10 @@ public class BR_CM_CD_SAVE {
 					,USE_YN
 					,ORD
 					,RMK
+					,ATTR1
+					,ATTR2
+					,ATTR3
+					,ATTR4
 					,L_SESSION_USER_NO
 					);
 		}

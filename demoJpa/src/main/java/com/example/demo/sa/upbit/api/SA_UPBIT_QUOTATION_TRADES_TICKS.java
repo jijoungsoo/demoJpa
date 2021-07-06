@@ -109,7 +109,7 @@ count
     }
   }
    
-    public ArrayList<HashMap<String,Object>> getTradesTicks(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException {
+    public ArrayList<HashMap<String,Object>> getTradesTicks(String market,String to ,String count) throws URISyntaxException, ClientProtocolException, IOException, BizException {
 /*
 market*
 string

@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BR_UPBIT_EXCHANGE_GET_ORDERS_CHANCE {
 
+	public static com.example.demo.br.coin.upbit.BR_UPBIT_EXCHANGE_GET_ORDERS_CHANCE.OUT_DS OUT_DS;
 	@Autowired
     PjtUtil pjtU;
 	
@@ -215,37 +216,50 @@ public class BR_UPBIT_EXCHANGE_GET_ORDERS_CHANCE {
 			
 			if(h!=null){
 				OUT_DATA_ROW row = new OUT_DATA_ROW();
-				row.BID_FEE = h.get("bid_fee").toString();
-				row.ASK_FEE = h.get("ask_fee").toString();
-				HashMap market = (HashMap) h.get("market");
-				row.MARKET__ID = market.get("id").toString();
-				row.MARKET__NAME = market.get("name").toString();
-
-				ArrayList<String> order_types = (ArrayList<String>)market.get("order_types");
-				ArrayList<String> order_sides = (ArrayList<String>)market.get("order_sides");
-
-				row.MARKET__ORDER_TYPES = String.join(",", order_types) ;
-				row.MARKET__ORDER_SIDES = String.join(",", order_sides) ;
-
-				HashMap bid = (HashMap) market.get("bid");
-
-				row.MARKET__BID__CURRENCY = bid.get("currency").toString();
-				if(bid.get("price_unit")!=null) {
-					row.MARKET__BID__PRICE_UNIT = bid.get("price_unit").toString();
+				if(h.get("bid_fee")!=null){
+					row.BID_FEE = h.get("bid_fee").toString();
 				}
+				if(h.get("ask_fee")!=null){
+					row.ASK_FEE = h.get("ask_fee").toString();
+				}
+
+
 				
-				row.MARKET__BID__MIN_TOTAL = bid.get("min_total").toString();
+				
+				
+				HashMap market = (HashMap) h.get("market");
 
-				HashMap ask = (HashMap) market.get("ask");
+				if(h.get("market")!=null){
+					row.MARKET__ID = market.get("id").toString();
+					row.MARKET__NAME = market.get("name").toString();
+	
+					ArrayList<String> order_types = (ArrayList<String>)market.get("order_types");
+					ArrayList<String> order_sides = (ArrayList<String>)market.get("order_sides");
+	
+					row.MARKET__ORDER_TYPES = String.join(",", order_types) ;
+					row.MARKET__ORDER_SIDES = String.join(",", order_sides) ;
+	
+					HashMap bid = (HashMap) market.get("bid");
+	
+					row.MARKET__BID__CURRENCY = bid.get("currency").toString();
+					if(bid.get("price_unit")!=null) {
+						row.MARKET__BID__PRICE_UNIT = bid.get("price_unit").toString();
+					}
+					
+					row.MARKET__BID__MIN_TOTAL = bid.get("min_total").toString();
 
-				row.MARKET__ASK__CURRENCY = ask.get("currency").toString();
-				if(ask.get("price_unit")!=null) {
-					row.MARKET__ASK__PRICE_UNIT = ask.get("price_unit").toString();
+					HashMap ask = (HashMap) market.get("ask");
+					row.MARKET__ASK__CURRENCY = ask.get("currency").toString();
+					if(ask.get("price_unit")!=null) {
+						row.MARKET__ASK__PRICE_UNIT = ask.get("price_unit").toString();
+					}
+					row.MARKET__ASK__MIN_TOTAL = ask.get("min_total").toString();
+					row.MARKET__MAX_TOTAL = market.get("max_total").toString();
+					row.MARKET__STATE = market.get("state").toString();
+	
+					
 				}
-				row.MARKET__ASK__MIN_TOTAL = ask.get("min_total").toString();
-				row.MARKET__MAX_TOTAL = market.get("max_total").toString();
-				row.MARKET__STATE = market.get("state").toString();
-
+			
 				HashMap bid_account = (HashMap) h.get("bid_account");
 				row.BID_ACCOUNT__CURRENCY = bid_account.get("currency").toString();
 				row.BID_ACCOUNT__BALANCE = bid_account.get("balance").toString();
@@ -262,6 +276,7 @@ public class BR_UPBIT_EXCHANGE_GET_ORDERS_CHANCE {
 				row.ASK_ACCOUNT__AVG_BUY_PRICE = ask_account.get("avg_buy_price").toString();
 				row.ASK_ACCOUNT__AVG_BUY_PRICE_MODIFIED = ask_account.get("avg_buy_price_modified").toString();
 				row.ASK_ACCOUNT__UNIT_CURRENCY = ask_account.get("unit_currency").toString();
+
 				outDs.OUT_DATA.add(row);
 			}
 
