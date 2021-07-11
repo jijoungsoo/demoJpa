@@ -30,8 +30,13 @@ public class SA_UPBIT_EXCHANGE_GET_WITHDRAWS {
   public ArrayList<HashMap<String,Object>> run(String CURRENCY,String STATE, ArrayList<String> UUIDS, 
   ArrayList<String>  TXIDS, String LIMIT, String PAGE, String ORDER_BY  ) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
     HashMap<String, String> params = new HashMap<>();
-    params.put("currency",CURRENCY);
-    params.put("state",STATE);
+    if(!pjtU.isEmpty(CURRENCY)){
+      params.put("currency",CURRENCY);
+    }
+    if(!pjtU.isEmpty(STATE)){
+      params.put("state",STATE);
+    }    
+    
     params.put("limit",LIMIT);
     params.put("page",PAGE);
     params.put("order_by",ORDER_BY);
@@ -39,12 +44,16 @@ public class SA_UPBIT_EXCHANGE_GET_WITHDRAWS {
     for(Map.Entry<String, String> entity : params.entrySet()) {
         queryElements.add(entity.getKey() + "=" + entity.getValue());
     }
-    for(String uuid : UUIDS) {
-      queryElements.add("uuids[]=" + uuid);
+    if(UUIDS!=null) {
+      for(String uuid : UUIDS) {
+        queryElements.add("uuids[]=" + uuid);
+      }
     }
-
-    for(String txid : TXIDS) {
-      queryElements.add("txids[]=" +txid );
+    
+    if(TXIDS!=null) {
+      for(String txid : TXIDS) {
+        queryElements.add("txids[]=" +txid );
+      }
     }
 
     String queryString = String.join("&", queryElements.toArray(new String[0]));

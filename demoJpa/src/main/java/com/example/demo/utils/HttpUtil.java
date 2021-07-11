@@ -526,6 +526,12 @@ public class HttpUtil {
                 throw new BizException("페이지 주소가 잘못되었다. URL :"+URL);
             }
 
+            if(status_code==400){
+                HashMap<String,Object> tmp_error=pjtU.JsonStringToObject(rtn, HashMap.class);
+                HashMap<String,Object> tmp_error2=(HashMap<String,Object>)tmp_error.get("error");
+                throw new BizException("error :"+tmp_error2.get("message"));
+            }
+
             if(status_code==401){
                 HashMap<String,Object> tmp_error=pjtU.JsonStringToObject(rtn, HashMap.class);
                 HashMap<String,Object> tmp_error2=(HashMap<String,Object>)tmp_error.get("error");

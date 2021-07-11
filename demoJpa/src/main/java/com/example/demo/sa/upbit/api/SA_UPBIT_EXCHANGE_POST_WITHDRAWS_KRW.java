@@ -31,7 +31,7 @@ public class SA_UPBIT_EXCHANGE_POST_WITHDRAWS_KRW  {
   public HashMap<String,Object> run(String AMOUNT) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
     HashMap<String, String> params = new HashMap<>();
     params.put("amount", AMOUNT);
-    String jsonOutString = httpU.httpPostUpbitExchangeApi("https://api.upbit.com/v1/withdraws/coin", params);
+    String jsonOutString = httpU.httpPostUpbitExchangeApi("https://api.upbit.com/v1/withdraws/krw", params);
     HashMap<String,Object> rtn = new HashMap<String,Object>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, HashMap.class);

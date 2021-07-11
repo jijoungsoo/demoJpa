@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SA_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
+public class SA_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE {
     @Autowired
 	PjtUtil pjtU;
 
