@@ -31,7 +31,7 @@ spring:
 #postgresql   하나 설정      
     hikari:
       maximum-pool-size: 4
-      driver-class-name: org.postgresql.Driver       
+      driver-class-name: org.postgresql.Driver 
       #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명
       #jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy      
@@ -91,7 +91,7 @@ logging:
      sql: error
      jdbc: off
      jdbc.sqlonly: debug
-  file : c:/logs/demoJpa/product.log
+  file.name : c:/logs/demoJpa/product.log
   file.max-history: 9999999
   file.max-size : 100MB        
   config: classpath:logback-spring.xml

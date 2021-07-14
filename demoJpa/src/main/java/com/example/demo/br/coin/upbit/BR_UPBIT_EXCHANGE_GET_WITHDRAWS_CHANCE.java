@@ -31,13 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
+public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE {
 
 	@Autowired
     PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -49,11 +49,11 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("CURRENCY")
@@ -62,27 +62,27 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA_MEMBER_LEVEL")
-		@Schema(name="OUT_DATA_MEMBER_LEVEL-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE", description = "출력 데이터")
+		@Schema(name="OUT_DATA_MEMBER_LEVEL-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE", description = "출력 데이터")
 		ArrayList<OUT_DATA_MEMBER_LEVEL_ROW> OUT_DATA_MEMBER_LEVEL = new ArrayList<OUT_DATA_MEMBER_LEVEL_ROW>();
 
 		@JsonProperty("OUT_DATA_CURRENCY")
-		@Schema(name="OUT_DATA_CURRENCY-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE", description = "출력 데이터")
+		@Schema(name="OUT_DATA_CURRENCY-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE", description = "출력 데이터")
 		ArrayList<OUT_DATA_CURRENCY_ROW> OUT_DATA_CURRENCY = new ArrayList<OUT_DATA_CURRENCY_ROW>();
 
 		@JsonProperty("OUT_DATA_ACCOUNT")
-		@Schema(name="OUT_DATA_ACCOUNT-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE", description = "출력 데이터")
+		@Schema(name="OUT_DATA_ACCOUNT-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE", description = "출력 데이터")
 		ArrayList<OUT_DATA_ACCOUNT_ROW> OUT_DATA_ACCOUNT = new ArrayList<OUT_DATA_ACCOUNT_ROW>();
 
 		@JsonProperty("OUT_DATA_WITHDRAW_LIMIT")
-		@Schema(name="OUT_DATA_WITHDRAW_LIMIT-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE", description = "출력 데이터")
+		@Schema(name="OUT_DATA_WITHDRAW_LIMIT-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE", description = "출력 데이터")
 		ArrayList<OUT_DATA_WITHDRAW_LIMIT_ROW> OUT_DATA_WITHDRAW_LIMIT = new ArrayList<OUT_DATA_WITHDRAW_LIMIT_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_MEMBER_LEVEL_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="OUT_DATA_MEMBER_LEVEL_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class OUT_DATA_MEMBER_LEVEL_ROW {
 
@@ -145,7 +145,7 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
 
 
 	
-	@ApiModel(value="OUT_DATA_ACCOUNT_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="OUT_DATA_ACCOUNT_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class OUT_DATA_ACCOUNT_ROW {
 		@JsonProperty("CURRENCY")  //String
@@ -179,7 +179,7 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
 
 
 	
-	@ApiModel(value="OUT_DATA_WITHDRAW_LIMIT_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE")
+	@ApiModel(value="OUT_DATA_WITHDRAW_LIMIT_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE")
 	@Data
 	static class OUT_DATA_WITHDRAW_LIMIT_ROW {
 		@JsonProperty("CURRENCY")  //String
@@ -281,7 +281,10 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAW_CHANCE {
 					row.CURRENCY =withdraw_limit.get("currency").toString();
 					row.MINIMUM =withdraw_limit.get("minimum").toString();
 					row.ONETIME =withdraw_limit.get("onetime").toString();
-					row.DAILY =withdraw_limit.get("daily").toString();
+					if(withdraw_limit.get("daily")!=null){
+						row.DAILY =withdraw_limit.get("daily").toString();
+					}
+					
 					row.REMAINING_DAILY =withdraw_limit.get("remaining_daily").toString();
 					row.REMAINING_DAILY_KRW =withdraw_limit.get("remaining_daily_krw").toString();
 					row.FIXED =withdraw_limit.get("fixed").toString();

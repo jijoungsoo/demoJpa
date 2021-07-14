@@ -36,7 +36,7 @@ public class SA_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE {
     }
     String queryString = String.join("&", queryElements.toArray(new String[0]));
 
-    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/withdraw", queryString);
+    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/withdraws/chance", queryString);
     HashMap<String,Object> rtn = new HashMap<String,Object>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, HashMap.class);

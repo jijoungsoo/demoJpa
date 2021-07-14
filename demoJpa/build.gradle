@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.0'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
@@ -34,21 +34,21 @@ dependencies {
 	
 	implementation 'org.reflections:reflections:0.9.12'  /*메소드 파라미터 name을 얻어오기 위해 달아보았다.*/
 	
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3' 
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.12.4' 
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'  /*jackson-mapper-asl 이건 view 리턴을 data리턴으로 잡아주는 것!!*/
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4' /*jackson-databind 이건 json으로 들어오는 모든 데이터를 생긴 것만 똑같으면 모든 타입으로 변경해서*/
 		
 	//implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1' /*log 출력을 위해서   출처: https://goddaehee.tistory.com/207 [갓대희의 작은공간]  */
     compileOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     //implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  //이것도 docker에서 위에 compileOnly를 못읽어서 넣어주었다.
 
-	compileOnly 'org.projectlombok:lombok:1.18.16'    ///docker에서  gradlew build에서 안되서 아래 것을 하나 더 추가했다.
-	implementation 'org.projectlombok:lombok:1.18.16'
-	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+	compileOnly 'org.projectlombok:lombok:1.18.20'    ///docker에서  gradlew build에서 안되서 아래 것을 하나 더 추가했다.
+	implementation 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//runtimeOnly 'com.h2database:h2'   //이렇게 하니까. docker에서 gradle build 시 못읽는다. bootRun도 읽는다.
-	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.23'
 	
 	//implementation 'com.h2database:h2'   //이렇게 하니까 읽었다.  둘다 살려보자.
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -65,13 +65,13 @@ dependencies {
     
     
     //복잡한 쿼리문은 mybatis를 쓰자.
-    implementation("org.springframework.data:spring-data-jdbc:2.1.2")
-    implementation("org.mybatis:mybatis:3.5.6")
+    implementation("org.springframework.data:spring-data-jdbc:2.2.2")
+    implementation("org.mybatis:mybatis:3.5.7")
     implementation("org.mybatis:mybatis-spring:2.0.6")
     //mybatis 를 쓰려고 하는데 postgresql을 jpa랑 같이 사용하려고 할때 HikariCp에서 문제를 일으킨다고한다.
     //https://stackoverflow.com/questions/49088847/after-spring-boot-2-0-migration-jdbcurl-is-required-with-driverclassname
     //tomcat-jdbc를 쓰라고 한다.
-    implementation("org.apache.tomcat:tomcat-jdbc:10.0.0")
+    implementation("org.apache.tomcat:tomcat-jdbc:10.0.8")
         
     
     
@@ -79,14 +79,14 @@ dependencies {
     annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
     
     
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0") 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2") 
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     
     /*스프링 상태 모니터링
 	/actuator  로 접근
 	 */
-	implementation "org.springframework.boot:spring-boot-starter-actuator:2.4.1"
-	implementation 'de.codecentric:spring-boot-admin-starter-client:2.3.1'
+	implementation "org.springframework.boot:spring-boot-starter-actuator:2.5.2"
+	implementation 'de.codecentric:spring-boot-admin-starter-client:2.4.3'
     
     //https://github.com/springfox/springfox
     implementation "io.springfox:springfox-boot-starter:3.0.0"
@@ -95,7 +95,7 @@ dependencies {
 	//html태그를 제거하기위해서 쓰려고함 
 	//https://java2020.com/q/hwprbhse
 	// https://mvnrepository.com/artifact/org.jsoup/jsoup
-	implementation "org.jsoup:jsoup:1.13.1"
+	implementation "org.jsoup:jsoup:1.14.1"
 
     
 	//java9이상 컴파일시 기존에 java8 이전에 포함되었던 이것이 없어서 문제가 된다고 한다.
@@ -103,10 +103,10 @@ dependencies {
 
 
 	// https://mvnrepository.com/artifact/commons-io/commons-io
-	implementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.10.0'
 
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-compress
-	implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
+	implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.21'
 
 	// https://mvnrepository.com/artifact/javax.jdo/jdo-api
 	////javax.jdo.annotations.PrimaryKey can not find symbol  이거 오류 잡으려고 넣음
@@ -126,7 +126,7 @@ dependencies {
 	implementation 'org.seleniumhq.selenium:selenium-java'
 
 
-	implementation 'com.auth0:java-jwt:3.16.0'
+	implementation 'com.auth0:java-jwt:3.18.1'
 
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.7'
