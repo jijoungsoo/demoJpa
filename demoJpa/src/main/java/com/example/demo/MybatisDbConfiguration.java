@@ -33,7 +33,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 public class MybatisDbConfiguration {
 	@PrimaryKey
 	@Bean(name="dataSource")
-	@ConfigurationProperties(prefix = "spring.datasource.hikari")
+	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource(){
 		return DataSourceBuilder.create().build();
 	}

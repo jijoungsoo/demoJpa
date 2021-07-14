@@ -20,6 +20,11 @@ spring:
   profiles:
     active: default
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://127.0.0.1:5432/stockweb
+    jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb
+    username: postgres
+    password: pwd
 ##H2디비 설정
       #jdbc-url: jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
       #jdbc-url: jdbc:log4jdbc:h2:c:/data/testdb;AUTO_SERVER=TRUE  #AUTO_SERVER=true를 해야만 멀티로 접속할수 있다. 이모드는 파일경루일 경우
@@ -31,13 +36,19 @@ spring:
 #postgresql   하나 설정      
     hikari:
       maximum-pool-size: 4
-      driver-class-name: org.postgresql.Driver 
+      #data-source-class-name: org.postgresql.ds.PGSimpleDataSource
+      #driver-class-name: org.postgresql.Driver
+      #DataSource: org.postgresql.Driver
+      #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
+      #username: postgres
+      #password: pwd
+      #driver-class-name: org.postgresql.Driver      
+      #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
       #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명
       #jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy      
-      jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
-      username: postgres
-      password: pwd
+      
+      
     #url: jdbc:postgresql://localhost:5432/stockweb  #postgres   db명
     #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy  로그가 너무 나와서 제거
   output:
