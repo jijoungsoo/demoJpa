@@ -30,8 +30,12 @@ public class SA_UPBIT_EXCHANGE_GET_DEPOSITS  {
   public ArrayList<HashMap<String,Object>> run(String CURRENCY,String STATE,ArrayList<String>  UUIDS 
   ,ArrayList<String> TXIDS, String LIMIT, String PAGE, String ORDER_BY  ) throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
     HashMap<String, String> params = new HashMap<>();
-    params.put("currency",CURRENCY);
-    params.put("state",STATE);
+    if(CURRENCY!=null){
+      params.put("currency",CURRENCY);
+    }
+    if(STATE!=null){
+      params.put("state",STATE);
+    }
     params.put("limit",LIMIT);
     params.put("page",PAGE);
     params.put("order_by",ORDER_BY);
@@ -39,17 +43,22 @@ public class SA_UPBIT_EXCHANGE_GET_DEPOSITS  {
     for(Map.Entry<String, String> entity : params.entrySet()) {
         queryElements.add(entity.getKey() + "=" + entity.getValue());
     }
-    for(String txid : TXIDS) {
-      queryElements.add("txids[]=" + txid);
-    }
-    for(String uuid : UUIDS) {
-      queryElements.add("uuids[]=" + uuid);
+    if(TXIDS!=null){
+      for(String txid : TXIDS) {
+        queryElements.add("txids[]=" + txid);
+      }
+    }    
+    if(UUIDS!=null){
+      for(String uuid : UUIDS) {
+        queryElements.add("uuids[]=" + uuid);
+      }
     }
 
     String queryString = String.join("&", queryElements.toArray(new String[0]));
 
     String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/deposits", queryString);
     ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
+    System.out.println("queryString ="+queryString);
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);
     return rtn;

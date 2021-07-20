@@ -144,7 +144,10 @@ public class BR_UPBIT_EXCHANGE_POST_WITHDRAWS_KRW {
 				row.TYPE = tmp.get("type").toString();
 				row.UUID = tmp.get("uuid").toString();				
 				row.CURRENCY = tmp.get("currency").toString();
-				row.TXID = tmp.get("txid").toString();
+				if(tmp.get("txid")!=null){
+					row.TXID = tmp.get("txid").toString();
+				}
+				
 				row.STATE = tmp.get("state").toString();
 				row.CREATED_AT = tmp.get("created_at").toString();
 				row.DONE_AT = tmp.get("done_at").toString();

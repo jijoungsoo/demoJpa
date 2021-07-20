@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
+import com.example.demo.sa.upbit.api.SA_UPBIT_EXCHANGE_GET_DEPOSITS;
 import com.example.demo.sa.upbit.api.SA_UPBIT_EXCHANGE_GET_WITHDRAWS;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,13 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
+public class BR_UPBIT_EXCHANGE_GET_DEPOSITS {
 
 	@Autowired
     PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_DEPOSITS")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -49,11 +50,11 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAWS", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_DEPOSITS", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_DEPOSITS")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("CURRENCY")
@@ -79,15 +80,15 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_DEPOSITS")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAWS", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_UPBIT_EXCHANGE_GET_DEPOSITS", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="OUT_DATA_ROW-BR_UPBIT_EXCHANGE_GET_DEPOSITS")
 	@Data
 	static class OUT_DATA_ROW {
 
@@ -136,7 +137,7 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 	}
 	
 	@Autowired
-	SA_UPBIT_EXCHANGE_GET_WITHDRAWS saUpbitExchangeGetWithdraws;
+	SA_UPBIT_EXCHANGE_GET_DEPOSITS saUpbitExchangeGetDeposits;
 
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
@@ -179,7 +180,7 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 
 		ArrayList<HashMap<String, Object>> al;
 			try {
-				al = saUpbitExchangeGetWithdraws.run( CURRENCY, 
+				al = saUpbitExchangeGetDeposits.run( CURRENCY, 
 				STATE
 				/*
 					출금 상태

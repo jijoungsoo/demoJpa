@@ -280,7 +280,9 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS_CHANCE {
 					OUT_DATA_WITHDRAW_LIMIT_ROW row = new OUT_DATA_WITHDRAW_LIMIT_ROW();
 					row.CURRENCY =withdraw_limit.get("currency").toString();
 					row.MINIMUM =withdraw_limit.get("minimum").toString();
-					row.ONETIME =withdraw_limit.get("onetime").toString();
+					if(withdraw_limit.get("onetime")!=null){
+						row.ONETIME =withdraw_limit.get("onetime").toString();
+					}
 					if(withdraw_limit.get("daily")!=null){
 						row.DAILY =withdraw_limit.get("daily").toString();
 					}

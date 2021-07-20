@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import com.example.demo.anotation.OpService;
 import com.example.demo.exception.BizException;
-import com.example.demo.sa.upbit.api.SA_UPBIT_EXCHANGE_GET_WITHDRAWS;
+import com.example.demo.sa.upbit.api.SA_UPBIT_EXCHANGE_GET_DEPOSIT;
 import com.example.demo.utils.PjtUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -31,13 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @OpService
 @Service
-public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
+public class BR_UPBIT_EXCHANGE_GET_DEPOSIT {
 
 	@Autowired
     PjtUtil pjtU;
 	
 	@JsonRootName("IN_DS")
-	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="IN_DS-BR_UPBIT_EXCHANGE_GET_DEPOSIT")
 	@Data
 	static class IN_DS {
 		@JsonProperty("brRq")
@@ -49,45 +49,36 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 		String brRs;
 
 		@JsonProperty("IN_DATA")
-		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAWS", description = "입력 데이터")
+		@Schema(name="IN_DATA-BR_UPBIT_EXCHANGE_GET_DEPOSIT", description = "입력 데이터")
 		ArrayList<IN_DATA_ROW> IN_DATA = new ArrayList<IN_DATA_ROW>();
 	}
 
-	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="IN_DATA_ROW-BR_UPBIT_EXCHANGE_GET_DEPOSIT")
 	@Data
 	static class IN_DATA_ROW {
 		@JsonProperty("CURRENCY")
 		@Schema(name = "CURRENCY", example = "KRW-ADX", description = "CURRENCY코드")
 		String CURRENCY = null;
 
-		@JsonProperty("STATE")
-		@Schema(name = "STATE", example = "KRW-ADX", description = "종목상태")
-		String STATE = null;
+		@JsonProperty("UUID")
+		@Schema(name = "UUID", example = "KRW-ADX", description = "UUID")
+		String UUID = null;
 
-		@JsonProperty("AL_UUIDS")
-		@Schema(name = "AL_UUIDS", example = "KRW-ADX", description = "AL_UUIDS")
-		String AL_UUIDS = null;
-
-		
-
-		@JsonProperty("AL_TXIDS")
-		@Schema(name = "AL_TXIDS", example = "KRW-ADX", description = "AL_TXIDS")
-		String AL_TXIDS =null;
-
-		
-		
+		@JsonProperty("TXID")
+		@Schema(name = "TXID", example = "KRW-ADX", description = "TXID")
+		String TXID = null;
 	}
 	
 	@JsonRootName("OUT_DS")
-	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="OUT_DS-BR_UPBIT_EXCHANGE_GET_DEPOSIT")
 	@Data
 	static class OUT_DS {
 		@JsonProperty("OUT_DATA")
-		@Schema(name="OUT_DATA-BR_UPBIT_EXCHANGE_GET_WITHDRAWS", description = "출력 데이터")
+		@Schema(name="OUT_DATA-BR_UPBIT_EXCHANGE_GET_DEPOSIT", description = "출력 데이터")
 		ArrayList<OUT_DATA_ROW> OUT_DATA = new ArrayList<OUT_DATA_ROW>();
 	}
 
-	@ApiModel(value="OUT_DATA_ROW-BR_UPBIT_EXCHANGE_GET_WITHDRAWS")
+	@ApiModel(value="OUT_DATA_ROW-BR_UPBIT_EXCHANGE_GET_DEPOSIT")
 	@Data
 	static class OUT_DATA_ROW {
 
@@ -136,7 +127,7 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 	}
 	
 	@Autowired
-	SA_UPBIT_EXCHANGE_GET_WITHDRAWS saUpbitExchangeGetWithdraws;
+	SA_UPBIT_EXCHANGE_GET_DEPOSIT saUpbitExchangeGetDeposit;
 
 	
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation", content = {
@@ -146,62 +137,21 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 	//@PostMapping(path= "/api/BR_MIG_AV_ACTR_FIND", consumes = "application/json", produces = "application/json")
 	public OUT_DS run(@RequestBody IN_DS inDS) throws BizException {
 		String CURRENCY = null;
-		String STATE =null;
-		ArrayList<String> AL_UUIDS  =null;
-		ArrayList<String> AL_TXIDS =null;
+		String TXID =null;
+		String UUID =null;
 		OUT_DS outDs = new OUT_DS();
 		if(inDS.IN_DATA!=null) {
 			if(inDS.IN_DATA.size()>0) {
 				CURRENCY  =inDS.IN_DATA.get(0).CURRENCY;
-				STATE  =inDS.IN_DATA.get(0).STATE;
-				String tmp_al_uuids   =inDS.IN_DATA.get(0).AL_UUIDS;
-				if(!pjtU.isEmpty(tmp_al_uuids)){
-					String[] arr_tmp = tmp_al_uuids.split(",");
-					if(arr_tmp.length>0){
-						AL_UUIDS = new ArrayList<String>();
-						for(int i=0;i<arr_tmp.length;i++){
-							AL_UUIDS.add(arr_tmp[i]);
-						}
-					}					
-				}
-				String tmp_al_txids   =inDS.IN_DATA.get(0).AL_TXIDS;
-				if(!pjtU.isEmpty(tmp_al_txids)){
-					String[] arr_tmp = tmp_al_txids.split(",");
-					if(arr_tmp.length>0){
-						AL_TXIDS = new ArrayList<String>();
-						for(int i=0;i<arr_tmp.length;i++){
-							AL_TXIDS.add(arr_tmp[i]);
-						}
-					}					
-				}
+				TXID  =inDS.IN_DATA.get(0).TXID;
+				UUID  =inDS.IN_DATA.get(0).UUID;
 			}	
 		}
 
-		ArrayList<HashMap<String, Object>> al;
-			try {
-				al = saUpbitExchangeGetWithdraws.run( CURRENCY, 
-				STATE
-				/*
-					출금 상태
-- submitting : 처리 중
-- submitted : 처리 완료
-- almost_accepted : 출금대기중
-- rejected : 거부
-- accepted : 승인됨
-- processing : 처리 중
-- done : 완료
-- canceled : 취소됨
-				*/
-				,
-				AL_UUIDS /*	출금 UUID의 목록*/,
-				AL_TXIDS,/*출금 TXID의 목록 */
-				"100" /*limit 리미트 1~100 */,
-				"1" /*page 페이지 */,				
-				"desc"  /*order by 정렬  */				
-				);
-			
-			for(int i=0;i<al.size();i++){
-				HashMap<String, Object>  tmp = al.get(i);
+		
+		try {
+			HashMap<String,Object>  tmp = saUpbitExchangeGetDeposit.run( UUID,TXID,CURRENCY);
+			if(tmp!=null){
 				OUT_DATA_ROW row = new OUT_DATA_ROW();
 				row.TYPE = tmp.get("type").toString();
 				row.UUID = tmp.get("uuid").toString();				
@@ -209,15 +159,13 @@ public class BR_UPBIT_EXCHANGE_GET_WITHDRAWS {
 				row.TXID = tmp.get("txid").toString();
 				row.STATE = tmp.get("state").toString();
 				row.CREATED_AT = tmp.get("created_at").toString();
-				if(tmp.get("done_at")!=null){
-					row.DONE_AT = tmp.get("done_at").toString();
-				}
-				
+				row.DONE_AT = tmp.get("done_at").toString();
 				row.AMOUNT = tmp.get("amount").toString();
 				row.FEE = tmp.get("fee").toString();
 				
 				row.TRANSACTION_TYPE = tmp.get("transaction_type").toString();				
 				outDs.OUT_DATA.add(row);
+
 			}
 		} catch (NoSuchAlgorithmException | URISyntaxException | IOException e) {
 			// TODO Auto-generated catch block

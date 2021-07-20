@@ -28,15 +28,7 @@ public class SA_UPBIT_EXCHANGE_GET_DEPOSITS_COIN_ADDRESSES {
   HttpUtil httpU;
 //출금 리스트 조회
   public ArrayList<HashMap<String,Object>> run() throws BizException, ClientProtocolException, NoSuchAlgorithmException, URISyntaxException, IOException  {
-    HashMap<String, String> params = new HashMap<>();
-    ArrayList<String> queryElements = new ArrayList<>();
-    for(Map.Entry<String, String> entity : params.entrySet()) {
-        queryElements.add(entity.getKey() + "=" + entity.getValue());
-    }
-
-    String queryString = String.join("&", queryElements.toArray(new String[0]));
-
-    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/deposits/coin_addresses", queryString);
+    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/deposits/coin_addresses");
     ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);
