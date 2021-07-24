@@ -141,13 +141,10 @@ dependencies {
 }
 /* 유투브보고 querydsl 설정했다.
 https://www.youtube.com/watch?v=hIw4EuhF9o8
-
 cmd 창에서  gradlw build 를 하면
 src/main/generated  여기에  Q로시작하는 것들이  생성됨
-
 그때 이거 생성하고 어떤걸 설정했는지 기억이 나지 않는다.
 eclipse 에서 import 가 안되네.
-
 */
 
 /*출처: https://coding-start.tistory.com/304 [코딩스타트]

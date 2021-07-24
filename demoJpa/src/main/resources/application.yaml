@@ -20,7 +20,9 @@ spring:
   profiles:
     active: default
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
+    #type: com.zaxxer.hikari.HikariDataSource
+    type: org.apache.tomcat.jdbc.pool.DataSource
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/stockweb
     jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb
     username: postgres
@@ -34,18 +36,15 @@ spring:
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       #junit 테스트 넣음
 #postgresql   하나 설정      
-    hikari:
-      maximum-pool-size: 4
+    #hikari:
+      #maximum-pool-size: 4
       #data-source-class-name: org.postgresql.ds.PGSimpleDataSource
       #driver-class-name: org.postgresql.Driver
       #DataSource: org.postgresql.Driver
       #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
       #username: postgres
-      #password: pwd
+      #password: pwd2
       #driver-class-name: org.postgresql.Driver      
-      #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명      
-      #jdbc-url: jdbc:postgresql://127.0.0.1:5432/stockweb  #postgres   db명
-      #jdbc-url: jdbc:postgresql://postgres:5432/stockweb  #postgres   db명
       #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy      
       
       
@@ -63,7 +62,7 @@ spring.datasource.sql-script-encoding: utf-8
 spring.jpa.database-platform: com.example.demo.db.sqlutil.CustomPostgreSQLDialect
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
 spring.jpa.properties.hibernate.default_schema: public  #postgresql 디폴트 스키마 지정  일단 이거 제외 db를 빠꾸자. 
-spring.datasource.type: org.apache.tomcat.jdbc.pool.DataSource
+#spring.datasource.type: org.apache.tomcat.jdbc.pool.DataSource
 #spring.jpa.database-platform: org.hibernate.dialect.H2Dialect      
 
 

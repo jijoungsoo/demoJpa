@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.Map;
+
 import javax.jdo.annotations.PrimaryKey;
 import javax.sql.DataSource;
 
@@ -35,7 +37,8 @@ public class MybatisDbConfiguration {
 	@Bean(name="dataSource")
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource(){
-		return DataSourceBuilder.create().build();
+		DataSource tmp =DataSourceBuilder.create().build();
+		return tmp;
 	}
 
 	@PrimaryKey
@@ -52,11 +55,17 @@ public class MybatisDbConfiguration {
 		@Qualifier("dataSource") DataSource primaryDataSource,
 		@Qualifier("jpaProperties") JpaProperties jpaProperties
 	){
-		return builder.dataSource(primaryDataSource)
-		.properties(jpaProperties.getProperties())
+
+		DataSource tmp_DataSource =primaryDataSource;
+		Map<String, String>  tmp_jpa =jpaProperties.getProperties();
+
+		LocalContainerEntityManagerFactoryBean  tmp =builder.dataSource(tmp_DataSource)
+		.properties(tmp_jpa)
 		.packages("com.example.demo.db")
 		.persistenceUnit("default")
 		.build();
+
+		return tmp;
 	}
 
 	@Bean(name="sqlSessionFactory")
