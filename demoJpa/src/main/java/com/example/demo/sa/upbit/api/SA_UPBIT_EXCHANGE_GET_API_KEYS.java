@@ -34,9 +34,8 @@ public class SA_UPBIT_EXCHANGE_GET_API_KEYS {
         queryElements.add(entity.getKey() + "=" + entity.getValue());
     }
 
-    String queryString = String.join("&", queryElements.toArray(new String[0]));
+    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/api_keys");
 
-    String jsonOutString = httpU.httpGetUpbitExchangeApi("https://api.upbit.com/v1/status/wallet", queryString);
     ArrayList<HashMap<String,Object>> rtn = new ArrayList<HashMap<String,Object>>();
     System.out.println("jsonOutString ="+jsonOutString);
     rtn=pjtU.JsonStringToObject(jsonOutString, ArrayList.class);
