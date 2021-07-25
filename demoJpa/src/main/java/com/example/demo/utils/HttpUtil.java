@@ -338,6 +338,55 @@ public class HttpUtil {
 	}
 
     
+    public String httpGetBinianceGetServerTime() throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String ServerTime="";
+        try {
+
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet("https://api.binance.com/api/v3/time");
+            request.setHeader("Content-Type", "application/json");
+            HttpResponse response = client.execute(request);
+            org.apache.http.HttpEntity entity = response.getEntity();
+            String rtn = EntityUtils.toString(entity, "UTF-8");
+            HashMap<String,Object> tmp=pjtU.JsonStringToObject(rtn, HashMap.class);
+            ServerTime = tmp.get("serverTime").toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return  ServerTime;
+	}
+
+    public String httpGetBiniance(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
+        String rtn="";
+        String accessKey = System.getenv("BINANCE-API-KEY");
+        String secretKey = System.getenv("BINANCE-API-SECRET");
+
+        //https://github.com/binance-exchange/binance-java-api/blob/master/src/main/java/com/binance/api/client/security/HmacSHA256Signer.java
+        String signature = HmacSHA256Signer.sign(queryString, secretKey);
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            if(!PjtUtil.isEmpty(queryString)){
+                URL=URL+"?"+queryString+"&signature="+signature;
+            }
+            System.out.println(URL);
+            HttpGet request = new HttpGet(URL);
+            request.setHeader("Content-Type", "application/json");
+            request.addHeader("X-MBX-APIKEY", accessKey);
+
+            HttpResponse response = client.execute(request);
+            org.apache.http.HttpEntity entity = response.getEntity();
+            rtn = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return  rtn;
+	}
+
+    
     public String httpGetUpbitExchangeApi(String URL, String queryString) throws URISyntaxException, ClientProtocolException, IOException, NoSuchAlgorithmException{
         String rtn="";
         String remaining_req="";
